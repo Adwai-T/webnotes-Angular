@@ -1,0 +1,43 @@
+*{
+  font-family:  Arial, Helvetica, sans-serif;
+  color: #0e588c;
+  text-decoration: none;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color:  #003171;
+}
+
+.icon{
+  width: 50px;
+  height: auto;
+}
+
+.icon:hover{
+  cursor: pointer;
+  transform: scale3d(1.1,1.1,1.1);
+}
+
+a:hover{
+  color: #0000b3;
+  text-decoration: none;
+  transform: scale3d(1.1,1.1,1.1);
+}
+
+.navbar-brand{
+  font-size: 30px;
+}
+
+#blog{
+  padding-top: 6px;
+  padding-left: 5px;;
+}
+
+.nav-link{
+  color: #003171;
+}
+
+.navbar-light{
+  background-color:#f5fbff;
+}
+
