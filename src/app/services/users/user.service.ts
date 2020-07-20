@@ -1,12 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { AuthenticatedUser } from 'src/app/interfaces/authenticatedUser';
 import { SignInUser } from 'src/app/interfaces/signInUser';
 import { JWT } from 'src/app/interfaces/jwt-response';
 import { JWTBody } from 'src/app/interfaces/jwtbody';
-import { Observable } from 'rxjs';
-
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +22,7 @@ export class UserService {
     id : 0,
     email : "user@example.com"
   }
+  public isAuthenticatedEvent:EventEmitter<boolean> = new EventEmitter();
 
   constructor(private http: HttpClient) { }
 
@@ -53,6 +53,7 @@ export class UserService {
 
   set isAuthenticated(authenticate: boolean){
     this.authenticated = authenticate;
+    this.isAuthenticatedEvent.emit(authenticate);
   }
 
   get authenticatedUserDetails(): AuthenticatedUser{
@@ -60,6 +61,7 @@ export class UserService {
   }
 
   set authenticatedUserDetails(authenticatedUser: AuthenticatedUser){
+    console.log(authenticatedUser);
     this.authenticatedUser = authenticatedUser;
   }
 

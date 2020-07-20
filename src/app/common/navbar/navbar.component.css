@@ -6,7 +6,7 @@
 
 #container{
   display: flex;
-  background-color: rgb(241, 255, 255);
+  background-color: rgb(253, 255, 255);
   align-items: center;
   flex-wrap: no-wrap;
   position: fixed;
@@ -40,6 +40,7 @@
 .nav-link:hover{
   color: #8f008f;
   font-size: 20px;
+  cursor: pointer;
 }
 
 #nav-right{

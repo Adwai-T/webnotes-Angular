@@ -8,11 +8,13 @@
        </g>
       </g>
      </svg>
-    <a routerLink="#" id="blog">BLOG</a>
+    <a routerLink="#" id="blog">
+      <div>NOTES</div>
+    </a>
   </div>
 
   <div id="nav-links">
-    <a routerLink="/user/profile" class="nav-link">Profile</a>
+    
     <a routerLink="/blog" class="nav-link">Notes</a>
     <a routerLink="#" class="nav-link">Links</a>
     <a routerLink="#" class="nav-link">Links</a>
@@ -20,8 +22,10 @@
   </div>
 
   <div id="nav-right">
-    <a routerLink="/user/signin" class="nav-link">SignIn</a>
-    <a routerLink="/user/signup" class="nav-link">SignUp</a>
+    <a routerLink="/user/profile" class="nav-link" *ngIf="isAuth">{{ subject }}</a>
+    <a (click)="onSignOut()" class="nav-link" *ngIf="isAuth">SignOut</a>
+    <a routerLink="/user/signin" class="nav-link" *ngIf="!isAuth">SignIn</a>
+    <a routerLink="/user/signup" class="nav-link" *ngIf="!isAuth">SignUp</a>
   </div>
 
 </div>

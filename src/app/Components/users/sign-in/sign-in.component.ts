@@ -4,7 +4,6 @@ import { Router } from '@angular/router'
 
 import { UserService } from 'src/app/services/users/user.service';
 import { SignInUser } from 'src/app/interfaces/signInUser';
-import { AuthenticatedUser } from 'src/app/interfaces/authenticatedUser';
 import { JWT } from 'src/app/interfaces/jwt-response';
 
 @Component({
