@@ -7,9 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotesTilesComponent implements OnInit {
 
-   imgtilesrc : string = '../../../assets/images/cat.jpg'
+  getLink:string = "/blog";
+
+   imgtilesrc : string = '../../../assets/images/cat.jpg';
    titletile : string = "Title";
-   descriptiontile = "This is a description. Here we will place a short description."
+   descriptiontile = "This is a description. Here we will place a short description.";
 
   constructor() { }
 

@@ -6,7 +6,7 @@
 
 #container{
   display: flex;
-  background-color: aliceblue;
+  background-color: rgb(241, 255, 255);
   align-items: center;
   flex-wrap: no-wrap;
   position: fixed;
@@ -23,7 +23,7 @@
   display: flex;
   align-items: center;
   padding: 8px;
-  margin-right: 4px;
+  margin-right: 15px;
   font-size: 21px;
 }
 
@@ -34,16 +34,16 @@
 
 .nav-link{
   font-size: 18px;
-  padding-left: 6px;
-  padding-right: 6px;
+  padding: 10px;
 }
 
 .nav-link:hover{
-  color: #0000b3;
+  color: #8f008f;
   font-size: 20px;
 }
 
 #nav-right{
+  margin-right: 80px;
   padding-right: 8px;
   margin-left: auto;
 }

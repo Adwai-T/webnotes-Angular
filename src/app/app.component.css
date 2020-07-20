@@ -1,6 +1,24 @@
 #container{
   display: flex;
+  flex-wrap: wrap;
+  margin-right: 50px;
   flex-direction: column;
+}
+
+#nav-bar{
+  width: 100vw;
+  height: 70px;
+}
+
+#navbarpadding{
+  padding: 23px;
+}
+
+#notes-container{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100vw;
+  justify-content: center;
 }
 
 
