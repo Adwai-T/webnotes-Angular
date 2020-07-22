@@ -6,6 +6,7 @@ import { AuthenticatedUser } from 'src/app/interfaces/authenticatedUser';
 import { SignInUser } from 'src/app/interfaces/signInUser';
 import { JWT } from 'src/app/interfaces/jwt-response';
 import { JWTBody } from 'src/app/interfaces/jwtbody';
+import { ServerMessage } from 'src/app/interfaces/serverMessage';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,10 @@ import { JWTBody } from 'src/app/interfaces/jwtbody';
 export class UserService {
 
   private authenticated:boolean = false;
-  private authenticationUrl:string = 'https://adwait-webnotes.herokuapp.com/authenticate'
-  private getAuthenticatedUserUrl:string = 'https://adwait-webnotes.herokuapp.com/user/userprofile'
+  private authenticationUrl:string = 'https://adwait-webnotes.herokuapp.com/authenticate';
+  private getAuthenticatedUserUrl:string = 'https://adwait-webnotes.herokuapp.com/user/userprofile';
+  private createNewUserUrl:string = 'https://adwait-webnotes.herokuapp.com/user/createuser';
+  private deleteUserUrl:string = 'https://adwait-webnotes.herokuapp.com/user/userprofile/delete';
   private authenticatedUser: AuthenticatedUser = {
     userName : "user",
     active : false,
@@ -33,6 +36,7 @@ export class UserService {
 
   }
 
+  //If jwt is already present then get the userProfile data.
   getAuthenticatedUser(): Observable<AuthenticatedUser>{
 
     let jwtToken = `Bearer ${localStorage.getItem('jwt')}`;
@@ -44,6 +48,28 @@ export class UserService {
     }
 
     return this.http.get<AuthenticatedUser>(this.getAuthenticatedUserUrl, httpOptions);
+  }
+
+  //Create a new User in the database
+  signUp(signUpUser: AuthenticatedUser): Observable<AuthenticatedUser>{
+
+    return this.http.post<AuthenticatedUser>(this.createNewUserUrl, signUpUser);
+
+  }
+
+  //Delete User from database
+  deleteUser(): Observable<ServerMessage>{
+
+    let jwtToken = `Bearer ${localStorage.getItem('jwt')}`;
+
+    let httpOptions = {
+      headers: new HttpHeaders({
+        "Authorization" : jwtToken
+      })
+    }
+
+    return this.http.delete<ServerMessage>(this.deleteUserUrl, httpOptions);
+
   }
 
   //--- Getters and Setters

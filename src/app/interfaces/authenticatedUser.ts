@@ -2,6 +2,7 @@ export interface AuthenticatedUser{
   userName: string;
   active: boolean;
   roles: string;
-  id: number;
   email: string;
+  id?: number;
+  password?: string;
 }

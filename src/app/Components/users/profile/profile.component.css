@@ -4,6 +4,8 @@
 }
 
 #profile-component{
+    margin-top: 30px;
+    justify-items: flex-start;
     background-color: #fff;
     align-items: center;
     padding: 20px;
@@ -48,4 +50,48 @@ span{
 
 img{
     width: 75px;
+}
+
+#button-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button{
+    padding: 20px;
+    color: red;
+    background-color: salmon;
+    border: none;
+    border-radius: 15px;
+    align-self: center;
+    justify-self: center;
+}
+
+button:hover{
+    background-color: red;
+    color : white;
+}
+
+.delete-success{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding : 8px;
+    margin: 5px;
+    border-radius: 10px;
+    background-color: lightseagreen;
+    color: white;
+    text-align: center;
+    font-size: medium;
+}
+
+.delete-success img{
+    width: 25px;
+}
+
+.delete-success a{
+    text-decoration: none;
+    cursor: pointer;
+    color: white;
 }

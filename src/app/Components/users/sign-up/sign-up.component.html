@@ -1,1 +1,47 @@
-<p>sign-up works!</p>
+<div id="signup-container">
+
+    <div id="heading">
+        NOTES
+    </div>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+        <div class="label-input-group">
+            <label for="username">Username</label>
+            <input type="text" id=" username" formControlName="userName" class="form-control" placeholder="Username">
+        </div>
+
+        <div class="label-input-group">
+            <label for="email">Email</label>
+            <input type="email" id=" email" formControlName="email" class="form-control" placeholder="Username">
+        </div>
+
+        <div class="label-input-group">
+            <label for="password">Password</label>
+            <input type="password" id=" password" formControlName="password" class="form-control" placeholder="Username">
+
+        </div>
+
+        <div>
+            <button type="submit">Join Us</button>
+        </div>
+
+        <div *ngIf="loading" id="loading">Creating new Account. Thank you for your patience...</div>
+
+        <div *ngIf="errors.length > 0">
+            <div class="form-warning" *ngFor="let error of errors">
+                <img src="data:image/png;base64,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"/>
+                {{ error }}
+            </div>
+        </div>
+
+        <div *ngIf="success">
+            <div id="from-success">
+                Thanks for Joining Us on this Journey.
+                <a routerLink = '/user/signin'>Login to Continue</a>
+            </div>
+        </div>
+
+    </form>
+
+
+</div>
