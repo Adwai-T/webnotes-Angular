@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-notes-tiles',
@@ -7,15 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotesTilesComponent implements OnInit {
 
-  getLink:string = "/blog";
+  @Input() imgSrc = 'src';
+  @Input() tileTitle = 'Title';
 
-   imgtilesrc : string = '../../../assets/images/cat.jpg';
-   titletile : string = "Title";
-   descriptiontile = "This is a description. Here we will place a short description.";
+  public imgtilesrc : string = this.imgSrc;
+  public titletile : string = this.tileTitle;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.imgtilesrc= this.imgSrc;
+    this.titletile = this.tileTitle;
   }
 
 }

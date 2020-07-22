@@ -1,0 +1,30 @@
+#blog-container{
+    display: flex;
+    flex-direction: column;
+}
+
+#tile-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.options-window{
+    text-decoration: none;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+h2{
+    color: coral;
+}
+
+a{
+    text-decoration: none;
+}
+
+.line-divide-light{
+    width: 97%;
+    height: 0px;
+    border: 1px solid rgb(226, 214, 214);
+    margin : 5px auto;
+  }

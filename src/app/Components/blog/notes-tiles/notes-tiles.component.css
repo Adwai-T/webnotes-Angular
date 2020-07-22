@@ -5,13 +5,14 @@
   width: 150px;
   padding : 2px;
   border-radius: 5px;
-  background-color: #ffffff;
+  background-color: rgb(255, 231, 221);
   margin: 3px;
 }
 
 .container-tile:hover{
   transform: scale(1.1);
   box-shadow: 11px 11px 8px 1px rgba(193,208,227,1);
+  background-color: #ffffff;
 }
 
 img{
@@ -19,7 +20,9 @@ img{
 }
 
 #title-tile{
-  font-size: 22px;
+  font-size: 19px;
+  text-align: center;
+  color: darksalmon;
 }
 
 #description-tile{
