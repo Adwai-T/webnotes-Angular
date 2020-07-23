@@ -27,6 +27,12 @@
   font-size: 21px;
 }
 
+#nav-links{
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
 #nav-title:hover{
   cursor: pointer;
   transform: scale3d(1.1,1.1,1.1);

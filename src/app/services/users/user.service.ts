@@ -25,7 +25,16 @@ export class UserService {
     id : 0,
     email : "user@example.com"
   }
+  private defaultUser: AuthenticatedUser = {
+      userName : "user",
+      active : false,
+      roles : "NON",
+      id : 0,
+      email : "user@example.com"
+  }
+
   public isAuthenticatedEvent:EventEmitter<boolean> = new EventEmitter();
+  public authenticatedUserDetailsEventEmitter: EventEmitter<AuthenticatedUser> = new EventEmitter();
 
   constructor(private http: HttpClient) { }
 
@@ -73,6 +82,7 @@ export class UserService {
   }
 
   //--- Getters and Setters
+  //--- Use the getters only for static one time values, use the Event Emitter for changing values.
   get isAuthenticated():boolean{
     return this.authenticated;
   }
@@ -89,6 +99,7 @@ export class UserService {
   set authenticatedUserDetails(authenticatedUser: AuthenticatedUser){
     console.log(authenticatedUser);
     this.authenticatedUser = authenticatedUser;
+    this.authenticatedUserDetailsEventEmitter.emit(this.authenticatedUser);
   }
 
   //--- JWT Utilities

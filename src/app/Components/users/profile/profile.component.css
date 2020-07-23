@@ -60,6 +60,7 @@ img{
 
 button{
     padding: 20px;
+    margin: 3px;
     color: red;
     background-color: salmon;
     border: none;
@@ -71,6 +72,16 @@ button{
 button:hover{
     background-color: red;
     color : white;
+}
+
+#edit-questions{
+    background-color: lightseagreen;
+    color:darkblue;
+}
+
+#edit-questions:hover{
+    background-color: darkblue;
+    color:white;
 }
 
 .delete-success{
