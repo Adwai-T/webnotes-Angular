@@ -3,15 +3,26 @@
     flex-direction: column;
 }
 
+#index{
+    background-color: #fff;
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
+
 #tile-container{
     display: flex;
     flex-wrap: wrap;
+    background-color: #fff;
+    margin-bottom: 8px;
+    border-radius: 10px;
 }
 
 .options-window{
     text-decoration: none;
     display: flex;
     flex-wrap: wrap;
+    background-color: #fff;
+    border-radius: 10px;
 }
 
 h2{
@@ -22,9 +33,3 @@ a{
     text-decoration: none;
 }
 
-.line-divide-light{
-    width: 97%;
-    height: 0px;
-    border: 1px solid rgb(226, 214, 214);
-    margin : 5px auto;
-  }

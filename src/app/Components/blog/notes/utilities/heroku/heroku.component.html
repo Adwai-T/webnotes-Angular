@@ -1,1 +1,49 @@
-<p>heroku works!</p>
+<div class ="blog-container">
+
+    <h2>Heroku</h2>
+
+    <h3>Create a new application</h3> 
+    <ul>
+        <li><code>heroku create</code> : Create app with random name</li>
+
+        <li><code>heroku create appName</code> : Create app with custom name</li>
+    
+        <li><code>heroku apps:rename</code> : Rename an application.</li>
+    </ul>
+
+    <h3>Deploy app to heroku.</h3>
+    <ul><li><code>git push heroku master</code> : The application should be create and a git commit needs to be done before that as the last commit will be pushed to heroku.</li></ul>
+
+    <h3>Setup Enviroment Variables</h3>
+    <ul>
+        <li><code>heroku config:set key=value</code> : Set a Enviroment valiable.</li>
+        <li><code>heroku config</code> : Get a list of all the set configuration values.</li>
+        <li><code>heroku config:unset key</code> : Remove a key from the configuration/Environment set</li>
+    </ul>
+
+    <h3>Open Application</h3>
+    <ul>
+        <code>heroku open</code> : After the application has been deployed we can open the application by using this.
+    </ul>
+
+    <h3>View Logs</h3>
+    <ul><code>heroku logs --tail</code></ul>
+
+    <h3>Fixing App not found</h3>
+    Some times you might have an issue when you try to push your git-commit to heroku. The error says there was no app found. Following are steps to fix this problem.
+    <ul>
+        <li><code>git remote -v</code> : Check for the current url</li>
+        <li><code>git remote rm heroku</code> : remove remote url</li>
+        <li><code>git remote add heroku git@heroku.com:boiling-inlet-6957.git</code> : re-add the remote url</li>
+    </ul>
+
+    <h3>Dyno Management</h3>
+    <ul>
+        <li><code>heroku ps</code> : List of dynos for an application</li>
+        <li><code>heroku ps:restart</code> : Restart all dynos</li>
+        <li><code>heroku ps:restart web</code> : Adding a name to the above will restart that dyno</li>
+        <li><code>heroku logs --tail</code> : View Logs</li>
+        <li><code>heroku ps --help</code> : Get help </li>
+    </ul>
+    
+</div>
