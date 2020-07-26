@@ -1,8 +1,16 @@
+#add-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 #addcomment-container{
    display: flex;
    padding: 10px;
    margin: 5px 10px;
    background-color: #fff;
+   width: 98%;
    align-items: center;
    justify-content: space-evenly;
 }
@@ -40,4 +48,34 @@ button:hover{
     color: white;
     background-color: lightseagreen;
 }
+
+img{
+    width: 50px;
+}
+
+#error{
+    background-color: rgb(235, 125, 125);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 15px;
+    width: fit-content;
+}
+
+#success{
+    background-color: rgb(70, 180, 116);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 15px;
+    width: fit-content;
+}
+
+
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subscriber } from 'rxjs';
 
 import { UserService } from '../users/user.service';
 import { ServerMessage } from 'src/app/interfaces/serverMessage';
@@ -79,7 +79,7 @@ export class CommentsService {
   }
 
   //---Post UserComment
-  public postComment(comment:UserComment): Observable<ServerMessage>{
+  public postComment(comment:UserComment): Observable<UserComment|ServerMessage>{
 
     if(this.userService.isAuthenticated){
 
@@ -89,11 +89,18 @@ export class CommentsService {
         })
       }
   
-      return this.http.post<ServerMessage>(this.postCommentsUrl, comment,httpOptions);
+      return this.http.post<UserComment>(this.postCommentsUrl, comment,httpOptions);
 
     }else{
 
-      throw new Error("User Is not Authorized, Login to comment");
+      let serverMessage:ServerMessage ={
+        message: "User Is not Authorized Please login to continue",
+        exception: "Unauthorized"
+      }
+
+      return new Observable(subscriber => {
+        subscriber.next(serverMessage);
+      });
       
     }
 

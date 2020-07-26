@@ -27,6 +27,7 @@ export class CommentsComponent implements OnInit, OnDestroy{
   @Input() activeTopicSubscription:EventEmitter<SubTopic>;
   public activeTopic:SubTopic;
 
+  public commentSuccessfulEvent:EventEmitter<UserComment|ServerMessage> = new EventEmitter();
 
   constructor(private commentsService:CommentsService, public userService: UserService) { }
 
@@ -44,25 +45,18 @@ export class CommentsComponent implements OnInit, OnDestroy{
 
   }
 
-  public onNewCommentEvent(event){
-    
+  public onNewCommentEvent(newComment){
+
     if(this.userService.isAuthenticated){
 
-      event.subscribe((data)=>{
+      let newUserComment:UserComment = {
+        comment: newComment,
+        topic: this.activeTopic.title.toLowerCase(),
+        userName: this.userService.authenticatedUserDetails.userName
+      }
+    
+      this.postComment(newUserComment);
 
-        let newUserComment:UserComment = {
-          comment: data,
-          topic: this.activeTopic.title.toLowerCase(),
-          userName: this.userService.authenticatedUserDetails.userName
-        }
-  
-        this.postComment(newUserComment);
-  
-      },(error)=>{
-  
-        console.log(error, "Error while posting comment, in the comment subscriptions");
-  
-      });
     }
   }
 
@@ -95,9 +89,9 @@ export class CommentsComponent implements OnInit, OnDestroy{
 
   public postComment(newUserComment:UserComment):void{
 
-    let postCommentSubscription = this.commentsService.postComment(newUserComment).subscribe((data:ServerMessage)=>{
+    let postCommentSubscription = this.commentsService.postComment(newUserComment).subscribe((data:UserComment|ServerMessage)=>{
 
-      console.log("post Succesful",data);
+      this.commentSuccessfulEvent.emit(data);
       postCommentSubscription.unsubscribe();
 
     },(error)=>{

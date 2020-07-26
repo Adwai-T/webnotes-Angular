@@ -1,7 +1,11 @@
 <div *ngIf="activeTopic">
 
+    <div id="comment">
+        
+    </div>
+
     <div *ngIf="userService.isAuthenticated">
-        <app-addcomment (newCommentEvent)="onNewCommentEvent($event)"></app-addcomment>
+        <app-addcomment (newCommentEvent)="onNewCommentEvent($event)" [commentPostStatus] = "commentSuccessfulEvent"></app-addcomment>
     </div>
     
 

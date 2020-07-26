@@ -1,16 +1,42 @@
-<div id="addcomment-container">
+<div id="add-container">
 
-    <div id="user-image">
-        {{ 'U' }}
+    <div id="addcomment-container">
+
+        <div id="user-image">
+            {{ 'C' }}
+        </div>
+    
+            <input 
+                type="text"
+                name="comment" 
+                id="input-comment" 
+                placeholder="Please write your comment here" 
+                (change) ="getValue($event)"
+                #textInputField>
+    
+            <button (click) = "getComment(textInputField)">Comment</button>
+    
     </div>
 
-        <input 
-            type="text"
-            name="comment" 
-            id="input-comment" 
-            [placeholder]="placeHolderAndErrors" (change) ="getValue($event)">
+    <div *ngIf="commentStatus && commentStatus.exception === 'Error'" id="error">
 
-        <button (click) = "getComment()">Comment</button>
+        <img src="../../../../../assets/images/blog/errorIcon.png">
 
+        <div id="error-message">
+            {{ commentStatus.message }}
+        </div>
+
+    </div>
+
+    <div *ngIf="commentStatus && commentStatus.exception !== 'Error'" id="success">
+
+        <div class="logoImage">
+            <img src="../../../../../assets/images/blog/successIcon.png">
+        </div>
+
+        <div id="success-message">
+            {{ commentStatus.message }}
+        </div>
+
+    </div>
 </div>
-
