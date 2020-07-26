@@ -1,0 +1,44 @@
+#comment-container{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 50px;
+    text-align: left;
+    border: 1px solid rgb(238, 236, 236);
+    margin: 5px 20px;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+#comment-info{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+#user-image{
+    display: flex;
+    font-size: xx-large;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border: 2px solid rgb(255, 220, 187);
+    border-radius: 10px;
+    margin : 5px;
+}
+
+#username{
+    font-size: large;
+}
+
+#date{
+    font-size: smaller;
+    color: grey;
+}
+
+#topic{
+    margin: 0 20px 10px auto;
+    font-size: small;
+    color: grey;
+}
+
+

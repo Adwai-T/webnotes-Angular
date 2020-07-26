@@ -4,93 +4,30 @@
     <h2>Notes For Reference</h2>
   </div>
 
-  <div id="tile-container">
-
-    <app-notes-tiles 
-      [tileTitle]="'Java'" 
-      (click)="java = !java; web = false; util = false; data=false"
-      [imgSrc]="'/../../../../assets/images/languages/java.png'">
-    </app-notes-tiles>
-
-    <app-notes-tiles 
-      [tileTitle]="'Web-Dev'" 
-      (click)="web = !web; java = false; util = false; data = false"
-      [imgSrc]="'/../../../../assets/images/languages/html.png'">
-    </app-notes-tiles>
-
-    <app-notes-tiles 
-      [tileTitle]="'Utilities'" 
-      (click)="util = !util; java = false; web = false; data = false"
-      [imgSrc]="'https://img.icons8.com/cute-clipart/128/000000/services.png'">
-    </app-notes-tiles>
-
-    <app-notes-tiles 
-      [tileTitle]="'DataBase'" 
-      (click)="util = false; java = false; web = false; data = !data"
-      [imgSrc]="'/../../../../assets/images/languages/database.png'">
-    </app-notes-tiles>
-
+  <div class="tile-container">
+    <div *ngFor="let topic of topics">
+      <app-notes-tiles 
+        [tileTitle] = "topic.topic"
+        (click) = "setActiveTopic(topic.topic)"
+        [imgSrc] = "topic.imageSrc">
+      </app-notes-tiles>
+    </div>
   </div>
 
-  <!--Programming Utilitites and Helper sites and Programs-->
-  <div *ngIf="util" class="options-window">
-    <a routerLink="/blog/util/git">
-      <app-notes-tiles [tileTitle]="'Github'" [imgSrc]="'/../../../../assets/images/languages/git.png'">
-      </app-notes-tiles>
-    </a>
-    <a routerLink="/blog/util/heroku">
-      <app-notes-tiles [tileTitle]="'Heroku'" [imgSrc]="'https://img.icons8.com/nolan/128/heroku.png'">
-      </app-notes-tiles>
-    </a>
-    <a routerLink="/blog/util/maven">
-      <app-notes-tiles [tileTitle]="'Maven'" [imgSrc]="'/../../../../assets/images/languages/maven.png'">
-      </app-notes-tiles>
-    </a>
-    <a routerLink="/blog/util/mongodb">
-      <app-notes-tiles [tileTitle]="'MongoDB'" [imgSrc]="'/../../../../assets/images/languages/mongodb.png'">
-      </app-notes-tiles>
-    </a>
-  </div>
-
-  <!--Java Programming-->
-  <div *ngIf="java" class="options-window">
-    <a routerLink="/blog/java/spring">
-      <app-notes-tiles [tileTitle]="'Spring-Boot'" [imgSrc]="'/../../../../assets/images/languages/Spring.png'">
-      </app-notes-tiles>
-    </a>
-    <a routerLink="/blog/java/threads">
-      <app-notes-tiles [tileTitle]="'Threads'" [imgSrc]="'/../../../../assets/images/languages/Threads.png'">
-      </app-notes-tiles>
-    </a>
-  </div>
-
-  <!--Web Development-->
-  <div *ngIf="web" class="options-window">
-    <a routerLink="/blog/webdev/html">
-      <app-notes-tiles [tileTitle]="'HTML'" [imgSrc]="'/../../../../assets/images/languages/html.png'">
-      </app-notes-tiles>
-    </a>
-    <a routerLink="/blog/webdev/css">
-      <app-notes-tiles [tileTitle]="'CSS'" [imgSrc]="'/../../../../assets/images/languages/css.png'">
-      </app-notes-tiles>
-    </a>
-    <a routerLink="/blog/webdev/javascript">
-      <app-notes-tiles [tileTitle]="'JavaScript'" [imgSrc]="'/../../../../assets/images/languages/javascript.png'">
-      </app-notes-tiles>
-    </a>
-    <a routerLink="/blog/webdev/angular">
-      <app-notes-tiles [tileTitle]="'Angular'" [imgSrc]="'/../../../../assets/images/languages/angular.png'">
-      </app-notes-tiles>
-    </a>
-  </div>
-
-  <div *ngIf="data" class="options-window">
-    <a routerLink="/blog/database/sql">
-      <app-notes-tiles [tileTitle]="'SQL'" [imgSrc]="'/../../../../assets/images/languages/SQL.png'">
-      </app-notes-tiles>
-    </a>
+  <div class="options-window" *ngIf="subTopics.length > 0">
+    <div *ngFor="let subTopic of subTopics">
+      <a [routerLink]="subTopic.linkToComponent" (click)="setSubTopicActive(subTopic)">
+        <app-notes-tiles [tileTitle]="subTopic.title" [imgSrc]="subTopic.imageSrc">
+        </app-notes-tiles>
+      </a>
+    </div>
   </div>
 
   <router-outlet></router-outlet>
+
+  <div *ngIf="activeSubTopicSubscription">
+    <app-comments [activeTopicSubscription]=activeSubTopicSubscription></app-comments>
+  </div>
+  
 
 </div>

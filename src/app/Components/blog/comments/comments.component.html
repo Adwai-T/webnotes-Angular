@@ -1,0 +1,13 @@
+<div *ngIf="activeTopic">
+
+    <div *ngIf="userService.isAuthenticated">
+        <app-addcomment (newCommentEvent)="onNewCommentEvent($event)"></app-addcomment>
+    </div>
+    
+
+    <div id="comments" *ngFor="let comment of comments">
+        <app-comment [userComment] = comment></app-comment>
+    </div>
+
+
+</div>

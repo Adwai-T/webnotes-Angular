@@ -16,6 +16,9 @@ import { CssComponent } from './notes/webdevelopment/css/css.component';
 import { HtmlComponent } from './notes/webdevelopment/html/html.component';
 import { AngularComponent } from './notes/webdevelopment/angular/angular.component';
 import { SqlComponent } from './notes/database/sql/sql.component';
+import { CommentComponent } from './comments/comment/comment.component';
+import { AddcommentComponent } from './comments/addcomment/addcomment.component';
+import { CommentsComponent } from './comments/comments.component';
 
 
 @NgModule({
@@ -32,7 +35,10 @@ import { SqlComponent } from './notes/database/sql/sql.component';
     CssComponent,
     HtmlComponent,
     AngularComponent,
-    SqlComponent
+    SqlComponent,
+    CommentComponent,
+    AddcommentComponent,
+    CommentsComponent
   ],
   imports: [
     CommonModule,

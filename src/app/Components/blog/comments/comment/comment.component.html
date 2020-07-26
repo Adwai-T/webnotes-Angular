@@ -1,0 +1,28 @@
+<div id="comment-container">
+
+    <div id="comment-info">
+
+        <div id="user-image" [style]="color">
+            {{ userComment.userName.substring(0, 1) }}
+        </div>
+
+        <div>
+            <div id="username">
+                {{ userComment.userName }}
+            </div>
+        
+            <div id="date">
+                {{ userComment.createDate.substring(0, 19) }}
+            </div>
+        </div>
+
+        <div id="topic">
+            {{ userComment.topic | uppercase }}
+        </div>
+    </div>
+
+    <div id="comment">
+        {{ userComment.comment }}
+    </div>
+
+</div>

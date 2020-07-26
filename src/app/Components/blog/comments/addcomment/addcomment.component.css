@@ -1,0 +1,43 @@
+#addcomment-container{
+   display: flex;
+   padding: 10px;
+   margin: 5px 10px;
+   background-color: #fff;
+   align-items: center;
+   justify-content: space-evenly;
+}
+
+#user-image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin: 5px;
+    border: 5px lightcoral solid;
+    border-radius: 20px;
+    color: rebeccapurple;
+    font-size: xx-large;
+}
+
+input{
+    padding: 15px;
+    font-size: medium;
+    height: 30px;
+    width: 80%;
+    border-radius: 10px;
+}
+
+button{
+    margin: 5px;
+    padding: 20px 10px;
+    color: rebeccapurple;
+    border-radius: 10px;
+    font-size: large;
+    background: rgb(252, 218, 205);
+}
+
+button:hover{
+    color: white;
+    background-color: lightseagreen;
+}
+
