@@ -1,1 +1,77 @@
-<p>quiz works!</p>
+<div id="container">
+
+    <div id="title">
+        Quiz
+    </div>
+
+    <div id="topic-container">
+        <div *ngFor="let topic of topics" (click)="onSelectedTopic(topic)" class="topic">
+            {{ topic | uppercase }}
+        </div>
+    </div>
+
+    <div id="loading" *ngIf="selectedTopic && loadingQuestions">
+        Loading... 
+        <img src="../../../../assets/images/questions/loading.svg" alt="">
+    </div>
+
+    <div id="empty-questionsArray">
+        <div>
+            Congrats you have solved All the problem on the topic.
+        </div>
+
+        <div>
+            Here Treat yourself with an icecream.
+            <img src="../../../../assets/images/questions/icecream.png">
+        </div>
+
+        <div >
+            But dont eat too much ice-cream there is still work to be done. Have an apple for later.
+        </div>
+    </div>
+
+    <div id="error" *ngIf="errorFetchingQuestions"> 
+        We Are Sorry An Error has Occured While Fetching Questions. Please try and select another topic.
+    </div>
+
+    <div *ngIf="selectedTopic && !questionArrayFromServerReturnEmpty">
+
+        <div id="quiz-container" *ngIf="questions.length > 0">
+
+            <div id="questions-contianer">
+                <div *ngFor="let question of questions; index as i">
+                    <app-question [question]="question" [index]="i" (onSubmitAnswerEvent)="onSubmitAnswerEvent($event)">
+                    </app-question>
+                </div>
+            </div>
+
+            <div id="button">
+                <button (click)="onSubmitQuiz()">Get Score</button>
+            </div>
+
+            <div id="quiz-score" *ngIf="quizSubmitted">
+                <div>
+                    You got {{ numberOfCorrectAnswers }} correct Answers. 
+                </div>
+                <div (click)="onRetryQuiz()" id="retry-quiz">
+                    Retry this Quiz
+                    <img src="../../../../assets/images/questions/retry.png">
+                </div>
+            </div>
+        </div>
+
+        <div id="pagination">
+            <div class="moveto-quiz" (click)="onFetchPreviousQuiz()"> 
+                <img src="../../../../assets/images/questions/back_arrow.png">
+                Previous Page
+            </div>
+
+            <div class="moveto-quiz" (click)="onFetchNextQuiz()">
+                Next Page
+                <img src="../../../../assets/images/questions/next_arrow.png">
+            </div>
+        </div>
+
+
+    </div>
+</div>

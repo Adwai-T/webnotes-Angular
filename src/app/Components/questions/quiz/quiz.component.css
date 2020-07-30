@@ -1,0 +1,120 @@
+#container{
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 10px;
+    margin-right: 12px;
+}
+
+#title{
+    color: maroon;
+    margin : 10px;
+    font-size: x-large;
+    padding: 10px;
+}
+
+#topic-container{
+    border: 2px solid lightsteelblue;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 10px 0px;
+}
+
+.topic{
+    color: darkmagenta;
+    padding: 12px;
+    border: 1px solid white;
+    border-radius: 20px;
+}
+
+.topic:hover{
+    border: 1px solid rgb(54, 150, 54);
+    background-color: lightgoldenrodyellow;
+    cursor: pointer;
+    color: lightcoral;
+}
+
+#loading{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+#loading img{
+    padding: 10px;
+}
+
+#quiz-container{
+    display: flex;
+    flex-direction: column;
+}
+
+button{
+    padding: 10px;
+    color: white;
+    background-color: lightcoral;
+    border: none;
+    border-radius: 8px;
+    font-size: large;
+}
+
+#button{
+    margin: 10px;
+    align-self: center;
+    justify-self: center;
+}
+
+button:hover{
+    color: white;
+    background-color: seagreen;
+    cursor: pointer;
+}
+
+#questions-container{
+    display: flex;
+    flex-direction: column;
+}
+
+#quiz-score{
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    margin: 10px;
+    background-color: lightblue;
+    font-size: larger;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 15px;
+    color: darkmagenta;
+}
+
+#retry-quiz{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #fff;
+}
+
+#retry-quiz img{
+    padding: 10px;
+}
+
+#pagination{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.moveto-quiz{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 20px;
+    cursor: pointer;
+    color: darkblue;
+}
+

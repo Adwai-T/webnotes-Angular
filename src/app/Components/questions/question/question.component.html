@@ -1,5 +1,45 @@
-<div id="question-container">
+<div id="question-container" [ngClass]="{ disabled : disabled}" *ngIf="question">
 
-    div#question-title
+    <div id="question-body">
+        <div id="title-container">
+            <div id="title">
+                {{ question.title }}
+            </div>
+            <div id="topic">
+                {{ question.topic | uppercase }}
+            </div>
+        </div>
+
+        <div id="description">
+            {{ question.description }}
+        </div>
+
+        <div id="answers">
+            <div
+                *ngFor="let answer of question.answers"
+                (click)="getSelectedAnswer(answer)"
+                class="answer"
+                [ngClass]="{'selected': answer === selectedAnswer}"
+                >
+                {{ answer }}
+            </div>
+        </div>
+
+        <div id="answer-description-toggle" (click)="getSelectedAnswer('NotSelected')">
+            Show Answer
+            <img src="../../../../assets/images/questions/arrow-down.png">
+        </div>
+    </div>
+
+    <div id="answer-box" [hidden]="answerDescriptionActive">
+        
+        <div [ngClass]="wasAnswerCorrect ? 'answer-correct' : 'answer-wrong'">
+            Write answer is Option : {{ question.answer }}
+        </div>
+
+        <div id="answer-description">
+            This is description of the Answer that you just answered.
+        </div>
+    </div>
 
 </div>
