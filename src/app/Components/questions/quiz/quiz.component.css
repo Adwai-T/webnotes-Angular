@@ -118,3 +118,45 @@ button:hover{
     color: darkblue;
 }
 
+#empty-questionsArray{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
+    background-color: lightyellow;
+    color: yellowgreen;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 15px;
+}
+
+#empty-questionsArray img{
+    width: 100px;
+}
+
+#empty-questionsArray div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#reset-progress{
+    margin: 10px;
+    cursor: pointer;
+    color: teal;
+    border: 2px solid lightcoral;
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+    width: fit-content;
+    align-self: center;
+    justify-self: center;
+}
+
+#reset-progress:hover{
+    box-shadow: 5px 5px 10px lightslategrey;
+    background-color: darkred;
+    color: white;
+}
+

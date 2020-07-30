@@ -15,9 +15,10 @@
         <img src="../../../../assets/images/questions/loading.svg" alt="">
     </div>
 
-    <div id="empty-questionsArray">
+    <div id="empty-questionsArray" *ngIf="questionArrayFromServerReturnEmpty">
         <div>
             Congrats you have solved All the problem on the topic.
+            <img src="../../../../assets/images/questions/milestone.png">
         </div>
 
         <div>
@@ -25,9 +26,12 @@
             <img src="../../../../assets/images/questions/icecream.png">
         </div>
 
-        <div >
-            But dont eat too much ice-cream there is still work to be done. Have an apple for later.
+        <div>
+            But dont eat too much ice-cream there is still work to be done. Here have an apple for later.
+            <img src="../../../../assets/images/questions/apple.png">
         </div>
+
+        <div id="reset-progress" (click)="resetProgressForTopic()">Reset Progress</div>
     </div>
 
     <div id="error" *ngIf="errorFetchingQuestions"> 

@@ -35,7 +35,7 @@ export class QuizComponent implements OnInit {
   constructor(private questionsService: QuestionsService) { }
 
   ngOnInit(): void {
-    this.questionArrayFromServerReturnEmpty = true;
+    this.questionArrayFromServerReturnEmpty = false;
     this.questions = [];
     this.answersSubmitted = [];
     this.numberOfQuestionsPerQuiz = 5;
@@ -127,6 +127,7 @@ export class QuizComponent implements OnInit {
 
     this.loadingQuestions = true;
     this.errorFetchingQuestions = false;
+    this.questionArrayFromServerReturnEmpty = false;
 
     this.questionsService
       .getQuestionsByTopic(this.selectedTopic, this.quizNumber, this.numberOfQuestionsPerQuiz)
@@ -168,13 +169,14 @@ export class QuizComponent implements OnInit {
   }
 
   onRetryQuiz(){
+    this.quizSubmitted = false;
     this.getQuestionsByTopic();
   }
 
   public onFetchPreviousQuiz():void{
 
     if(this.quizNumber > 1){
-
+      this.quizSubmitted = false;
       this.quizNumber--;
       this.setLocalStorageValue(this.selectedTopic, this.quizNumber);
       this.getQuestionsByTopic();
@@ -183,11 +185,17 @@ export class QuizComponent implements OnInit {
   }
 
   public onFetchNextQuiz():void{
-
+    this.quizSubmitted = false;
     this.quizNumber++;
     this.getQuestionsByTopic();
-    console.log(this.quizNumber, this.selectedTopic)//---
     this.setLocalStorageValue(this.selectedTopic, this.quizNumber);
+  }
+
+  public resetProgressForTopic():void{
+    this.quizNumber = 1;
+    console.log(this.quizNumber, this.selectedTopic);
+    this.setLocalStorageValue(this.selectedTopic, this.quizNumber);
+    this.getQuestionsByTopic(); 
   }
 
 }
