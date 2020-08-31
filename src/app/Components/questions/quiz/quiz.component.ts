@@ -38,7 +38,7 @@ export class QuizComponent implements OnInit {
     this.questionArrayFromServerReturnEmpty = false;
     this.questions = [];
     this.answersSubmitted = [];
-    this.numberOfQuestionsPerQuiz = 5;
+    this.numberOfQuestionsPerQuiz = 3;
     this.selectedTopic = '';
     this.quizSubmitted = false;
     this.loadingQuestions = false;
@@ -110,7 +110,6 @@ export class QuizComponent implements OnInit {
     
     let quizNumberFromLocalStorage = this.getLocalStorageValueForTopic(topic);
 
-    console.log(quizNumberFromLocalStorage, 'quiz number from local storage'); //---
     if(quizNumberFromLocalStorage > 0){
 
       this.quizNumber = quizNumberFromLocalStorage;
@@ -128,6 +127,8 @@ export class QuizComponent implements OnInit {
     this.loadingQuestions = true;
     this.errorFetchingQuestions = false;
     this.questionArrayFromServerReturnEmpty = false;
+    this.numberOfCorrectAnswers = 0;
+    this.answersSubmitted = [];
 
     this.questionsService
       .getQuestionsByTopic(this.selectedTopic, this.quizNumber, this.numberOfQuestionsPerQuiz)
@@ -193,7 +194,6 @@ export class QuizComponent implements OnInit {
 
   public resetProgressForTopic():void{
     this.quizNumber = 1;
-    console.log(this.quizNumber, this.selectedTopic);
     this.setLocalStorageValue(this.selectedTopic, this.quizNumber);
     this.getQuestionsByTopic(); 
   }

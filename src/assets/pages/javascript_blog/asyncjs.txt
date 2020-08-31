@@ -1,0 +1,9 @@
+setTimeout(()=>{
+    console.log('This will run after a second. After the console.log below');
+}, 1000)
+
+function add(a, b){
+    return a + b;
+}
+
+console.log(add(10, 2));

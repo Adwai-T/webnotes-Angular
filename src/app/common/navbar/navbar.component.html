@@ -13,17 +13,17 @@
     </a>
   </div>
 
-  <div id="nav-links">  
-    <a routerLink="/blog" class="nav-link">Notes</a>
-    <a href="https://github.com/Adwai-T/Notes" class="nav-link" target="_blank">AllNotes</a>
-    <a routerLink="/questions/quiz" class="nav-link">Quiz</a>
+  <div id="nav-links">
+    <a routerLink="/blog" class="nav-link">Notes<span></span></a>
+    <a href="https://github.com/Adwai-T/Notes" class="nav-link" target="_blank">AllNotes<span></span></a>
+    <a routerLink="/questions/quiz" class="nav-link">Quiz<span></span></a>
   </div>
 
   <div id="nav-right">
-    <a routerLink="/user/profile" class="nav-link" *ngIf="isAuth">{{ subject }}</a>
-    <a (click)="onSignOut()" class="nav-link" *ngIf="isAuth">SignOut</a>
-    <a routerLink="/user/signin" class="nav-link" *ngIf="!isAuth">SignIn</a>
-    <a routerLink="/user/signup" class="nav-link" *ngIf="!isAuth">SignUp</a>
+    <a routerLink="/user/profile" class="nav-link" *ngIf="isAuth">{{ subject }}<span></span></a>
+    <a (click)="onSignOut()" class="nav-link" *ngIf="isAuth">SignOut<span></span></a>
+    <a routerLink="/user/signin" class="nav-link" *ngIf="!isAuth">SignIn<span></span></a>
+    <a routerLink="/user/signup" class="nav-link" *ngIf="!isAuth">SignUp<span></span></a>
   </div>
 
 </div>

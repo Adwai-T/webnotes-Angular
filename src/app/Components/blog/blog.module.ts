@@ -19,6 +19,8 @@ import { SqlComponent } from './notes/database/sql/sql.component';
 import { CommentComponent } from './comments/comment/comment.component';
 import { AddcommentComponent } from './comments/addcomment/addcomment.component';
 import { CommentsComponent } from './comments/comments.component';
+import { HttpClientModule } from '@angular/common/http';
+import { CodeMarkingComponent } from './code-highlight/codeMarking';
 
 
 @NgModule({
@@ -38,12 +40,14 @@ import { CommentsComponent } from './comments/comments.component';
     SqlComponent,
     CommentComponent,
     AddcommentComponent,
-    CommentsComponent
+    CommentsComponent,
+    CodeMarkingComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
-    BlogRoutingModule
+    BlogRoutingModule,
+    HttpClientModule
   ],
   exports: [],
   providers: [],

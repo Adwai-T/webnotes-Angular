@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient} from '@angular/common/http';
 
 interface Topic {
   topic:string;
@@ -10,8 +11,9 @@ interface Topic {
 
 interface SubTopic{
   title:string;
-  linkToComponent:string;
   imageSrc:string;
+  linkToComponent?:string;
+  linkToFile?:string;
 }
 
 @Component({
@@ -21,12 +23,19 @@ interface SubTopic{
 })
 export class BlogComponent implements OnInit {
 
+  public blogPage:string;
+  public contentFromComponents:boolean;
+  public contentFromFile:boolean;
+  public contentPage:string;
+  public contentReady:boolean;
+
+  //---Do not leave space in topic or subtopic title. They may cause problem fetching comments for them.
   public topics:Topic[] = [
 
     {
       topic : "Utils",
       active : false,
-      imageSrc : 'https://img.icons8.com/cute-clipart/128/000000/services.png',
+      imageSrc : '/../../../../assets/images/languages/utilities.png',
       subTopics : [
         {
           title: "Git",
@@ -88,6 +97,11 @@ export class BlogComponent implements OnInit {
           linkToComponent: "/blog/webdev/javascript"
         },
         {
+          title: 'AsyncJS',
+          imageSrc: "/../../../assets/images/languages/asyncJavascript.png",
+          linkToFile: '/../../../assets/pages/javascript_blog/asyncjs.txt'
+        },
+        {
           title: "Angular",
           imageSrc: "/../../../../assets/images/languages/angular.png",
           linkToComponent: "/blog/webdev/angular"
@@ -112,9 +126,11 @@ export class BlogComponent implements OnInit {
 
   public activeSubTopicSubscription: EventEmitter<SubTopic> = new EventEmitter();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private httpClient: HttpClient) {}
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
+
+    this.blogPage = '';
 
     //---Need to navigate to blog for initalizing other component contained
     //--- Directly Going to the page cause subscriptions and other data to not be ready.
@@ -160,6 +176,36 @@ export class BlogComponent implements OnInit {
 
   public setSubTopicActive(subTopic: SubTopic){
     this.activeSubTopicSubscription.emit(subTopic);
+
+    if(subTopic.hasOwnProperty('linkToComponent')){
+      this.contentFromFile = false;
+      this.contentFromComponents = true;
+    }
+
+
+    if(subTopic.hasOwnProperty('linkToFile')){
+      this.getFileFromServer(subTopic.linkToFile);
+    }
+  }
+
+  public getFileFromServer(filePath:string):void{
+
+    this.contentReady = false;
+    this.contentFromFile = true;
+    this.contentFromComponents = false;
+
+    this.httpClient.get(filePath , { responseType: 'text' }).subscribe(data => {
+      this.contentPage = data;
+      this.contentReady = true;
+    },
+    (error) =>{
+
+      this.contentPage = "Sorry Could not fetch the page. \
+      Please try again after some time or try reloading. \
+      Thank you for your patience";
+
+      this.contentReady = true;
+    })    
   }
 
 }

@@ -1,6 +1,6 @@
 export interface Question{
     title:string;
-    description:string;
+    question:string;
     answer:number;
     answers:string[];
     answerDescription:string;
