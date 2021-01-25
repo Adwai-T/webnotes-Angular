@@ -97,7 +97,6 @@ export class UserService {
   }
 
   set authenticatedUserDetails(authenticatedUser: AuthenticatedUser){
-    console.log(authenticatedUser);
     this.authenticatedUser = authenticatedUser;
     this.authenticatedUserDetailsEventEmitter.emit(this.authenticatedUser);
   }
