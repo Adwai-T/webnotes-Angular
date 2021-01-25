@@ -106,6 +106,8 @@ export class QuizComponent implements OnInit {
 
   public onSelectedTopic(topic: string): void {
 
+    this.questions = [];
+
     this.selectedTopic = topic;
     
     let quizNumberFromLocalStorage = this.getLocalStorageValueForTopic(topic);
