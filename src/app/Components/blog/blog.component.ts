@@ -35,11 +35,11 @@ export class BlogComponent implements OnInit {
     {
       topic : "Utils",
       active : false,
-      imageSrc : '/../../../../assets/images/languages/utilities.png',
+      imageSrc : 'assets/images/languages/utilities.png',
       subTopics : [
         {
           title: "Git",
-          imageSrc: "/../../../../assets/images/languages/git.png",
+          imageSrc: "assets/images/languages/git.png",
           linkToComponent: "/blog/util/git"
         },
         {
@@ -49,12 +49,12 @@ export class BlogComponent implements OnInit {
         },
         {
           title: "Maven",
-          imageSrc: "/../../../../assets/images/languages/maven.png",
+          imageSrc: "assets/images/languages/maven.png",
           linkToComponent: "/blog/util/maven"
         },
         {
           title: "MongoDB",
-          imageSrc: "/../../../../assets/images/languages/mongodb.png",
+          imageSrc: "assets/images/languages/mongodb.png",
           linkToComponent: "/blog/util/mongodb"
         }
       ]
@@ -62,16 +62,16 @@ export class BlogComponent implements OnInit {
     {
       topic : "Java",
       active : false,
-      imageSrc : '/../../../../assets/images/languages/Spring.png',
+      imageSrc : 'assets/images/languages/Spring.png',
       subTopics : [ 
         {
           title: "Spring",
-          imageSrc: "/../../../../assets/images/languages/maven.png",
+          imageSrc: "assets/images/languages/maven.png",
           linkToComponent: "/blog/java/spring"
         },
         {
           title: "Threads",
-          imageSrc: "/../../../../assets/images/languages/Threads.png",
+          imageSrc: "assets/images/languages/Threads.png",
           linkToComponent: "/blog/java/threads"
         }
       ]
@@ -79,31 +79,31 @@ export class BlogComponent implements OnInit {
     {
       topic : "WebDevelopment",
       active : false,
-      imageSrc : '/../../../../assets/images/languages/html.png',
+      imageSrc : 'assets/images/languages/html.png',
       subTopics : [ 
         {
           title: "HTML",
-          imageSrc: "/../../../../assets/images/languages/html.png",
+          imageSrc: "assets/images/languages/html.png",
           linkToComponent: "/blog/webdev/html"
         },
         {
           title: "CSS",
-          imageSrc: "/../../../../assets/images/languages/css.png",
+          imageSrc: "assets/images/languages/css.png",
           linkToComponent: "/blog/webdev/css"
         },
         {
           title: "JavaScript",
-          imageSrc: "/../../../../assets/images/languages/javascript.png",
+          imageSrc: "assets/images/languages/javascript.png",
           linkToComponent: "/blog/webdev/javascript"
         },
         {
           title: 'AsyncJS',
-          imageSrc: "/../../../assets/images/languages/asyncJavascript.png",
-          linkToFile: '/../../../assets/pages/javascript_blog/asyncjs.txt'
+          imageSrc: "assets/images/languages/asyncJavascript.png",
+          linkToFile: 'assets/pages/javascript_blog/asyncjs.txt'
         },
         {
           title: "Angular",
-          imageSrc: "/../../../../assets/images/languages/angular.png",
+          imageSrc: "assets/images/languages/angular.png",
           linkToComponent: "/blog/webdev/angular"
         }
       ]

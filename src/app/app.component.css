@@ -6,8 +6,14 @@
 }
 
 #nav-bar{
+  z-index: 10;
   width: 100vw;
   height: 61px;
+}
+
+#page{
+  display: flex;
+  justify-content: center;
 }
 
 #notes-container{

@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ProjectsComponent } from './common/projects/projects.component';
 
 const routes: Routes = [
+  {
+    path: "",
+    component : ProjectsComponent
+  },
   {
     path: "user",
     loadChildren: () => import('./Components/users/user.module').then(m => m.UserModule)
