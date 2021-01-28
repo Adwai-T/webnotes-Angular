@@ -33,7 +33,7 @@ export class ProjectsComponent implements OnInit {
       description : "Handles Signup/Login credentials and jwt processing, is connected to Postgre database." + 
       "Handles comments accoring to page and sections, connected to a Mongodb." +
       "Handles Quiz.",
-      gitLink : "https://github.com/Adwai-T/"
+      gitLink : "https://github.com/Adwai-T/webnotes"
     },
     {
       langImg : "assets/images/languages/angular.png",
@@ -48,7 +48,7 @@ export class ProjectsComponent implements OnInit {
       title : "GitHub",
       subtitle : "My Github Repositories",
       image : "assets/images/projects/github.png",
-      description : "There are some more projects on my github. Most of them I am actively trying to develop. I would love if you could check them out.",
+      description : "There are some more projects on my github. Most of them, I am actively trying to develop. I would love if you could check them out.",
       gitLink : "https://github.com/Adwai-T/"
     },
   ];
