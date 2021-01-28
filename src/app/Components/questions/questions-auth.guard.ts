@@ -13,9 +13,10 @@ export class QuestionsGuard implements CanActivate {
         if(
             this.userService.authenticatedUserDetails.roles === "ROLE_ADMIN"
             ||
-            this.userService.authenticatedUserDetails.roles === "ROLE_ASSIST"){
+            this.userService.authenticatedUserDetails.roles === "ROLE_ASSIST"
+        ){
 
-                return true;
+            return true;
 
         }else return false;
     }

@@ -56,11 +56,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   //---Go to Edit Questions
   onEditQuestions(){
-    
     if(this.isUserRoleAdminOrAssist){
       this.router.navigate(['questions', 'edit']);
     }
-
   }
 
   //--- Delete User

@@ -24,6 +24,10 @@ const routes: Routes = [
   {
     path: 'games',
     loadChildren: () => import('./Components/games/games.module').then(m=>m.GamesModule)
+  },
+  {
+    path : 'steam',
+    loadChildren: () => import('./Components/steam/steam.module').then(m=>m.SteamModule)
   }
 ];
 

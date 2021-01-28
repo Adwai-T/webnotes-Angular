@@ -21,7 +21,7 @@ export class ProjectsComponent implements OnInit {
       title : "JavaSteam",
       subtitle : "Steam Trade Bot implemented in Java",
       image : "assets/images/projects/java_steam.png",
-      description : "Automates Steam trades. Accepts or Declines trades based on item Item values saved on the Mongodb" +
+      description : "Automates Steam trades. Accepts or Declines trades based on Item values saved on the Mongodb. " +
       "Saves Trade operation data to Mongodb.",
       gitLink : "https://github.com/Adwai-T/JavaSteam"
     },
@@ -40,7 +40,7 @@ export class ProjectsComponent implements OnInit {
       title : "Website",
       subtitle : "FrontEnd/Angular app",
       image : "assets/images/projects/website.png",
-      description : "My website that you are currently viewing is made with the help of Angular 9.",
+      description : "My website that you are currently viewing is made with Angular 9.",
       gitLink : "https://github.com/Adwai-T/webnotes-Angular"
     },
     {
@@ -48,7 +48,7 @@ export class ProjectsComponent implements OnInit {
       title : "GitHub",
       subtitle : "My Github Repositories",
       image : "assets/images/projects/github.png",
-      description : "There are some more porjects on my github. Most of them I am actively trying to develop. I would love if you could check them out.",
+      description : "There are some more projects on my github. Most of them I am actively trying to develop. I would love if you could check them out.",
       gitLink : "https://github.com/Adwai-T/"
     },
   ];
