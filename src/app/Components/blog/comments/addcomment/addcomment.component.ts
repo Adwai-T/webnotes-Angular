@@ -46,7 +46,6 @@ export class AddcommentComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.commentStatus = null;
         }, 3000)
-
       }
 
     }, (error) => {
@@ -116,8 +115,6 @@ export class AddcommentComponent implements OnInit, OnDestroy {
       }, 3000);
 
     }
-
-
   }
 
   ngOnDestroy(): void {

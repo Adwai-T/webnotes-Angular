@@ -7,7 +7,7 @@
 
 #addcomment-container{
    display: flex;
-   padding: 10px;
+   padding: 5px;
    margin: 5px 10px;
    background-color: #fff;
    width: 98%;
@@ -19,29 +19,29 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
-    margin: 5px;
-    border: 5px lightcoral solid;
-    border-radius: 20px;
+    padding: 5px;
+    margin: 2px;
+    border: 2px rgb(120, 192, 235) solid;
+    border-radius: 5px;
     color: rebeccapurple;
     font-size: xx-large;
 }
 
-input{
-    padding: 15px;
+#input{
+    padding: 5px;
     font-size: medium;
-    height: 30px;
+    height: 50px;
     width: 80%;
-    border-radius: 10px;
+    border-radius: 5px;
+    resize: none;
 }
 
 button{
-    margin: 5px;
-    padding: 20px 10px;
+    margin: 5px 10px 5px 5px;
+    padding: 5px;
     color: rebeccapurple;
-    border-radius: 10px;
-    font-size: large;
-    background: rgb(252, 218, 205);
+    border-radius: 5px;
+    background: lightblue;
 }
 
 button:hover{

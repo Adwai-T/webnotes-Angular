@@ -5,14 +5,13 @@
         <div id="user-image">
             {{ 'C' }}
         </div>
-    
-            <input 
+            <textarea 
                 type="text"
                 name="comment" 
-                id="input-comment" 
+                id="input" 
                 placeholder="Please write your comment here" 
                 (change) ="getValue($event)"
-                #textInputField>
+                #textInputField></textarea>
     
             <button (click) = "getComment(textInputField)">Comment</button>
     

@@ -184,7 +184,6 @@ export class QuizComponent implements OnInit {
       this.setLocalStorageValue(this.selectedTopic, this.quizNumber);
       this.getQuestionsByTopic();
     }
-
   }
 
   public onFetchNextQuiz():void{

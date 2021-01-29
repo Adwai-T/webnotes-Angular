@@ -11,17 +11,17 @@
         </div>
 
         <div id="description">
-            {{ question.question }}
+            {{index+1}} {{ question.question }}
         </div>
 
         <div id="answers">
             <div
-                *ngFor="let answer of question.answers"
+                *ngFor="let answer of question.answers; index as i"
                 (click)="getSelectedAnswer(answer)"
                 class="answer"
                 [ngClass]="{'selected': answer === selectedAnswer}"
                 >
-                {{ answer }}
+                {{i+1}}. {{ answer }}
             </div>
         </div>
 
@@ -38,8 +38,7 @@
         </div>
 
         <div id="answer-description">
-            This is description of the Answer that you just answered.
+            <b>Description</b> : {{question.answerDescription}}
         </div>
     </div>
-
 </div>
