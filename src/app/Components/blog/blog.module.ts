@@ -9,18 +9,10 @@ import { GitComponent } from './notes/utilities/git/git.component';
 import { HerokuComponent } from './notes/utilities/heroku/heroku.component';
 import { MavenComponent } from './notes/utilities/maven/maven.component';
 import { MongobdComponent } from './notes/utilities/mongobd/mongobd.component';
-import { SpringComponent } from './notes/java/spring/spring.component';
-import { ThreadsComponent } from './notes/java/threads/threads.component';
-import { JavascriptComponent } from './notes/webdevelopment/javascript/javascript.component';
-import { CssComponent } from './notes/webdevelopment/css/css.component';
-import { HtmlComponent } from './notes/webdevelopment/html/html.component';
-import { AngularComponent } from './notes/webdevelopment/angular/angular.component';
-import { SqlComponent } from './notes/database/sql/sql.component';
 import { CommentComponent } from './comments/comment/comment.component';
 import { AddcommentComponent } from './comments/addcomment/addcomment.component';
 import { CommentsComponent } from './comments/comments.component';
 import { HttpClientModule } from '@angular/common/http';
-import { CodeMarkingComponent } from './code-highlight/codeMarking';
 
 
 @NgModule({
@@ -31,17 +23,9 @@ import { CodeMarkingComponent } from './code-highlight/codeMarking';
     HerokuComponent,
     MavenComponent,
     MongobdComponent,
-    SpringComponent,
-    ThreadsComponent,
-    JavascriptComponent,
-    CssComponent,
-    HtmlComponent,
-    AngularComponent,
-    SqlComponent,
     CommentComponent,
     AddcommentComponent,
     CommentsComponent,
-    CodeMarkingComponent
   ],
   imports: [
     CommonModule,

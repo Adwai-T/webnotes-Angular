@@ -1,0 +1,161 @@
+<h1 id="mongodb">MongoDB</h1>
+<h2 id="setting-up">Setting up</h2>
+<ol>
+<li><p>Create a new DataBase or start the already existing bd at file path :
+<code>&quot;C:\Users\Adwait\Documents\NpmFiles\mongodb\bin\mongod.exe&quot; --dbpath=&quot;C:\Users\Adwait\Documents\NpmFiles\Database&quot;</code></p>
+</li>
+<li><p>Use Roto-3T to access the database locally at 27017 port : which is the default port for MongoDB.</p>
+</li>
+<li><p>A model of how the data should be stored with what properties to be made as a java object. A repository interface
+extends the MongoRepository need to be created.</p>
+</li>
+<li><p>The methods specified in the interface are automatically implemented as should by Spring.</p>
+</li>
+<li><p>They could then be used with a @Autowired instance of the interface.</p>
+</li>
+<li><p><a href="https://docs.spring.io/spring-data/mongodb/docs/current/api/org/springframework/data/mongodb/repository/MongoRepository.html">Mongo Docs Spring Boot</a></p>
+</li>
+<li><p><a href="https://www.opencodez.com/java/use-mongodb-atlas-with-spring-boot.htm">Spring Boot with Remote Mongo Repository</a>.</p>
+</li>
+<li><p><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-nosql">Spring Working with NOSQL databases</a>.</p>
+</li>
+</ol>
+<h2 id="creating-account">Creating Account</h2>
+<p>Use the MongoDB official site to create a free tier account : <a href="https://www.mongodb.com/cloud/atlas">Mongo Atlas</a>.</p>
+<p>WhiteList the ip so that the repository can be used with that particular id or set it to <code>0.0.0.0/0</code> so that all ip&#39;s are whitelisted and can be used from any where.</p>
+<p>Even when we whitelist all ips we dont need to worry as the database is protected by a username and password.</p>
+<h2 id="access-remote-repo">Access Remote Repo</h2>
+<p>Robo 3t does not support connecting to remote mongo databases so we use the default software <strong>mongo compass</strong>.</p>
+<p>Link to accessdatabase : &quot;mongodb+srv://learn:passwordHere@cluster0.dszax.mongodb.net/nameofdatabasehere?retryWrites=true&amp;w=majority&quot;.</p>
+<h2 id="access-remote-repo-from-spring-application">Access Remote Repo from Spring Application</h2>
+<p>Defined in the Spring.md file.</p>
+<h2 id="using-mongodb-with-java">Using MongoDB with Java</h2>
+<h2 id="making-a-connection">Making a connection</h2>
+<blockquote>
+<p>Note : <a href="https://mongodb.github.io/mongo-java-driver/3.8/javadoc/com/mongodb/client/MongoClients.html">MongoBD Client Documentation</a></p>
+</blockquote>
+<p>Use <code>MongoClients.create()</code>, or <code>MongoClient()</code> for the legacy MongoClient API, to make a connection to a running MongoDB instance.</p>
+<p>The <code>MongoClient</code> instance represents a pool of connections to the database; you will only need one instance of class MongoClient even with multiple threads.</p>
+<blockquote>
+<p>Note : <a href="mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database.collection][?options]]">MongoDB Connection String Docs</a></p>
+</blockquote>
+<pre><code class="lang-java">//Connects to the default<span class="hljs-built_in"> instance </span>of mongodb client started at local host 27017
+MongoClient mongoClient = MongoClients.create();
+//Or
+MongoClient mongoClient =<span class="hljs-built_in"> new </span>MongoClient();
+
+//We could also specify Connection String with the create method
+
+//It also supports multiple host connection
+MongoClient mongoClient = MongoClients.create(<span class="hljs-string">"mongodb://hostOne:27017,hostTwo:27018"</span>);
+</code></pre>
+<h2 id="access-data-base">Access Data-Base</h2>
+<ul>
+<li><p>Use the <code>MongoClient.getDatabase()</code> method to access a database. If a database does not exist, MongoDB creates the database when we first store data for that database.</p>
+</li>
+<li><p>Use its <code>getCollection()</code> method to access a collection. If a collection does not exist, MongoBD creates the collection when we first store data for that collection.</p>
+</li>
+</ul>
+<blockquote>
+<p>Note : MongoDatabase instances are immutable.</p>
+</blockquote>
+<ul>
+<li>To create the document using the Java driver, use the <code>Document</code> class.</li>
+</ul>
+<pre><code class="lang-java">MongoDatabase database = mongoClient.getDatabase(<span class="hljs-string">"mydb"</span>)<span class="hljs-comment">;</span>
+
+MongoCollection&lt;Document&gt; collection = database.getCollection(<span class="hljs-string">"test"</span>)<span class="hljs-comment">;</span>
+</code></pre>
+<pre><code class="lang-json">  {
+   <span class="hljs-string">"name"</span> : <span class="hljs-string">"MongoDB"</span>,
+   <span class="hljs-string">"type"</span> : <span class="hljs-string">"database"</span>,
+   <span class="hljs-string">"count"</span> : <span class="hljs-number">1</span>,
+   <span class="hljs-string">"versions"</span>: [ <span class="hljs-string">"v3.2"</span>, <span class="hljs-string">"v3.0"</span>, <span class="hljs-string">"v2.6"</span> ],
+   <span class="hljs-string">"info"</span> : { x : <span class="hljs-number">203</span>, y : <span class="hljs-number">102</span> }
+  }
+</code></pre>
+<pre><code class="lang-java"><span class="hljs-comment">//To save the above object we use Document class</span>
+ Document doc = <span class="hljs-keyword">new</span> Document(<span class="hljs-string">"name"</span>, <span class="hljs-string">"MongoDB"</span>)
+                .<span class="hljs-keyword">append</span>(<span class="hljs-string">"type"</span>, <span class="hljs-string">"database"</span>)
+                .<span class="hljs-keyword">append</span>(<span class="hljs-string">"count"</span>, <span class="hljs-number">1</span>)
+                .<span class="hljs-keyword">append</span>(<span class="hljs-string">"versions"</span>, Arrays.<span class="hljs-keyword">asList</span>(<span class="hljs-string">"v3.2"</span>, <span class="hljs-string">"v3.0"</span>, <span class="hljs-string">"v2.6"</span>))
+                .<span class="hljs-keyword">append</span>(<span class="hljs-string">"info"</span>, <span class="hljs-keyword">new</span> Document(<span class="hljs-string">"x"</span>, <span class="hljs-number">203</span>).<span class="hljs-keyword">append</span>(<span class="hljs-string">"y"</span>, <span class="hljs-number">102</span>));
+</code></pre>
+<blockquote>
+<p>Note : The BSON type of array corresponds to the Java type java.util.List</p>
+</blockquote>
+<ul>
+<li><p>Insert One document into a collection use <code>insertOne</code> method of <code>MongoCollection</code> class.</p>
+</li>
+<li><p>To insert multiple documents use the <code>insertMany</code> method of <code>MongoCollection</code> class, which takes a <code>List</code> of <code>Document</code>s to insert.</p>
+</li>
+</ul>
+<pre><code class="lang-java">collection.insertOne(doc);
+
+List&lt;Document&gt; documents = <span class="hljs-keyword">new</span> ArrayList&lt;Document&gt;();
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) {
+    documents.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> Document(<span class="hljs-string">"i"</span>, i));
+}
+collection.insertMany(documents);
+</code></pre>
+<blockquote>
+<p>Note : If no top-level <code>_id</code> field is specified in the document, MongoDB automatically adds the <code>_id</code> field to the inserted document.</p>
+</blockquote>
+<ul>
+<li>Count <code>Document</code>s in <code>MongoCollection</code> use <code>collection.countDocuments()</code>.</li>
+</ul>
+<h2 id="query-the-collection">Query the Collection</h2>
+<p>To query the collection, you can use the collection’s <code>find()</code> method. It <code>find()</code> returns a <code>FindIterable()</code>.</p>
+<p>Using <code>find</code> without any paramters will return all the <code>Document</code>s stored in the <code>MongoCollection</code>.</p>
+<p>The find().first() construct is useful for queries that should only match a single document or if we are interested in the first document only.</p>
+<pre><code class="lang-java">Document myDoc = collection.<span class="hljs-built_in">find</span>().first();
+System.out.<span class="hljs-built_in">println</span>(myDoc.toJson());
+
+<span class="hljs-comment">//Get all Documents and iterate throught them.</span>
+<span class="hljs-comment">//Using for loop even though permitted is not recommended.</span>
+MongoCursor&lt;Document&gt; <span class="hljs-built_in">cursor</span> = collection.<span class="hljs-built_in">find</span>().iterator();
+<span class="hljs-built_in">try</span> {
+    <span class="hljs-built_in">while</span> (<span class="hljs-built_in">cursor</span>.hasNext()) {
+        System.out.<span class="hljs-built_in">println</span>(<span class="hljs-built_in">cursor</span>.next().toJson());
+    }
+} finally {
+    <span class="hljs-built_in">cursor</span>.<span class="hljs-built_in">close</span>();
+}
+
+<span class="hljs-comment">//Print the first document that matches the filter</span>
+myDoc = collection.<span class="hljs-built_in">find</span>(eq(<span class="hljs-string">"i"</span>, <span class="hljs-number">71</span>)).first();
+System.out.<span class="hljs-built_in">println</span>(myDoc.toJson());
+
+<span class="hljs-comment">//Get all documents that match the filter "i" &gt; 50</span>
+Block&lt;Document&gt; printBlock = <span class="hljs-keyword">new</span> Block&lt;Document&gt;() {
+     @Override
+     <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> apply(final Document document) {
+         System.out.<span class="hljs-built_in">println</span>(document.toJson());
+     }
+};
+
+collection.<span class="hljs-built_in">find</span>(gt(<span class="hljs-string">"i"</span>, <span class="hljs-number">50</span>)).forEach(printBlock);
+
+<span class="hljs-comment">//Get all documents with a filter being a range</span>
+<span class="hljs-comment">//To specify a filter for a range, such as 50 &lt; i &lt;= 100, we can use the and helper:</span>
+collection.<span class="hljs-built_in">find</span>(and(gt(<span class="hljs-string">"i"</span>, <span class="hljs-number">50</span>), lte(<span class="hljs-string">"i"</span>, <span class="hljs-number">100</span>))).forEach(printBlock);
+</code></pre>
+<h2 id="update-collections">Update Collections</h2>
+<pre><code class="lang-java">//<span class="hljs-keyword">Update</span> <span class="hljs-keyword">first</span> <span class="hljs-keyword">document</span> that matches the filter
+collection.updateOne(eq(<span class="hljs-string">"i"</span>, <span class="hljs-number">10</span>), <span class="hljs-keyword">new</span> <span class="hljs-keyword">Document</span>(<span class="hljs-string">"$set"</span>, <span class="hljs-keyword">new</span> <span class="hljs-keyword">Document</span>(<span class="hljs-string">"i"</span>, <span class="hljs-number">110</span>)));
+
+//<span class="hljs-keyword">Update</span> multiple documents
+UpdateResult updateResult = collection.updateMany(lt(<span class="hljs-string">"i"</span>, <span class="hljs-number">100</span>), inc(<span class="hljs-string">"i"</span>, <span class="hljs-number">100</span>));
+System.out.println(updateResult.getModifiedCount());
+</code></pre>
+<h2 id="delete-from-collections">Delete From Collections</h2>
+<pre><code class="lang-java"><span class="hljs-comment">//Delete single</span>
+collection.deleteOne(<span class="hljs-keyword">eq</span>(<span class="hljs-string">"i"</span>, <span class="hljs-number">110</span>));
+
+<span class="hljs-comment">//delete multiple</span>
+DeleteResult deleteResult = collection.deleteMany(gte(<span class="hljs-string">"i"</span>, <span class="hljs-number">100</span>));
+<span class="hljs-keyword">System</span>.out.println(deleteResult.getDeletedCount());
+</code></pre>
+<blockquote>
+<p>Note : <a href="https://mongodb.github.io/mongo-java-driver/3.8/driver/getting-started/quick-start/">Getting Started Guide</a></p>
+</blockquote>

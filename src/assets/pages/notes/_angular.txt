@@ -1,0 +1,1583 @@
+<h1 id="angular">Angular</h1>
+<blockquote>
+<p>Note all these notes are base on Maximilian Schwarzmüller course on Udemy.</p>
+</blockquote>
+<h2 id="install">Install</h2>
+<p>Requires Node for packing and optimize the project. Also npm will be used download all the dependencies and angualar cli itself.</p>
+<p><code>npm install -g @angular/cli</code> : Install angular Cli</p>
+<p><code>ng new my-app</code> :  Create a new project</p>
+<p><code>ng serve</code> : Serve or run the new project at port 4200 on local host with development server active, that is the server will refresh app whenever we save some files and changes are detected in those files. The <code>ng serve --open</code> flag will open the default browser at localhost:4200.</p>
+<p>As angular cli sets up the project with a package.json file and we have npm installed with node, we can set up <code>npm start</code> command with required setup.</p>
+<h2 id="bootstrap">Bootstrap</h2>
+<p>Adding bootstrap to our angular project.</p>
+<p>With bootstrap download the bootstrap dependency <code>npm install --save bootstrap@3</code>.</p>
+<p>In angular.json in the root of our project, add the location of the bootstrap dependency.</p>
+<p>In &quot;styles&quot; array add: <code>node_modules/bootstrap/dist/css/bootstrap.min.css&quot;</code>.</p>
+<h2 id="components">Components</h2>
+<p>While we generate a component with the cli we can use <code>--skipTests true</code> so that the test <code>.spec.ts</code> is not created.</p>
+<h3 id="html-template">HTML template</h3>
+<p>Directly in the component.ts file :</p>
+<pre><code class="lang-ts">@Component({
+    selector: <span class="hljs-string">'aap-servers'</span>,
+    <span class="hljs-regexp">//</span>This <span class="hljs-keyword">is</span> html template that will be used with <span class="hljs-keyword">this</span> component
+    <span class="hljs-regexp">//</span>We <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span> case <span class="hljs-keyword">do</span> <span class="hljs-keyword">not</span> need to define a <span class="hljs-keyword">new</span> html file to hold the template <span class="hljs-keyword">for</span> the compnent.
+    template: `<span class="javascript">&lt;app-server&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">app-server</span>&gt;</span></span></span>`,
+    styleUrl: [<span class="hljs-string">'./servers.component.css'</span>]
+})
+</code></pre>
+<p>Even so this method is not recommened as it can get very complex even if we write a relatively small amount of code.</p>
+<p>The other mehods is to add templateUrl that holds the relative location of the html template we want to use with the component script file.</p>
+<h3 id="styles">Styles</h3>
+<p>Similar to html templates direcly defined above we can also define our css by defining it in the component script file.</p>
+<p><code>styles: [&#39; h3{ color: dodgerblue; } &#39;]</code></p>
+<p>Or we can do it as it is recommended by the cli and use the component.css file create by the angular cli when we generate a component.</p>
+<p>Note :
+Angular Enforces style encapsulation that means that a css property defined for one component is not applied to other component even if the component is a child component of the component where the style is defined.</p>
+<p>Angular does that by adding a custom property to all the elements of the particular component and adding style to that property.</p>
+<p>This is done so that the page is supported on older browser that might not support shadow DOM that is implemented by modern browser that supports styles to be added to individual components and then be displayed.</p>
+<p>This style Encapsulation behaviour of a component can be changed by adding <code>encapsulation: ViewEncapsulation.None</code> to the <code>@Component</code> declaration of the component that we dont need encapsulation for.</p>
+<p>We can also choose <code>Native</code> as the porperty for the encapsulation which will use the Shadow DOM behaviour of the browers that support it. But we dont want to use it as there are browsers that might not support it especially the older version of the common browers.</p>
+<p>The default value for <code>encapsulation</code> is <code>Emulated</code> which is the default behaviour as discussed above and does not need to be specified.</p>
+<h3 id="selector">Selector</h3>
+<p>Selectors can be html tags, or class or id.</p>
+<ul>
+<li><p>Normal Selector defined when generated is a html element.
+<code>selector: &#39;app-servers&#39;</code>
+<code>&lt;app-servers&gt;&lt;/app-servers&gt;</code></p>
+</li>
+<li><p>Attribute :
+<code>selector: &#39;[app-servers]</code>
+<code>&lt;div app-servers&gt;&lt;/div&gt;</code></p>
+</li>
+<li><p>Class :
+<code>selector: &#39;.app-servers&#39;</code>
+<code>&lt;div class=&quot;app-servers&quot;&gt;&lt;/div&gt;</code></p>
+</li>
+</ul>
+<p>All of the above selectors can be used to get similar results.</p>
+<h2 id="data-binding">Data Binding</h2>
+<ul>
+<li>String Interpolation :</li>
+</ul>
+<p><code>value: string = This string will be displayed</code>
+<code>{{ value }}</code> : This we put in HTML file.</p>
+<p>Any value which at the end can be resolved to a string can be used here. But a multiline expresson cannot be used here.</p>
+<ul>
+<li>Property Binding</li>
+</ul>
+<p>Binding To properties in HTML.</p>
+<p><code>&lt;button class=&quot;btn btn-primary&quot; [disabled]=&quot;allowNewServer&quot;&gt;Add Server&lt;/button&gt;</code>
+<code>allowNewServer:boolean = false</code></p>
+<p>In the above html code we create a button. In it <code>disable</code> is a property of the button and default html code. It is not related to angular. The disable property will disable the button and we will not be able to click it.</p>
+<p>In the above code we bind the disable property to the varible <code>allowNewServer</code> which is a variable in our js code.</p>
+<ul>
+<li>Event Binding</li>
+</ul>
+<p>Similar to property binding we can bind to any event provided by that HTML element.</p>
+<p>We use <code>()</code> to bind to the event as we used <code>[]</code> to bind to the properties.</p>
+<ul>
+<li>Bindable Properties and Events</li>
+</ul>
+<p>How do you know to which Properties or Events of HTML Elements you may bind? You can basically bind to all Properties and Events - a good idea is to <code>console.log()</code>  the element you&#39;re interested in to see which properties and events it offers.</p>
+<p>Important: For events, you don&#39;t bind to onclick but only to click <code>(=&gt; (click))</code>.</p>
+<p>The MDN (Mozilla Developer Network) offers nice lists of all properties and events of the element you&#39;re interested in. Googling for <code>YOUR_ELEMENT</code> properties  or <code>YOUR_ELEMENT</code> events  should yield nice results.</p>
+<ul>
+<li>Events</li>
+</ul>
+<pre><code class="lang-ts"><span class="hljs-comment">//We get a event from the event binding in the html.</span>
+onUpdateServerName(<span class="hljs-keyword">event</span>: Event){
+    <span class="hljs-comment">//This will expilicitely tell ts that we know that this is the html event property.</span>
+    <span class="hljs-keyword">this</span>.serverName = &lt;HTMLInputElement&gt;<span class="hljs-keyword">event</span>.target.<span class="hljs-keyword">value</span>;
+
+}
+</code></pre>
+<ul>
+<li>ngModel : Twp Way binding Directive</li>
+</ul>
+<p>NgModel is used for two way databinding and is a directive provided by angular.</p>
+<p><code>ngModel</code> is not a part of the core module of angular and needs to be imported by adding the <code>FormsModule</code>  to the <code>imports[]</code>  array in the AppModule.
+Then also need to add the import from <code>@angular/forms</code>  in the app.module.ts file:</p>
+<p><code>import { FormsModule } from &#39;@angular/forms&#39;;</code></p>
+<ul>
+<li>Two way Data Binding :</li>
+</ul>
+<h2 id="directives">Directives</h2>
+<h3 id="structural-directives-build-in">Structural Directives : Build In</h3>
+<p>In structural directives we use <code>*</code> to indicate that the directive is a structural directive. The star is not only there to tell the other programs that read the code that it is a structural directive but also to angular as angular need to change the code that in wrapped in the structural directive to from the code that it understands. <code>*</code> by itself is not a functional part of angular, but a way for us to write the code more inituitively.</p>
+<p>So the code <code>*</code> gets converted into an ng-template that angular understands.</p>
+<pre><code class="lang-html"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> *<span class="hljs-attr">ngIf</span>=<span class="hljs-string">"!onlyOdd"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let even of evenNumbers"</span>&gt;</span></span><span class="hljs-template-variable">{{even}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!--The above code will be converted to the following code and similar for the ngFor inisde the existing code.--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ng-template</span> [<span class="hljs-attr">ngIf</span>]= <span class="hljs-string">"!onlyOdd"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let even of evenNumbers"</span>&gt;</span></span><span class="hljs-template-variable">{{even}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ng-template</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!--Now we see that we dont have the star and the ngIf is bound as a property instead--&gt;</span></span>
+</code></pre>
+<p>Note: We cannot have more than one structural directive on any one html element.</p>
+<ul>
+<li>*ngIf :</li>
+</ul>
+<p>The <code>*</code> in the directive name tells that this directive will change the DOM and is a <strong>structural directive</strong>.</p>
+<p>The value *ngIf should be set to an expression that return a boolean value.</p>
+<ul>
+<li>*ngIf with Else :</li>
+</ul>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> *<span class="hljs-attr">ngIf</span>=<span class="hljs-string">"serverCreated; else noServer"</span>&gt;</span>Server was created<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ng-template</span> #<span class="hljs-attr">noServer</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>No Server was created<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ng-template</span>&gt;</span>
+</code></pre>
+<p><code>#</code> in the code is called a local marker. It denotes what is to be shown when the condition of the <code>ngIf</code> is false.</p>
+<ul>
+<li><p>ngFor : This is also a structural directive.</p>
+</li>
+<li><p>ngSwitch :</p>
+</li>
+</ul>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> [<span class="hljs-attr">ngSwitch</span>]=<span class="hljs-string">"value"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span> *<span class="hljs-attr">ngSwitchCase</span>=<span class="hljs-string">"1"</span>&gt;</span>value 1<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span> *<span class="hljs-attr">ngSwitchCase</span>=<span class="hljs-string">"2"</span>&gt;</span>value 2<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span> *<span class="hljs-attr">ngSwitchDefault</span>&gt;</span>value Default<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<ul>
+<li><strong>Custom Structural Directive</strong> :</li>
+</ul>
+<pre><code class="lang-ts"><span class="hljs-keyword">import</span>{ Directive, Input } from <span class="hljs-string">'@angular/core'</span>;
+
+<span class="hljs-meta">@Directive({
+    selector: <span class="hljs-meta-string">'[appUnless]'</span>
+})</span>
+export <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UnlessDirective</span></span>{
+
+    <span class="hljs-comment">//set looks like a method but is just defines how or what value is set to the property it is used with. This does not converty the property by itself into a method, but will be executed when the value of the property changes outside to check the condition for setting the value of the property.</span>
+    <span class="hljs-comment">//The name of the property and the selector of the directive need to match as we use the * and rely on angular to create the template for us. And as we saw above when angular create the template it will bind to the selector and this property if it has some other name. So we use the same name as that of the selector for the property to be bound correctly.</span>
+    <span class="hljs-meta">@Input()</span> <span class="hljs-keyword">set</span> appUnless(condition: boolean){
+        <span class="hljs-keyword">if</span>(!condition){
+            <span class="hljs-keyword">this</span>.vcRef.createEmbeddedView(<span class="hljs-keyword">this</span>.templateRef);
+        }<span class="hljs-keyword">else</span>{
+            <span class="hljs-keyword">this</span>.vcRef.clear();
+        }
+    }
+
+    <span class="hljs-keyword">constructor</span>(<span class="hljs-keyword">private</span> templateRed TemplateRef&lt;any&gt;, <span class="hljs-keyword">private</span> vcRed: ViewContainerRef){}
+}
+
+<span class="hljs-comment">//After the directive is created remember to add the directive name in the app.module.ts in @NgModule -&gt; declarations array.</span>
+</code></pre>
+<pre><code class="lang-html">&lt;<span class="hljs-selector-tag">div</span> *appUnless=<span class="hljs-string">"onlyOdd"</span>&gt;
+    &lt;<span class="hljs-selector-tag">li</span> *ngFor=<span class="hljs-string">"let even of evenNumbers"</span>&gt;
+&lt;/div&gt;
+</code></pre>
+<h3 id="attribute-directives">Attribute Directives</h3>
+<p>Unlike structural directives these directive do not add or remove any elements. Thye only change the element they are placed on.</p>
+<pre><code class="lang-html"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> [<span class="hljs-attr">ngStyle</span>]=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{backgroundColor: getColor()}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>This is a line<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-comment">&lt;!--We could also have conditional styling like in the below example--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span> [<span class="hljs-attr">ngStyle</span>]=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{backgroundColor: odd%2 !== 0 ? 'grey': 'yellow'}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span></span>
+</code></pre>
+<p>The ngStyle by itself does not require the <code>[]</code> but was we are binging a value form our component.ts file to the style we need them. In the example above we bind the value from our script file to the backgroundColor Property of the ngStyle.</p>
+<ul>
+<li>ngClass : Conditionally add class to our element.
+<code>[ngClass]=&quot;{odd: odd%2 !==2}&quot;</code></li>
+</ul>
+<h2 id="creating-an-attribute-directive">Creating an Attribute directive</h2>
+<p><code>ng g d better-highlighter</code></p>
+<pre><code class="lang-ts"><span class="hljs-keyword">import</span>{ Directive } from <span class="hljs-string">'@angular/core'</span>;
+
+<span class="hljs-meta">@Directive</span>({
+<span class="hljs-symbol">    selector:</span> <span class="hljs-string">'[appBasicHighlight]'</span>
+})
+export <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BasicHighlightDirective</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">OnInit</span> {</span>
+
+    constructor(<span class="hljs-keyword">private</span> <span class="hljs-string">elementRef:</span> ElementRef){}
+
+    ngOnInit(){
+        <span class="hljs-keyword">this</span>.elementRef.nativeElement.style.backgroundColor = <span class="hljs-string">'green'</span>;
+    }
+}
+
+<span class="hljs-comment">//Directives need to be added to app.module.ts in the declarations for angular to know that we have created that directive.</span>
+</code></pre>
+<p>In the below example we dont use square brackets as we are not trying to select any attributes but trying just using our directive on our element.</p>
+<pre><code class="lang-html">&lt;p appBasicHighlight&gt;Style me <span class="hljs-keyword">with</span> bacic directive!<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span>
+</code></pre>
+<p>Even if in the above example we change the style of our html element directly by using the reference to the element in our script file it is not recommened.</p>
+<p>The better approach to changing the DOM from the script file is to use <code>Renderer</code> to make the style changes that we want to make. This is important as in some use cases like in services(Not referering to angular services here but general service programs) we might not have access to the DOM element.</p>
+<h3 id="create-directive-with-renderer">Create Directive with Renderer</h3>
+<pre><code class="lang-ts"><span class="hljs-comment">//--Change 1 : Make the change background interactive so that the background of the element only changes when we hover our mouse over the element.</span>
+
+<span class="hljs-comment">//--Change 2 : Use @HostBinding to bind to the properties of the html element.</span>
+
+<span class="hljs-comment">//--Change 3 Make final code clear and Add selectable color properties in our script that can be bound from within our html element in our html template file.</span>
+
+<span class="hljs-keyword">import</span> { Directive, OnInit, ElementRef, Renderer2 } from <span class="hljs-string">'@angular/core'</span>;
+
+<span class="hljs-meta">@Directive</span>({
+<span class="hljs-symbol">    selector:</span> <span class="hljs-string">'[appBetterHighlight]'</span>
+})
+export <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BetterHighlighterDirective</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">OnInit</span>{</span>
+
+    <span class="hljs-comment">//--Change 2</span>
+    <span class="hljs-comment">//Here we bind to the backgroundColor property of host or the html element that the directive is used in. The argument that is passed in represents what we property of the host element we want to bind to and the outside backgroundColor is the varaible name that we use to refer to the bound property within our script and can be named as we wish.</span>
+    HostBinding(<span class="hljs-string">'style.backgroundColor'</span>) <span class="hljs-string">backgroundColor:</span> string = <span class="hljs-string">'transparent'</span>
+
+    constructor(<span class="hljs-keyword">private</span> <span class="hljs-string">elRef:</span> ElementRef, <span class="hljs-keyword">private</span> <span class="hljs-string">render:</span> Renderer2){}
+
+    ngOnInit(){
+        <span class="hljs-comment">//--Change 1</span>
+        <span class="hljs-comment">//this.renderer.setStyle(this.elRef.nativeElement, 'background-color', 'blue');</span>
+    }
+
+    <span class="hljs-comment">//--Change 1</span>
+    <span class="hljs-comment">//@HostListener will refer to the element that the directive is placed on.</span>
+    <span class="hljs-comment">//This will activate when the mouse hover over our html element</span>
+    <span class="hljs-meta">@HostListener</span>(<span class="hljs-string">'mouseenter'</span>) mouseover(<span class="hljs-string">eventData:</span> Event){
+        <span class="hljs-comment">//--Change 2</span>
+        <span class="hljs-comment">//this.rederer.setStyle(this.elRef.nativeElement, 'background-color', 'blue');</span>
+        <span class="hljs-keyword">this</span>.backgroundColor = <span class="hljs-string">'blue'</span>;
+    }
+
+    <span class="hljs-comment">//--Change 1</span>
+    <span class="hljs-comment">//This will proc when the mouse pointer leaves the area covered by the html element.</span>
+    <span class="hljs-meta">@HostListener</span>(<span class="hljs-string">'mouseleave'</span>) mouseleave(<span class="hljs-string">eventData:</span> Event){
+        <span class="hljs-comment">//This still uses the renderer form change 1.</span>
+        <span class="hljs-keyword">this</span>.renderer.setStyle(<span class="hljs-keyword">this</span>.elRef.nativeElement, <span class="hljs-string">'background-color'</span>, <span class="hljs-string">'transparent'</span>)
+    }
+}
+</code></pre>
+<p>Final Form of Example</p>
+<pre><code class="lang-ts"><span class="hljs-meta">@Directive({
+    selector: <span class="hljs-meta-string">'[appBetterHighligher]'</span>
+})</span>
+export <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BetterHighlighterDirective</span> <span class="hljs-title">implements</span> <span class="hljs-title">OnInit</span></span>{
+
+    <span class="hljs-meta">@Input()</span> defaultColor: string = <span class="hljs-string">'transparent'</span>;
+
+    <span class="hljs-comment">//If our directive has one important propertu that it need to bind to we can directly name or in other words use Alias that is the selector value of the directive and bind to the directive declaration itself in the html tag as show below in the html code.</span>
+    <span class="hljs-meta">@Input(<span class="hljs-meta-string">'appBetterHighligher'</span>)</span> highlightColor: string = <span class="hljs-string">'blue'</span>;
+
+    <span class="hljs-comment">//We want to the element to initialize with the color so we initialize this in the ngOninit method.</span>
+    <span class="hljs-meta">@HostBinging(<span class="hljs-meta-string">'style.backgroundColor'</span>)</span> backgroundColor: string;
+
+    <span class="hljs-keyword">constructor</span>(<span class="hljs-keyword">private</span> elRef: ElementRef, <span class="hljs-keyword">private</span> renderer: RendererV2){}
+
+    ngOnInit(){
+        <span class="hljs-keyword">this</span>.backgroundColor = <span class="hljs-keyword">this</span>.defaultColor;
+    }
+
+    <span class="hljs-meta">@HostListener(<span class="hljs-meta-string">'mouseenter'</span>)</span> mouseOver(eventData: Event){
+        <span class="hljs-keyword">this</span>.backgroundColor = <span class="hljs-keyword">this</span>.highlightColor;
+    }
+
+    <span class="hljs-meta">@HostListener(<span class="hljs-meta-string">'mouseleave'</span>)</span> mouseleave(eventData: Event){
+        <span class="hljs-keyword">this</span>.backgroundColor = <span class="hljs-keyword">this</span>.defaultColor;
+    }
+}
+</code></pre>
+<p>HTML Code</p>
+<pre><code class="lang-html">&lt;p <span class="hljs-string">[appBetterHighlight]</span>=<span class="hljs-string">"'red'"</span> <span class="hljs-string">[defaultColor]</span>=<span class="hljs-string">"yellow"</span>&gt; Style me with better Highlighter Directive.&lt;/p&gt;
+</code></pre>
+<p>As we see in the previous section example we dont have to have <code>[]</code> to surround the directive selector but as we have named our @Input main property that the directive needs to achive to the name of the selector we have to now put the selector of the directive in the <code>[]</code>.</p>
+<p>We also see that we put the <em>red</em> in double quotes and then single quotes, that is to signify that it is a string.</p>
+<p>We can also bind to the properties direcly by omitting <code>[]</code> but only in the case that we are passing in a string and we also omit the single quotes that surround the string. But while using this case it should be very clear that it is not a native property of the element for other who read the code and also angular itself.</p>
+<h3 id="renderer">Renderer</h3>
+<p>The above example shows the use of renderer to change the property background color of the host html element. As it is recommended that we should not change host elmenents properties, values and style from our script we use the renderer to change the properties, and styles for us.</p>
+<p>A lot more can be done with the renderer than just change the style of the element. All the methods of the Renderer can be refered to <a href="https://angular.io/api/core/Renderer2">here : Renderer2</a>.</p>
+<h3 id="-hostbinding-and-hostlistener">@HostBinding and @HostListener</h3>
+<p>The above example show Hostbinding and HostListener in action.</p>
+<p>HostBinding let us bind with the properties of the hosting html element.</p>
+<p>HostListener listenes for the events that the html element my supports.</p>
+<h2 id="debugging-angular">Debugging Angular</h2>
+<p>A Tool named augury can be used to debug the angular code easily in chrome. It is a chrome extension and give wide and easy debugging options.</p>
+<h2 id="custom-property-and-event-binding">Custom Property and Event Binding</h2>
+<p>We need to import @Input and @Output from @angular/core to use them in our components.</p>
+<h3 id="-input-"><code>@Input()</code></h3>
+<p>The @Input() allows the child component that is hosted in our parent component, where the property that we want to access is defined, to use this property.</p>
+<p>So basically properites of parent component can be accessed by child component by using @Input().</p>
+<p><code>@Input() element: {type: string, name: string};</code></p>
+<p>We can also set an alias to the property, put simply we can pass to input a name that will be used to bind to the property.</p>
+<p><code>@Input(&#39;serverElement&#39;) element: {type: string, name: string};</code></p>
+<p><code>[serverElement]=&quot;serverElementCreated&quot;</code></p>
+<p>So as shown above we can bind to the name serverElement to access the property element in the parent component. Now that we have given then property an alias we cannot bind to the property with its original name.</p>
+<h3 id="-output-"><code>@Output()</code></h3>
+<p>The @Output() helps us to bind to a property in our child component and pass the data to the parent component to be used.</p>
+<p>So basically opposite flow of @Input().</p>
+<p>@Input() : Parent ==&gt; Child
+@Output() : Child ==&gt; Parent.</p>
+<p><code>(serverCreated)=&quot;onServerAdded($event)</code></p>
+<p>This is the code we will use in the app-component tag in the html to bind to the property from the child class and pass data with <code>event</code> to the parent class.</p>
+<p>As we see above out onServerAdded method needs an event paramenter. That means serverCreated should emmit an event.</p>
+<p>To do that we have create a property in our child class that is of type event emiiter.</p>
+<p><code>@Output()  7serverCreated = new EventEmitter&lt;{ServerName: string, serverContent: string}&gt;()</code></p>
+<p>This will create a new object of type EventEmmitter and we also pass in the type of object that the event emitter will emit.</p>
+<p>Now that we have create the event emitter object we want to create a method that will actually emit the event from the child to be used in the parent.</p>
+<pre><code class="lang-ts">onAddServer(){
+    <span class="hljs-comment">//The emit method takes the object that will be emitted by the event emitter when called.</span>
+    <span class="hljs-keyword">this</span>.serverCreated.emit({
+        serverName: <span class="hljs-keyword">this</span>.newServerName,
+        serverContent: <span class="hljs-keyword">this</span>.newServerContent
+    });
+}
+</code></pre>
+<p>Similar to @Input we can also pass @Output a name so that the name can be used to bind to the property from the parent component.</p>
+<h3 id="local-reference-to-the-html-element">Local Reference to the HTML element</h3>
+<p><code>#</code> is used to create a local reference in an element.</p>
+<p><code>&lt;input type=&quot;text&quot; c;ass=&quot;form-control&quot; #LocalElementReferenceName&gt;</code></p>
+<p>Note : Local References can only be used in the html template and not in the type script code of the component.</p>
+<p>The local Reference will give us access to the element it self. For example if we create a local reference to an input field as shown above we will have access to the field itself and not its value direclty. But we can get the value of the input form the element that we get reference to by using <code>referenceName.value</code>.</p>
+<p>In our script file if the local reference is passed as a parameter can specify the type of the arguments as <code>HTMLInputElement</code> for the above line of code example.</p>
+<h3 id="-viewchild-">@ViewChild()</h3>
+<p><code>@ViewChild(&#39;serverContentInput&#39;, {static: true}) serverContentInput: ElementRef;</code></p>
+<p>The same change (add <code>{ static: true }</code> as a second argument) needs to be applied to ALL usages of <code>@ViewChild()</code> (and also <code>@ContentChild()</code> which you&#39;ll learn about later) IF you plan on accessing the selected element inside of <code>ngOnInit()</code>.</p>
+<p>If you DON&#39;T access the selected element in ngOnInit (but anywhere else in your component), set <code>{ static: false }</code> instead!</p>
+<p>If you&#39;re using Angular 9, you only need to <code>add { static: true }</code> (if needed) but not <code>{ static: false }</code>.</p>
+<p>To Use <code>@ViewChild()</code> we have to pass the local reference to the ViewChild as a paramenter which will be used as a <em>selector</em> for the element in HTML.</p>
+<p>Unlike the above example where we pass the local referce to a method as a paramenter and get the html element itself in our script file, we get a <code>ElementRef</code> as the type which need to be imported form angular core.</p>
+<p>Note: Even if we can get the html element in our script file it is not recommended to change the value of any other property of the html element directly throught the reference. We can use directives to change the value.</p>
+<h3 id="ng-content">ng-content</h3>
+<p><code>&lt;ng-content&gt;&lt;/ng-content&gt;</code> is used in our component. This will be the place where the content placed between <code>&lt;app-componentname-selector&gt;Content&lt;/app-componentname-selector&gt;</code> will be projected.</p>
+<h2 id="services-and-dependency-injection">Services And Dependency Injection</h2>
+<p>Note: The Service is defined with <code>@Injectable()</code>. Every angular class that we need to inject a service into needs to have a metadata defined about it. For Componenets it is @Componenet, but services by themselves do not have any metadata defined for them. Thus to inject a service into another service the service in which another service is to be injected need to have an <code>@Injectable()</code> to define the metadata for the service.</p>
+<p>With the later versions of angular it is standart practice to define to define a service with <code>@Injectable()</code>.</p>
+<p>From Angular 6 onwards we do not have to have providers defined in the app-modules.ts file as the service direcly defines it in metadata in the <code>@Injectable()</code> that it needs to be instanciated in the root of the project.</p>
+<h3 id="hierarchical-injector">Hierarchical Injector</h3>
+<pre><code class="lang-ts"><span class="hljs-comment">//Service</span>
+<span class="hljs-selector-tag">export</span> <span class="hljs-selector-tag">class</span> <span class="hljs-selector-tag">NameOfService</span>(){
+    <span class="hljs-comment">//Service Code here</span>
+}
+
+<span class="hljs-comment">//Component we use the service in.</span>
+<span class="hljs-variable">@Component</span>({
+    <span class="hljs-comment">//Other code here</span>
+    <span class="hljs-attribute">providers</span>:[NameOfServiceHere]
+})
+export class NameComponent(){
+
+}
+
+<span class="hljs-variable">@Component</span>({
+    <span class="hljs-comment">//Meta data here.</span>
+    <span class="hljs-comment">//no need for providers as we have defined it above.</span>
+})
+export class ChildOfNameComponent(){
+
+}
+</code></pre>
+<p>The instance for the service are created when we define the service in the providers for the Component. All the child components of the Compoenent will use the same instance of the service if we do not define the service in providers of the child component.</p>
+<p>If we want a app wide single instance of the service or we want to inject one service into another we have to define the service in <code>@NgModules</code> -&gt; <code>providers[]</code> of the <code>app-modules.ts</code> class.</p>
+<p>So simply put the services declared in the parent passes down the same instance to the child if the service is not declared in providers of the child class.</p>
+<h2 id="routing">Routing</h2>
+<h3 id="defining-routes-in-app-module-ts">Defining Routes in app.module.ts</h3>
+<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { Routes, RouteModule } from <span class="hljs-string">'@angular/router'</span>;
+
+const <span class="hljs-string">appRoutes:</span> Routes = [
+    { <span class="hljs-string">path:</span> <span class="hljs-string">''</span>, <span class="hljs-string">component:</span> HomeComponent },
+    <span class="hljs-comment">//We do not want / before the route name.</span>
+    { <span class="hljs-string">path:</span> <span class="hljs-string">'users'</span>, <span class="hljs-string">component:</span> UserComponent }
+]
+
+<span class="hljs-meta">@NgModule</span>({
+    <span class="hljs-comment">//other code</span>
+<span class="hljs-symbol">    imports:</span> [
+        <span class="hljs-comment">//Other Imports</span>
+        RouterModule.forRoot(appRoutes)
+    ]
+})
+</code></pre>
+<p>In our html we add <code>&lt;router-outlet&gt;&lt;/router-outlet&gt;</code> where we want to add the compoenent at the current route.</p>
+<p>Note: <code>router-outlet</code> is a angular directive even if it looks like a html element.</p>
+<ul>
+<li>Adding links to the HTML code :</li>
+</ul>
+<pre><code class="lang-html"><span class="hljs-comment">&lt;!--In the below we pass directly the route to the router link--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">routerLink</span>=<span class="hljs-string">"/servers"</span>&gt;</span>Servers<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-comment">&lt;!--In the below example we bind to the routerLink and pass a string in '', otherwise the routerLink will try to find a property with that name.--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">a</span> [<span class="hljs-attr">routerLink</span>]=<span class="hljs-string">"'/servers'"</span>&gt;</span>Servers<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-comment">&lt;!--In the below example we pass in an array to the routerLink. It will help us create complicated routes. In the below exaple it will resolve to a link of /server/something--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">a</span> [<span class="hljs-attr">routerLink</span>]=<span class="hljs-string">"['/server','/something']"</span>&gt;</span>special Server<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
+<p>Note: Using <code>routerLink</code> in the anchor tag and not using a relative link direclty with <code>href</code> will prevent the default behaviour of the browser form reloading the complete page.</p>
+<p>If we use the <code>href</code> the whole page will be reloaded and the state of our application might be lost. This can lead to unexpected behaviour that needs to be prevented.</p>
+<p>Note: If we use &#39;servers&#39; directly without <code>/</code> we will have a relative path. So on a servers page we have another link with a relative routerLink to as defined above the link will become <code>servers/servers</code> that is if we give the routerLink relative path without the <code>/</code>, that path will simply be appended to the current path of the component and not be the path that we have defined.</p>
+<p>Useing relative path in routerLinks is not bad but we have to know that we define it properly to activate the path we want.</p>
+<p>Relative path for routerLink can be defined as if we were accessing a file structure in terminal using <code>../</code> and <code>./</code> as it works in terminal.</p>
+<ul>
+<li><code>routerLinkActive</code> and <code>routerLinkActiveOptions</code>:</li>
+</ul>
+<p><code>routerLinkActive</code> will add the class to the anchor tag whenever the link is active.</p>
+<p><code>routerLinkActiveOptions</code> : The &#39;&#39; or empty route is always avtive for all routes as it gets matcher for all routes. So want to add options to the routerLinkActive directive so that only the exact path is matched and only then the class is set to active.</p>
+<pre><code class="lang-html"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">routerLinkActive</span>=<span class="hljs-string">"active"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">routerLink</span>=<span class="hljs-string">"/"</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">routerLinkActive</span>=<span class="hljs-string">"active"</span> [<span class="hljs-attr">routerLinkOptions</span>]=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{exact: true}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">routerLink</span>=<span class="hljs-string">"/servers"</span>&gt;</span>servers<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">routerLinkActive</span>=<span class="hljs-string">"active"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">routerLink</span>=<span class="hljs-string">"/something"</span>&gt;</span>something<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span>
+</code></pre>
+<ul>
+<li>Loading Routes from Script</li>
+</ul>
+<pre><code class="lang-html">&lt;button <span class="hljs-keyword">class</span>=<span class="hljs-string">"btn btn-primary"</span> (<span class="hljs-built_in">click</span>)=<span class="hljs-string">"onLoadServers()"</span>&gt;Servers&lt;/button&gt;
+</code></pre>
+<pre><code class="lang-ts"><span class="hljs-comment">//--Change 1 Use Primary path.</span>
+
+<span class="hljs-keyword">import</span> { Route } from <span class="hljs-string">'@angular/router'</span>
+
+export <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HomeComponent</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">OnInit</span>{</span>
+    <span class="hljs-comment">//other code here</span>
+
+    constructor(<span class="hljs-keyword">private</span> <span class="hljs-string">router:</span> Router, <span class="hljs-keyword">private</span> <span class="hljs-string">route:</span> ActivatedRoute){}
+
+    onLoadServers(){
+        <span class="hljs-comment">//Some algorithm here</span>
+        <span class="hljs-keyword">this</span>.route.navigate([<span class="hljs-string">'/servers'</span>])
+    }
+
+    <span class="hljs-comment">//In this we will use a relative route. Unline routerLink the script does not know the current route and using relative route the route is appended to the root, thus we have to specify the route we want to be relative to.</span>
+    <span class="hljs-comment">//this.route will give the script the currently loaded path.</span>
+    onLoadServersSomething(){
+        <span class="hljs-keyword">this</span>.router.navigate([<span class="hljs-string">'something'</span>], {<span class="hljs-string">relativeTo:</span> <span class="hljs-keyword">this</span>.route});
+    }
+}
+</code></pre>
+<ul>
+<li>Passing Parameter to Route</li>
+</ul>
+<p><code>{ path: &#39;users/:id/:name&#39;, component: UserComponent }</code></p>
+<p>In the above code <code>:</code> is used to attach a dynamic parameter to the route.</p>
+<p>Both id and name are parameters of the route.</p>
+<ul>
+<li>Fetching dynamic Path segment that we create above :</li>
+</ul>
+<pre><code class="lang-ts"><span class="hljs-comment">//Other imports here</span>
+import { ActiatedRoute, Params } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/router'</span>;
+
+<span class="hljs-comment">//Metadata with @Componenet here</span>
+export <span class="hljs-keyword">class</span> <span class="hljs-title">UserComponent</span> <span class="hljs-title">implements</span> <span class="hljs-title">OnInit</span>{
+
+user:{id: number, name: <span class="hljs-keyword">string</span>};
+
+constructor(<span class="hljs-keyword">private</span> route: ActivatedRoute){}
+}
+
+ngOnInit(){
+    <span class="hljs-keyword">this</span>.user = {
+        id: <span class="hljs-keyword">this</span>.route.snapshot.<span class="hljs-keyword">params</span>[<span class="hljs-string">'id'</span>],
+        name: <span class="hljs-keyword">this</span>.route.snapshot.<span class="hljs-keyword">params</span>[<span class="hljs-string">'name'</span>]
+    };
+
+    <span class="hljs-comment">//The above approach is good if we know that the data from the route is not going to change form within the componenet itself as angular will not reload the page to reflect the changes as we define the code in ngOnInit.</span>
+    <span class="hljs-comment">//But if we have code that changes the data from within this component and we want to load the component again with that data we have to use an observable with the code defined above to know when the data on the url changes.</span>
+    <span class="hljs-comment">//The route.params returns an observable and can be subscribed to, to get data whenever it changes.</span>
+    <span class="hljs-keyword">this</span>.route.<span class="hljs-keyword">params</span>.subscribe(
+        (<span class="hljs-keyword">params</span>: Params) =&gt; {
+            <span class="hljs-keyword">this</span>.user.id = <span class="hljs-keyword">params</span>[<span class="hljs-string">'id'</span>];
+            <span class="hljs-keyword">this</span>.user.name = <span class="hljs-keyword">params</span>[<span class="hljs-string">'name'</span>];
+        }
+    );
+}
+</code></pre>
+<p>In the above example we do never unsubscribe from our subscriptions. It would not effect this as angular will unsubscribe for us when the component is destroied.</p>
+<p>But we can explicitly describe in our code when we want to unsubscribe, in the above case we want to unsubscribe when the component is destroied.</p>
+<p>In normal programs using rxjs we will always have to explicitly unsubscribe to our subscription.</p>
+<pre><code class="lang-ts"><span class="hljs-comment">//Only Changes to the above code</span>
+
+<span class="hljs-comment">//Assign the subscription to a varible</span>
+paramsSubscription: Subscription;
+
+ngOnInit(){
+    <span class="hljs-comment">//user code with snapshot</span>
+    <span class="hljs-keyword">this</span>.paramsSubscription = <span class="hljs-keyword">this</span>.route.params.subscribe(
+        (params: Params) =&gt;{
+            <span class="hljs-comment">//code as above</span>
+        }
+    )
+}
+
+ngOnDestroy(){
+    <span class="hljs-keyword">this</span>.paramsSubscription.unsubscribe();
+}
+</code></pre>
+<ul>
+<li>Using Query Paramters</li>
+</ul>
+<p>Both queryParams and fragment are properties of the routerLink itself.</p>
+<p>There can only be one fragment per routerLink but there can be multiple queryParams.</p>
+<pre><code class="lang-html">&lt;a
+    <span class="hljs-string">[routerLink]</span>=<span class="hljs-string">"['/servers',5, 'edit']"</span>
+    <span class="hljs-string">[queryParams]</span>=<span class="hljs-string">"{allowEdit: '1'}"</span>
+    fragement=<span class="hljs-string">"loading"</span>
+    href=<span class="hljs-string">"#"</span>
+&gt;
+</code></pre>
+<p>We can get the paramters and the fragements by injecting <code>ActivatedRoute</code> and use the <code>route.snapshot.fragment</code> and <code>route.snapshot.queryParams</code> to retrive the current paramters and fragment.</p>
+<p>As discussed above we only want to use <code>snapshot</code> if we know that the data of fragment or queryParams is not going to change from within the component, and if it is going to change we want to use the subscription methods as discussed in the previous examples.</p>
+<ul>
+<li>Using The QueryParams In our script file:</li>
+</ul>
+<p><code>this.router.navigate([&#39;edit&#39;], {relativeTo: this.route, queryParamsHandling: &#39;preserve or merge&#39;});</code></p>
+<p>In the above piece of code we use the <code>relativeTo</code> to set the path <code>edit</code> relative to the current path and <code>queryParamsHandling</code> to <code>preserve</code> to preserve the same queryParameters or <code>merge</code> to add the new QueryParameters.</p>
+<h3 id="wildcard-routing-and-redirecting">WildCard Routing and Redirecting</h3>
+<ul>
+<li><code>redirectTo</code> :</li>
+</ul>
+<pre><code class="lang-ts">{ <span class="hljs-string">path:</span> <span class="hljs-string">'not-found'</span>, <span class="hljs-string">component:</span> PageNotFoundComponent },
+<span class="hljs-comment">//With this if we visit /something path we will be redirected to /not-found path.</span>
+{ <span class="hljs-string">path:</span> <span class="hljs-string">'something'</span>, <span class="hljs-string">redirectTo:</span> <span class="hljs-string">'/not-found'</span> },
+<span class="hljs-comment">//Also Since the default matching strategy is "prefix" , Angular checks if the path you entered in the URL does start with the path specified in the route. Of course every path starts with ''  (Important: That's no whitespace, it's simply "nothing").This route will now ALWAYS redirect you. So we add the pathMatch to full so that angular matches the full path.</span>
+{ <span class="hljs-string">path:</span> <span class="hljs-string">''</span>, <span class="hljs-string">redirectTo:</span> <span class="hljs-string">'/somewhere-else'</span>, <span class="hljs-string">pathMatch:</span> <span class="hljs-string">'full'</span> }
+<span class="hljs-comment">//To cover all the path that are not defined we use **, it is called the Wildcard Route.</span>
+{ <span class="hljs-string">path:</span> <span class="hljs-string">'**'</span>, <span class="hljs-string">redirectTo:</span> <span class="hljs-string">'/not-found'</span> }
+<span class="hljs-comment">//Note that we want to place the wildcard route at the last as it will match and always redirect.</span>
+</code></pre>
+<h3 id="child-or-nested-routers">Child Or Nested Routers</h3>
+<pre><code class="lang-js">
+<span class="hljs-comment">//In the app.module.ts file where we define routes as above</span>
+
+const <span class="hljs-string">appRoutes:</span> Routes = [
+    { <span class="hljs-string">path:</span> <span class="hljs-string">''</span>, <span class="hljs-string">component:</span> HomeComponent },
+
+    { <span class="hljs-string">path:</span> <span class="hljs-string">'users'</span>, <span class="hljs-string">component:</span> UserComponent, <span class="hljs-string">children:</span>[
+        { <span class="hljs-string">path:</span> <span class="hljs-string">':id/:name'</span>, <span class="hljs-string">component:</span> UserComponent }
+    ] },
+
+    { <span class="hljs-string">path:</span> <span class="hljs-string">'servers'</span>, <span class="hljs-string">component:</span> ServersComponent, <span class="hljs-string">children:</span> [
+        {<span class="hljs-string">path:</span> <span class="hljs-string">':id'</span>, <span class="hljs-string">component:</span> ServerComponent },
+        {<span class="hljs-string">path:</span> <span class="hljs-string">':id/edit'</span>, <span class="hljs-string">component:</span> EditServerComponent }
+    ] }
+];
+</code></pre>
+<p>Now we have our main <code>&lt;router-outlet&gt;</code> where we have entry point for our main routes and whenever we have a <code>&lt;router-outlet&gt;</code> in the component loaded from the main routes, they will be the entry point for our child routes.</p>
+<p>There are no special properties to the router-outlet where the child path are loaded, just the placement of thse in the component loading them is how angular determines children of which route can be loaded.</p>
+<h3 id="defining-route-module-outside-of-the-app-module-ts-file">Defining route Module outside of the app.module.ts file</h3>
+<pre><code class="lang-ts">
+<span class="hljs-keyword">const</span> appRoutes: Routes = [
+    <span class="hljs-comment">//All our routes here</span>
+]
+
+<span class="hljs-meta">@NgModule</span>({
+    imports: [
+        RouterModule.forRoot(appRouters)
+    ],
+    exports:[RouterModule]
+})
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AppRoutingModule</span></span>{
+
+}
+
+<span class="hljs-comment">//We have created our custom routing module above but it also need to be added to the app.module.ts file to the imports array.</span>
+imports: [
+    <span class="hljs-comment">//all other imports</span>
+    AppRoutingModule
+]
+</code></pre>
+<h2 id="route-guards">Route Guards</h2>
+<h3 id="canactivate">CanActivate</h3>
+<pre><code class="lang-ts"><span class="hljs-comment">//File named auth-guard.service.ts</span>
+
+<span class="hljs-keyword">import</span>{ CanActivate, ActivatedRouteSnapshot, RouteStateSnapshot } from <span class="hljs-string">'@angular/router'</span>;
+<span class="hljs-keyword">import</span>{ Observanle } from <span class="hljs-string">'rxjs/Observable'</span>;
+
+<span class="hljs-meta">@Injectable</span>()
+export <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AuthGuard</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">CanActivate</span>{</span>
+
+    constructor(<span class="hljs-keyword">private</span> <span class="hljs-string">authService:</span> AuthService, <span class="hljs-keyword">private</span> <span class="hljs-string">route:</span> Router)
+
+    <span class="hljs-comment">//The arguments to the canActivate methods are passed by angular when we try to activate the route the gurad is put on, just before it is activated.</span>
+    canActivate(<span class="hljs-string">route:</span> ActivatedRouteSnapshot, <span class="hljs-string">state:</span> RouterStateSnapshot): Observable&lt;<span class="hljs-keyword">boolean</span>&gt; | Promise&lt;<span class="hljs-keyword">boolean</span>&gt;| <span class="hljs-keyword">boolean</span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.authService.isAuthenticated()
+            .then(
+                (<span class="hljs-string">authenticated:</span> <span class="hljs-keyword">boolean</span>) =&gt; {
+                    <span class="hljs-keyword">if</span>(authenticated){
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                    }<span class="hljs-keyword">else</span>{
+                        <span class="hljs-keyword">this</span>.router.navigate([<span class="hljs-string">'/'</span>]);
+                    }
+                }
+            );
+    }
+}
+
+<span class="hljs-comment">//AuthService file</span>
+export <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AuthService</span> {</span>
+    loggedIn = <span class="hljs-literal">false</span>;
+
+    isAuthenticated(){
+        const promise = <span class="hljs-keyword">new</span> Promise(
+            (resolve, reject) =&gt; {
+                setTimeout(()=&gt;{
+                    resolve(<span class="hljs-keyword">this</span>.loggedIn)
+                }, <span class="hljs-number">800</span>);
+            }
+        );
+        <span class="hljs-keyword">return</span> promise;
+    }
+}
+
+<span class="hljs-comment">//Add the services that we created to the app.module.ts to the providers array</span>
+<span class="hljs-string">providers:</span> [<span class="hljs-comment">/*Other services*/</span>, AuthService, AuthGuard]
+
+<span class="hljs-comment">//AppRoutingModule</span>
+{ <span class="hljs-string">path:</span> <span class="hljs-string">'servers'</span>, <span class="hljs-string">canActivate:</span> [AuthGuard], <span class="hljs-string">component:</span> ServerComponent, <span class="hljs-string">children:</span>[<span class="hljs-comment">/*Children path here*/</span>]}
+
+<span class="hljs-comment">//Not that when we put canActivate on the parent route we also add it to all the children automatically.</span>
+</code></pre>
+<h3 id="protecting-children">Protecting Children</h3>
+<p>In the above code we protect the parent path and the children path with it, but if we want to only protect the child route and still be able to access the parent route we can add <code>canActivateChild</code> to our AuthGuard file.</p>
+<pre><code class="lang-ts"><span class="hljs-comment">//This code adds to the above code. We keep the above code same as is.</span>
+canActivateChild(<span class="hljs-string">route:</span> ActivateRouteSnapshot. <span class="hljs-string">state:</span> RouterStateSnapshot):Observable&lt;<span class="hljs-keyword">boolean</span>&gt;| promise&lt;<span class="hljs-keyword">boolean</span>&gt;|<span class="hljs-keyword">boolean</span>{
+    <span class="hljs-comment">//We use te canActivate method as the we wnat to keep the logic the same.</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.canActivate(route, state);
+}
+
+<span class="hljs-comment">//Now we want to remove the canActivate from the route and put in canActivateChild in its place</span>
+{ <span class="hljs-string">path:</span> <span class="hljs-string">'servers'</span>, <span class="hljs-string">canActivateChild:</span> [AuthGuard], <span class="hljs-string">component:</span> ServerComponent, <span class="hljs-string">children:</span> [<span class="hljs-comment">/*Children path here*/</span>]}
+</code></pre>
+<h2 id="observable">Observable</h2>
+<p>Observable and Observer are provided by rxjs and not by angular itself.</p>
+<p>All the observable that are given by Angular are managed by angular and Angular will unsubscribe the observable when we are done using the observable, so we dont have to explicitly unsubscribe to the Observable.</p>
+<ul>
+<li>Creating our own observable</li>
+</ul>
+<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { interval, Subscription } <span class="hljs-keyword">from</span> <span class="hljs-string">'rxjs'</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HomeComponent</span> <span class="hljs-title">implements</span> <span class="hljs-title">OnInit</span> </span>{
+    <span class="hljs-comment">//othe code</span>
+
+    private firstObsSubscription: Subscription;
+
+    <span class="hljs-comment">//This is a simple observable but it is not build from ground up. It is just for an example.</span>
+    ngOnInit(){
+        <span class="hljs-keyword">this</span>.firstObsSubscription = interval(<span class="hljs-number">1000</span>).subscribe(<span class="hljs-function"><span class="hljs-params">count</span> =&gt;</span> {
+            <span class="hljs-built_in">console</span>.log(count);
+        });
+    }
+
+    ngOnDestroy(){
+        <span class="hljs-keyword">this</span>.firstObsSubscription.unsubscribe();
+    }
+}
+</code></pre>
+<ul>
+<li>Creating Observable from scratch</li>
+</ul>
+<p>Now we create our own observable from scratch that does the same task as the above example.</p>
+<pre><code class="lang-ts"><span class="hljs-comment">//All the class description code here</span>
+
+<span class="hljs-keyword">private</span> firstObsSubscription: Subscription;
+
+ngOnInit(){
+    const customIntervalObservable = Observable.create(observer = {
+        let <span class="hljs-keyword">count</span> = <span class="hljs-number">0</span>;
+        setInterval(( =&gt; {
+            observer.<span class="hljs-keyword">next</span>(<span class="hljs-keyword">count</span>);
+            <span class="hljs-keyword">count</span>++;
+        }, <span class="hljs-number">1000</span>);
+    });
+
+    <span class="hljs-comment">//Here we subscribe to our observable and we get the count ever 1000ms.</span>
+    <span class="hljs-keyword">this</span>.firstObsSubscription = CustomIntervalObservable.subscribe(data =&gt; {
+        console.log(data);
+    });
+
+    ngOnDestroy(){
+        <span class="hljs-keyword">this</span>.firstObsSubscription.unsubscribe();
+    }
+}
+</code></pre>
+<ul>
+<li>Errors and Completion</li>
+</ul>
+<p>Whenever an error is thrown from the Observable the subscription ends.</p>
+<ul>
+<li>Operterators</li>
+</ul>
+<blockquote>
+<p>TODO : Add rxjs Notes.</p>
+</blockquote>
+<h2 id="forms">Forms</h2>
+<p>There are two Approaches that angular offeres to handle forms.</p>
+<ol>
+<li><p>Template Driven : Angular Infers thte form Object from the DOM.</p>
+</li>
+<li><p>Reactive : From is created programmatically and synchronized with the DOM.</p>
+</li>
+</ol>
+<h3 id="template-driven-forms">Template Driven Forms</h3>
+<p>Import FormsModule in the NgModule -&gt; imports[] -&gt; FormsModule in the app.module.ts file to use the approach.</p>
+<p>Angular does not detect the form controls automatically so we have to make angular aware of the form control. This is done by using <code>ngModel</code> which is a part of FormsModule.</p>
+<pre><code class="lang-html">&lt;input <span class="hljs-class"><span class="hljs-keyword">type</span></span>=<span class="hljs-string">"text"</span> id=<span class="hljs-string">"username"</span> <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"form-control"</span> ngModel name=<span class="hljs-string">"username"</span>&gt;
+</code></pre>
+<p><code>name</code> is a property of the html element and not of angular. It will be used by angular to identify the element. ngModel will tell angular that this is a form control.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> (<span class="hljs-attr">ngSubmit</span>)= <span class="hljs-string">"onSubmit(f)"</span> #<span class="hljs-attr">f</span>= <span class="hljs-string">"ngForm"</span>&gt;</span>
+    <span class="hljs-comment">&lt;!--Our html form here as shown above--&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
+</code></pre>
+<p>Submitting a Form.</p>
+<p>The <code>ngSubmit</code> takes over the submit functionality of the HTML form, which is present by default, and gives us the control to submit the from as we want from our script. We pass in the local reference of the form to the submit method to use it to get the values that angular parsed for us.</p>
+<p>We put a <em>local Reference</em> to the from above and assign it to the <code>ngForm</code> which will give us the access to the from object that angular created for us and makes it easy for us to access the values of the form.</p>
+<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { NgFrom } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/froms'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AppComponent</span></span>{
+
+    <span class="hljs-comment">//Other code here</span>
+
+    onSubmit(<span class="hljs-keyword">from</span>: NgFrom){
+        <span class="hljs-comment">//This will print the the form object to the console and we can see all its properties.</span>
+        <span class="hljs-built_in">console</span>.log(form);
+    }
+}
+</code></pre>
+<ul>
+<li>Accessing from with <code>@ViewChild</code> as we have see before to access the <em>Local Reference</em> on the form.</li>
+</ul>
+<p>This method of getting the form objects helps us access the data that the form contains at any time <strong>before the from is submitted</strong>.</p>
+<pre><code class="lang-ts">export <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AppComponent</span></span>{
+    <span class="hljs-meta">@ViewChild(<span class="hljs-meta-string">'f'</span>)</span> signupForm: NgFrom;
+
+    onSubmit(){
+        console.log(<span class="hljs-keyword">this</span>.signupForm);
+    }
+}
+</code></pre>
+<ul>
+<li><strong>Validation</strong></li>
+</ul>
+<p>Some Build in properties of the HTML like required can be used to validate the form.</p>
+<p>There are also directive provided by angular that can be used to validate the form input such as email.</p>
+<p>The are not a definitive check though as the front end application can be tricked, there should always be validation of data on server side so that we dont get invalid data in our persistance.</p>
+<ul>
+<li><p><a href="https://angular.io/api/forms/Validators">Build in validators</a> : These are all built-in validators, though that are the methods which actually get executed(and which can be add when using the reactive approach).</p>
+</li>
+<li><p><a href="https://angular.io/api?type=directive">Build in directives</a> : Everything marked with &quot;D&quot; is a directive and can be added to your template.</p>
+</li>
+</ul>
+<p>Additionally, you might also want to enable HTML5 validation (by default, Angular disables it). You can do so by adding the <code>ngNativeValidate</code>  to a control in your template.</p>
+<ul>
+<li>NgModel :</li>
+</ul>
+<p>NgModel can be used with local reference to the form control.</p>
+<p>We can also have a default value for the control including <code>&lt;Select&gt;</code> as shown below.</p>
+<p><code>[NgModel]=&quot;pet&quot;</code></p>
+<p>The above example above shows one way binding and we can also use NgModel with two way binding.</p>
+<p><code>[(ngModel)]= &quot;answer&quot;</code> : answer is a property of the script that the html element is placed on.</p>
+<p>We can then use interpolation else were where we want to print the value of the answer property.</p>
+<ul>
+<li>Grouping from Controls</li>
+</ul>
+<p>We can put <code>ngModelGroup=&quot;controlGroup&quot;</code> on a div that holds the form controls that need to be grouped.</p>
+<p>This will create a individual object like the form object that we get for the group and thus we can assess the validity of the from and values of the group independently.</p>
+<p>We can also put a Local Reference on the group div and get access to the group object in our script as well as other places in the template itself.</p>
+<ul>
+<li>Setting an patching values</li>
+</ul>
+<p>We can set default valies to our from controls, by using the <code>patchValue</code> method of <code>form</code>.</p>
+<pre><code class="lang-ts">
+<span class="hljs-keyword">const</span> suggestedName = <span class="hljs-string">'SuperUser'</span>;
+
+<span class="hljs-keyword">this</span>.signupForm.form.patchValue({
+    userData: {
+        username: suggestedName
+    }
+});
+</code></pre>
+<p>The above approach to set the value for the form on a event will not reset the whole form, just set the value of the form element that we want to target.</p>
+<p>The Other approach might be to set the value directly by using <code>this.signupForm.setValue({})</code> and pass in the object with the values that we want ot add to our from, but it will reset the form and thus all the values that the user had entered and thus the above approach is much more convenient and useful in most cases.</p>
+<ul>
+<li>Resetting Form</li>
+</ul>
+<p><code>this.signupForm.reset();</code> this will reset the form to empty as if the page was reloaded and the form was never used.</p>
+<p>If we want the form to have defualt values set as we set wtih <code>setValues</code>, we could pass in the object to the reset property and the default values will be set as if we were to use the setValues property after the form is reset.</p>
+<h3 id="reactive-approach">Reactive Approach</h3>
+<p>In the reactive approach we create the from programatically.</p>
+<p>In NgModules we need <code>ReactiveFromsModule</code> to be added to the <code>imports[]</code>. We do not need the NgFormModule that we used in the previous template driven apprach.</p>
+<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { FormGroup, FromControl } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/froms'</span>
+
+<span class="hljs-comment">//@Component here</span>
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AppComponent</span> <span class="hljs-title">implement</span> <span class="hljs-title">onInit</span></span>{
+
+    gender = [<span class="hljs-string">'male'</span>, <span class="hljs-string">'female'</span>];
+
+    signupForm: FormGroup;
+
+    <span class="hljs-comment">//Creating our from.</span>
+    ngOnInit(){
+        <span class="hljs-keyword">this</span>.signupForm = <span class="hljs-keyword">new</span> FormGroup({
+            <span class="hljs-string">'username'</span>: <span class="hljs-keyword">new</span> FromControl(<span class="hljs-literal">null</span>),
+            <span class="hljs-string">'email'</span> : <span class="hljs-keyword">new</span> FormControl(<span class="hljs-literal">null</span>),
+            <span class="hljs-string">'gender'</span>: <span class="hljs-keyword">new</span> FormControl(<span class="hljs-string">'male'</span>) <span class="hljs-comment">//Here we set a default initialization value for our form control.</span>
+        });
+    }
+}
+</code></pre>
+<p>Synchronize our script from with the HTML from in our html template.</p>
+<pre><code class="lang-html"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> [<span class="hljs-attr">formGroup</span>=<span class="hljs-string">"signupFrom"</span>] (<span class="hljs-attr">ngSumbit</span>)=<span class="hljs-string">"onSubmit()"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"username"</span>&gt;</span>UserName<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">" username"</span> <span class="hljs-attr">formControlName</span>=<span class="hljs-string">"username"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-control"</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"email"</span>&gt;</span>Email<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">" email"</span> <span class="hljs-attr">formControlName</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-control"</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ckass</span>=<span class="hljs-string">"radio"</span> *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let gender of genders"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"radio"</span> [<span class="hljs-attr">value</span>]=<span class="hljs-string">"gender"</span> <span class="hljs-attr">fromControlName</span>=<span class="hljs-string">"gender"</span>&gt;</span></span><span class="hljs-template-variable">{{gender}}</span><span class="xml">
+        <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></span>
+</code></pre>
+<p>In the above html code we attached or linked our script Form object with the HTML template containing the Form control component. We use formControlName to connect the respective HTML form elements with the Object in script.</p>
+<ul>
+<li>Submitting Form</li>
+</ul>
+<p>As we create the from object in the script it self we already have access to the from object in the script.</p>
+<p>We still add the <code>ngSubmit</code> to the form to get the final values.</p>
+<pre><code class="lang-ts">onSubmit(){
+    <span class="hljs-comment">//This is the form we created in the script above in the ngOnInit  method.</span>
+    console.<span class="hljs-built_in">log</span>(<span class="hljs-keyword">this</span>.signupForm);
+}
+</code></pre>
+<ul>
+<li>Adding Validation In the Reactive Approach</li>
+</ul>
+<p>As we dont configure our html form elements in our HTML template, adding validator to the HTML template code does not work in the case of reactive aproach.</p>
+<p>We can validate the input from a form control by passing an array of <code>Validators</code> as the second argument to the <code>FormControl</code> with first being the default value for that element.</p>
+<p>Validators provides us with the methods for different validations and we can get them from the Vallidators class, but we dot call them we just pass the reference to the validator methods, that is we dont add <code>()</code> at the end of them, Angular calls or executes the methods when it needs to.</p>
+<p>We import <code>Validators</code> from <code>@angular/froms</code></p>
+<p><code>&#39;email&#39;: new FormControl(null, [Validators.required, Validators.email]);</code></p>
+<ul>
+<li>Showing message if the form is Invalid</li>
+</ul>
+<pre><code class="lang-html">&lt;<span class="hljs-selector-tag">span</span> *ngIf=<span class="hljs-string">"!signupFrom.get('email').valid &amp;&amp; signupForm.get('email').touched"</span> class=<span class="hljs-string">"help-block"</span>&gt;Please Enter <span class="hljs-selector-tag">a</span> valid Email Address
+&lt;/span&gt;
+</code></pre>
+<p>Note : If we want to specifically change some css for some property, the class are added to the html element accroding to its state such as <code>ng-untouched ng-pristine ng-invalid</code> and many others.</p>
+<ul>
+<li>Grouping Control</li>
+</ul>
+<p>We can have nested from groups to create groups of from elements as we did in the Template Approach.</p>
+<p>For this we just nest <code>FormGroup</code> in the main <code>FromGroup</code> and put the properties representing the html elements in the object in this new FormGroup.</p>
+<p>We also need to add all the html element that we add to the from group in our script object to be put in a HTML element <code>&lt;div formGroupName=&quot;userData&quot;&gt;</code>. Here userData is the name of the group that we used in our script.</p>
+<ul>
+<li>FromArray</li>
+</ul>
+<blockquote>
+<p>TODO : Dynamically adding FormControl and FromArray Lecture 209</p>
+</blockquote>
+<ul>
+<li>Creating Custom Validator</li>
+</ul>
+<pre><code class="lang-ts">
+<span class="hljs-comment">//As forbiddentNames will be called by angular to check the validity from outside of this calls the `this` keyword wont work. To bind the this keyword to this class we use bind where we call the method.</span>
+
+<span class="hljs-string">'username'</span> : new FormControl(<span class="hljs-literal">null</span>. [Validators.required, <span class="hljs-keyword">this</span>.frobiddenNames.bind(<span class="hljs-keyword">this</span>)]),
+
+<span class="hljs-comment">//The above code is a part of the signupFrom.</span>
+
+const forbiddenUserName = [<span class="hljs-string">"Adwait"</span>, <span class="hljs-string">"Abhi"</span>];
+
+forbiddenNames(control: FormControl):{[s: string]: boolean}{
+    <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.forbiddenUsernames.indexOf(control.value) !== <span class="hljs-number">-1</span>){ <span class="hljs-comment">//The value will return a -1 and -1 will be interpreted as true as a value exist by javascript. So we explicitly tell it to check if it is -1 then we want it to be false</span>
+        <span class="hljs-keyword">return</span>{<span class="hljs-string">'nameIsForbidden'</span>: <span class="hljs-literal">true</span>};
+    }
+    <span class="hljs-comment">//We have to return null or empty if the validation fails. We dont wnat to pass the object above with a false value.</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+}
+</code></pre>
+<ul>
+<li>Using Error Codes</li>
+</ul>
+<p>In the form object angular will add the validation error in the error property of the object of the individual FormControl. Angular may or may not add it to the overall form error.</p>
+<p>To check what is contained in the error we might want to console.log the from and check for the error values of the from object.</p>
+<ul>
+<li>Async Validations</li>
+</ul>
+<p>We sometimes want our validations to come from the server, for example check if the email already exist, in this case we want to have a asyc Validator.</p>
+<p>Async validators are passed as the third argument to a FormControl Object as an array of as many async validator as we need.</p>
+<p>If <code>this</code> is used in the validator as above, we want ot bind the this to this from our class where we use it as shown above, as angular will execute this method ourside of the class where this will not be availabe and we will have an error.</p>
+<pre><code class="lang-ts">forbiddenEmails(control: FromControl): <span class="hljs-built_in">Promise</span>&lt;any&gt; | Observable&lt;any&gt;{
+    <span class="hljs-comment">//We create a new Promise here that will be returned by the validator. This is just an example we use setTimeout here but in real programs where we validate data at server we will have a http request that might return a promise or an Observable.</span>
+    <span class="hljs-keyword">const</span> promise = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+
+        setTimeout(<span class="hljs-function"><span class="hljs-params">()</span>=&gt;</span>{
+            <span class="hljs-keyword">if</span>(control.value === <span class="hljs-string">'test@test.com'</span>){
+                resolve({<span class="hljs-string">'emailIsForbidden'</span>: <span class="hljs-literal">true</span>});
+            }<span class="hljs-keyword">else</span>{
+                resolve(<span class="hljs-literal">null</span>);
+            }
+        }, <span class="hljs-number">1500</span>);
+    });
+    <span class="hljs-keyword">return</span> promise;
+}
+</code></pre>
+<ul>
+<li>Reacting to Status and Value Changes</li>
+</ul>
+<pre><code class="lang-ts"><span class="hljs-keyword">this</span>.signupFrom.valueChanges.subscribe((<span class="hljs-function"><span class="hljs-params">value</span>=&gt;</span>{
+    <span class="hljs-comment">//This will print our the object that is the from every time there is a change in any of the value of any of the element in the object.</span>
+    <span class="hljs-built_in">console</span>.log(value);
+}))
+
+<span class="hljs-comment">//Similar to valueChange we have status change that return ths status of the form on whether the form is valid or not.</span>
+
+<span class="hljs-keyword">this</span>.signupForm.statusChanges.subscribe((<span class="hljs-function"><span class="hljs-params">value</span>=&gt;</span>{
+    <span class="hljs-built_in">console</span>.log(value);
+}))
+</code></pre>
+<p>These can also be applied on individual from controls.</p>
+<ul>
+<li>Setting and Patching Values</li>
+</ul>
+<p>We can update our from on our own by using setValue and patch value as we did in the Template Approach.</p>
+<pre><code class="lang-ts">this<span class="hljs-selector-class">.signupFrom</span><span class="hljs-selector-class">.setValue</span>({
+    <span class="hljs-comment">//the whole from object with set value for example we set the gender</span>
+    <span class="hljs-string">'gender'</span> : <span class="hljs-string">'male'</span>,
+    <span class="hljs-comment">//and so on fro every property of this form object.</span>
+})
+
+this<span class="hljs-selector-class">.signupForm</span><span class="hljs-selector-class">.patchValue</span>({
+    <span class="hljs-string">'userData'</span> : {
+        <span class="hljs-string">'username'</span>: <span class="hljs-string">'Anna'</span>
+    }
+})
+</code></pre>
+<ul>
+<li>Reset From</li>
+</ul>
+<p>Like we used in the Template Approach we also can use reset as <code>this.signupForm.reset();</code> and if we want to set any values to initiate the form after it has already been cleared we can pass a object containing the values to the reset method.</p>
+<h2 id="pipes">Pipes</h2>
+<p>Transfrom output in our template.</p>
+<ul>
+<li>Adding parameters to pipe :</li>
+</ul>
+<p>We can add parameters to a pipe by adding <code>:</code> after the name of the pipe.</p>
+<p><code>{{ server.started | date:&#39;fullDate&quot; }}</code></p>
+<ul>
+<li>Chaining Multile pipes :</li>
+</ul>
+<p>The order of the pipes is important. They are parsed from left to right.</p>
+<p><code>{{ server.started | date:&#39;fullDate | uppercase }}</code></p>
+<ul>
+<li>Create Custom pipes</li>
+</ul>
+<p><code>ng g p shortenpipe</code></p>
+<pre><code class="lang-ts"><span class="hljs-comment">//FileName : shorten.pipe.ts</span>
+
+<span class="hljs-keyword">import</span> { Pipetransfrom } from <span class="hljs-string">'@angular/core'</span>;
+
+<span class="hljs-meta">@Pipe</span>({
+<span class="hljs-symbol">    name:</span> <span class="hljs-string">'shorten'</span>
+})
+export <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ShortenPipe</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">PipeTransfrom</span>{</span>
+
+<span class="hljs-comment">//Transform gets the value of interpolated string from our HTML template.</span>
+    transfrom(<span class="hljs-string">value:</span>any, <span class="hljs-string">limit:</span> number){
+        <span class="hljs-keyword">return</span> value.substr(<span class="hljs-number">0</span>,number);
+    }
+}
+
+<span class="hljs-comment">//The limit here is a paramter for our pipe that can be passed as we saw for the inbuild pipes above.</span>
+
+<span class="hljs-comment">//We need to aadd pupes to declarations array of NgModules of the app.module.ts</span>
+</code></pre>
+<ul>
+<li>Async Pipes</li>
+</ul>
+<pre><code class="lang-js"><span class="hljs-regexp">//</span><span class="hljs-keyword">this</span> <span class="hljs-keyword">is</span> a methods <span class="hljs-keyword">in</span> our component string
+appStatus = <span class="hljs-keyword">new</span> Promise(<span class="hljs-function"><span class="hljs-params">(resolve)</span>=&gt;</span>{
+    setTimeout(<span class="hljs-function"><span class="hljs-params">()</span>=&gt;</span>{
+        resolve(<span class="hljs-string">'stable'</span>);
+    }, <span class="hljs-number">2000</span>);
+});
+</code></pre>
+<pre><code class="lang-html"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span> App Status: </span><span class="hljs-template-variable">{{ appStatus | async }}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span>
+</code></pre>
+<p>We use the async pipe as we know after some time the promise will be resolved and the data will be assigned to appStatus.</p>
+<p>When we add a async to a object that is a promise or an Observable it automatically subscribes and in case or promises wait for the data to be resolved and then display data once the data is avaible.</p>
+<h2 id="http-requests">HTTP Requests</h2>
+<p><a href="https://angular.io/guide/http">Official Documents HTTP requests</a></p>
+<ul>
+<li>We can set up BackEnd with Firebase.</li>
+</ul>
+<h3 id="post-requests">Post Requests</h3>
+<blockquote>
+<p>Note : Add <code>HttpClientModule</code> to <code>imports[]</code> of <code>@NgModule</code> in the file <code>app.module.ts</code> by importing it from <code>@angular/common/http</code></p>
+</blockquote>
+<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { HttpClient } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/commom/http'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AppComponent</span> <span class="hljs-title">implement</span> <span class="hljs-title">OnInit</span></span>{
+
+    <span class="hljs-keyword">constructor</span>(private http: HttpClient){}
+
+    onCreatePost(postData:{ <span class="hljs-attr">title</span>: string; content: string}){
+
+        <span class="hljs-comment">//Send the request</span>
+        <span class="hljs-comment">//We pass postData as the body and angualar will convert the object into a JSON when it is being send as REST apis need JSON data as the body.</span>
+        <span class="hljs-comment">//This by itself will not send the request. The http post will return a observabel and the data is not send until we subscribe to the Observable.</span>
+        <span class="hljs-comment">//this.http.post('https://ourURL', postData);</span>
+        <span class="hljs-keyword">this</span>.http.post(<span class="hljs-string">'https://resourceURL'</span>, postData).subscribe(<span class="hljs-function">(<span class="hljs-params">responseData</span>)=&gt;</span>{
+            <span class="hljs-built_in">console</span>.log(responseData);
+        });
+    }
+
+}
+</code></pre>
+<p>Post with error handling and service.</p>
+<pre><code class="lang-ts"><span class="hljs-comment">//In our service file</span>
+CreateAndStorePost(<span class="hljs-built_in">title</span>: <span class="hljs-keyword">string</span>, content: <span class="hljs-keyword">string</span>) {
+  const postData: Post = { <span class="hljs-built_in">title</span>: <span class="hljs-built_in">title</span>, content: content };
+  this.http
+    .post&lt;{ name: <span class="hljs-keyword">string</span> }&gt;(
+      'https:<span class="hljs-comment">//ng-complete-guide-c56d3.firebaseio.com/posts.json',</span>
+      postData
+    )
+    .subscribe(
+      responseData =&gt; {
+        console.<span class="hljs-built_in">log</span>(responseData);
+      },
+      <span class="hljs-comment">//The second argument to the subscription is error handling</span>
+      <span class="hljs-built_in">error</span> =&gt; {
+        this.<span class="hljs-built_in">error</span>.next(<span class="hljs-built_in">error</span>.message);
+      }
+    );
+}
+
+<span class="hljs-comment">//Our component file</span>
+
+onCreatePost(postData: Post) {
+      <span class="hljs-comment">// Send Http request</span>
+  this.postsService.createAndStorePost(postData.<span class="hljs-built_in">title</span>, postData.content);
+}
+</code></pre>
+<h3 id="get-requests">Get Requests</h3>
+<pre><code class="lang-ts">private fetchPosts(){
+    <span class="hljs-keyword">this</span>.http.get(<span class="hljs-string">'https://resourceURL'</span>).subscribe(<span class="hljs-function"><span class="hljs-params">(post)</span>=&gt;</span>{
+        <span class="hljs-built_in">console</span>.log(posts);
+    })
+}
+</code></pre>
+<p>We could outsource our data handling to a service and then subscribe to the data in our Component as it would be easier to manage as our app gets bigger.</p>
+<p>We also handle the error that we might get</p>
+<pre><code class="lang-ts"><span class="hljs-comment">//In our service file</span>
+<span class="hljs-keyword">import</span> { Injectable } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/core'</span>;
+<span class="hljs-keyword">import</span> { map, catchError } <span class="hljs-keyword">from</span> <span class="hljs-string">'rxjs/operators'</span>;
+<span class="hljs-keyword">import</span> { Subject, throwError } <span class="hljs-keyword">from</span> <span class="hljs-string">'rxjs'</span>;
+<span class="hljs-keyword">import</span> { HttpClient } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/common/http'</span>;
+
+fetchPosts() {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.http
+    .get&lt;{ [key: string]: Post }&gt;(
+      <span class="hljs-string">'https://ng-complete-guide-c56d3.firebaseio.com/posts.json'</span>
+    )
+    .pipe(
+      map(<span class="hljs-function"><span class="hljs-params">responseData</span> =&gt;</span> {
+        <span class="hljs-keyword">const</span> postsArray: Post[] = [];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> responseData) {
+          <span class="hljs-keyword">if</span> (responseData.hasOwnProperty(key)) {
+            postsArray.push({ ...responseData[key], <span class="hljs-attr">id</span>: key });
+          }
+        }
+        <span class="hljs-keyword">return</span> postsArray;
+      }),
+      catchError(<span class="hljs-function"><span class="hljs-params">errorRes</span> =&gt;</span> {
+        <span class="hljs-comment">// Send to analytics server</span>
+        <span class="hljs-keyword">return</span> throwError(errorRes);
+      })
+    );
+}
+
+<span class="hljs-comment">//In our component file</span>
+<span class="hljs-keyword">import</span> { Component, OnInit, OnDestroy } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/core'</span>;
+<span class="hljs-keyword">import</span> { HttpClient } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/common/http'</span>;
+<span class="hljs-keyword">import</span> { map } <span class="hljs-keyword">from</span> <span class="hljs-string">'rxjs/operators'</span>;
+<span class="hljs-keyword">import</span> { Subscription } <span class="hljs-keyword">from</span> <span class="hljs-string">'rxjs'</span>;
+
+<span class="hljs-comment">//Variables</span>
+loadedPosts: Post[] = [];
+isFetching = <span class="hljs-literal">false</span>;
+error = <span class="hljs-literal">null</span>;
+private errorSub: Subscription;
+
+onFetchPosts() {
+<span class="hljs-comment">// Send Http request</span>
+    <span class="hljs-keyword">this</span>.isFetching = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">this</span>.postsService.fetchPosts().subscribe(
+      <span class="hljs-function"><span class="hljs-params">posts</span> =&gt;</span> {
+        <span class="hljs-keyword">this</span>.isFetching = <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">this</span>.loadedPosts = posts;
+      },
+      error =&gt; {
+        <span class="hljs-keyword">this</span>.error = error.message;
+        <span class="hljs-built_in">console</span>.log(error);
+      }
+    );
+}
+</code></pre>
+<h3 id="transfroming-data-with-observables">Transfroming data with Observables</h3>
+<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { <span class="hljs-built_in">map</span> } from <span class="hljs-string">'rxjs/operators'</span>;
+
+<span class="hljs-keyword">private</span> fetchPosts(){
+    <span class="hljs-keyword">this</span>.http.<span class="hljs-built_in">get</span>(<span class="hljs-string">'https://resourceURL'</span>).pipe(<span class="hljs-built_in">map</span>(responseData =&gt; {
+        <span class="hljs-keyword">const</span> postArray = [];
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">const</span> <span class="hljs-built_in">key</span> in responseData) {
+            <span class="hljs-comment">//We wnat to check the json data that we get from the get request has a key named key.</span>
+            <span class="hljs-keyword">if</span>(responseData.hasOwnProperty(<span class="hljs-built_in">key</span>)){
+                <span class="hljs-comment">//We push the data to that is key value pairs to the array that we created by using the spread operator.</span>
+                <span class="hljs-comment">//Also add the id that we could use to uniquely identify the data that we get.</span>
+                postsArray.push({ ...responseData[<span class="hljs-built_in">key</span>], id: <span class="hljs-built_in">key</span> });
+            }
+        }
+        <span class="hljs-keyword">return</span> postArray;
+        <span class="hljs-comment">//The returned value will not be forwarded to the subscribe method.</span>
+    })).subscribe((post)=&gt;{
+        console.<span class="hljs-built_in">log</span>(posts);
+    })
+}
+</code></pre>
+<ul>
+<li>Using types with HTTP Request</li>
+</ul>
+<p>We can add the type to the HTTP request methods by adding <code>post&lt;type&gt;</code> or <code>get&lt;Type&gt;</code>. The request methods are called as generic methods.</p>
+<ul>
+<li>Sending Delete Request</li>
+</ul>
+<pre><code class="lang-ts">
+<span class="hljs-regexp">//</span>This <span class="hljs-keyword">is</span> <span class="hljs-keyword">in</span> our service file that fetches the data <span class="hljs-keyword">and</span> we <span class="hljs-keyword">return</span> an observable from here that we can subscribe to <span class="hljs-keyword">in</span> our component file where we need the data.
+deletePosts(){
+
+   <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.http.<span class="hljs-keyword">delete</span>(<span class="hljs-string">'https://resourceURL'</span>);
+}
+
+<span class="hljs-regexp">//</span>This <span class="hljs-keyword">is</span> <span class="hljs-keyword">in</span> our Component file where we want the data <span class="hljs-keyword">and</span> we subscribe to the Observable to get the data.
+onClearPosts(){
+
+    <span class="hljs-keyword">this</span>.postService.deletePosts().subscrbe(<span class="hljs-function"><span class="hljs-params">()</span>=&gt;</span>{
+        <span class="hljs-keyword">this</span>.loadedPosts = [];
+    });
+}
+</code></pre>
+<h3 id="handling-errors">Handling Errors</h3>
+<ul>
+<li>Directly handling error when we subscibe in the component.</li>
+</ul>
+<pre><code class="lang-ts">onClearPosts(){
+
+    <span class="hljs-keyword">this</span>.postService.deletePosts().subscrbe(()=&gt;{
+        <span class="hljs-keyword">this</span>.loadedPosts = [];
+    },
+    <span class="hljs-comment">//Here subscribe takes a second argument that represent the error. If an error occurs we will get the error as data for our subscription here and we can handle it as we want below.</span>
+    <span class="hljs-keyword">error</span>=&gt;{
+        <span class="hljs-keyword">this</span>.<span class="hljs-keyword">error</span> = <span class="hljs-keyword">error</span>.message;
+        <span class="hljs-comment">//The error might be an object depending on the backend server that we are using.</span>
+        console.log(<span class="hljs-keyword">error</span>);
+    });
+}
+</code></pre>
+<ul>
+<li>HTTP Headers</li>
+</ul>
+<p>THe last paramter to any HTTP request like post, get, delete takes an object. The object can take query paramters, headers etc.</p>
+<p>We put our headers in that object as a key and pass in a <code>new HttpHeaders({key: value, key: value})</code> to that key.</p>
+<p>This will set our headers for our request with the required default headers if we do not specify them.</p>
+<ul>
+<li>Params with HttpRequests</li>
+</ul>
+<p>In the last object that we pass to the request we add a <code>params: new HttpParams().set(&#39;print&#39;, &#39;pretty&#39;)</code>.</p>
+<p>In the above we add print as the key and pretty as the value. We can add multiple such key value pairs.</p>
+<ul>
+<li><code>observe</code></li>
+</ul>
+<p>We can also pass <code>observe: &#39;response&#39;</code> to the object that takes header to get the whole response with headers, status and body of the response that we get from the server. The default value of observe is body and body thus gets parsed to json.</p>
+<p><code>observe</code> can also have a value of event, which will tell us about the event like request was &#39;sent&#39;, &#39;response&#39; and some-others.</p>
+<ul>
+<li><code>responseType</code> Used to tell the observable what type of data we get in response.</li>
+</ul>
+<h3 id="interceptors">Interceptors</h3>
+<p>They can be used to change or modify a request before it is send. So for example we can change the request headers before any request is send. This might be useful if we are enforcing an authentication system and want to send a authcode in the header.</p>
+<p>We can not only interact with the outgoing request but also with the incoming response of all the request.</p>
+<blockquote>
+<p>Note : When we have multiple interceptor the order in which the interceptor are declared in  the <code>providers</code> array will be the order that they are exected in.</p>
+</blockquote>
+<pre><code class="lang-ts"><span class="hljs-comment">//Before we can use interceptor in our application we have to configure them in our app.module.ts file.</span>
+<span class="hljs-keyword">import</span> { HttpClientModule, HTTP_INTERCEPTORS } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/common/http'</span>;
+<span class="hljs-comment">//In the @NgModule</span>
+  imports: [BrowserModule, FormsModule, HttpClientModule],
+  <span class="hljs-attr">providers</span>: [
+    {
+      <span class="hljs-attr">provide</span>: HTTP_INTERCEPTORS,
+      <span class="hljs-attr">useClass</span>: AuthInterceptorService,
+      <span class="hljs-attr">multi</span>: <span class="hljs-literal">true</span>
+    },
+    {
+      <span class="hljs-attr">provide</span>: HTTP_INTERCEPTORS,
+      <span class="hljs-attr">useClass</span>: AuthInterceptorService,
+      <span class="hljs-attr">multi</span>: <span class="hljs-literal">true</span>
+    }
+  ]
+
+<span class="hljs-comment">//In our auth-interceptor.service.ts file</span>
+<span class="hljs-keyword">import</span> {
+  HttpInterceptor,
+  HttpRequest,
+  HttpHandler
+} <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/common/http'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AuthInterceptorService</span> <span class="hljs-title">implements</span> <span class="hljs-title">HttpInterceptor</span> </span>{
+    <span class="hljs-comment">//The next.handle method sends the request further to what it should have done if interceptors was not present.</span>
+  intercept(req: HttpRequest&lt;any&gt;, <span class="hljs-attr">next</span>: HttpHandler) {
+    <span class="hljs-comment">//As the Httprequest object that we get 'rep' in the case is immutable, hence we clone that object and then return our newly created and modified object back.</span>
+    <span class="hljs-keyword">const</span> modifiedRequest = req.clone({
+      <span class="hljs-attr">headers</span>: req.headers.append(<span class="hljs-string">'Auth'</span>, <span class="hljs-string">'xyz'</span>)
+    });
+    <span class="hljs-keyword">return</span> next.handle(modifiedRequest);
+  }
+}
+
+<span class="hljs-comment">//In our logging-interceptor</span>
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LoggingInterceptorService</span> <span class="hljs-title">implements</span> <span class="hljs-title">HttpInterceptor</span> </span>{
+  intercept(req: HttpRequest&lt;any&gt;, <span class="hljs-attr">next</span>: HttpHandler) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Outgoing request'</span>);
+    <span class="hljs-built_in">console</span>.log(req.url);
+    <span class="hljs-built_in">console</span>.log(req.headers);
+    <span class="hljs-keyword">return</span> next.handle(req).pipe(
+      tap(<span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> {
+        <span class="hljs-keyword">if</span> (event.type === HttpEventType.Response) {
+          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Incoming response'</span>);
+          <span class="hljs-built_in">console</span>.log(event.body);
+        }
+      })
+    );
+  }
+}
+</code></pre>
+<h2 id="angular-modules">Angular Modules</h2>
+<p><a href="https://angular.io/guide/ngmodules">Official Docs</a></p>
+<p><a href="https://angular.io/guide/ngmodule-faq">NgModules FAQ</a></p>
+<p>We can split our angular app into different Angular modules to make the app leaner and more importantly to use the lazy loading features for reduced initial size of our application and loading different modules as the user needs them.</p>
+<blockquote>
+<p>Note 1 : Browser Module needs to be imported only once in our project in the main module file. If we want to use ngFor and ngIf we <code>import { CommonModule } from &#39;@angular/common&#39;</code>.
+Note 2 : Services do not need to be imported in our custom module as they are avaible app wide, that is they are all setup at the root.</p>
+</blockquote>
+<h3 id="separating-modules-and-it-routes">Separating Modules and it Routes</h3>
+<pre><code class="lang-ts"><span class="hljs-comment">//Create a module.ts file for the part of the app that need to be separated. Here we take the example of recipies.</span>
+<span class="hljs-comment">//recipies.module.ts</span>
+<span class="hljs-keyword">import</span> { NgModule } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/core'</span>;<span class="hljs-comment">//Import to set the meta data for the module.</span>
+<span class="hljs-keyword">import</span> { CommonModule } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/common'</span>;<span class="hljs-comment">//As stated above in notes, to use ngfor and similar directives.</span>
+<span class="hljs-keyword">import</span> { RouterModule } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/router'</span>;
+<span class="hljs-keyword">import</span> { ReactiveFormsModule } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/forms'</span>;<span class="hljs-comment">//As we use reactive form in the module and the reactiveforms import decalared in the app.module.ts file does carry to this file we have to put this import again in the import array for this module.</span>
+
+<span class="hljs-keyword">import</span> { RecipesComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./recipes.component'</span>;
+<span class="hljs-keyword">import</span> { RecipeListComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./recipe-list/recipe-list.component'</span>;
+<span class="hljs-keyword">import</span> { RecipeDetailComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./recipe-detail/recipe-detail.component'</span>;
+<span class="hljs-keyword">import</span> { RecipeItemComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./recipe-list/recipe-item/recipe-item.component'</span>;
+<span class="hljs-keyword">import</span> { RecipeStartComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./recipe-start/recipe-start.component'</span>;
+<span class="hljs-keyword">import</span> { RecipeEditComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./recipe-edit/recipe-edit.component'</span>;
+
+@NgModule({
+  declarations: [
+    <span class="hljs-comment">//All the components that are a part of the module are declared here and can be removed from the app.module.ts file.</span>
+    RecipesComponent,
+    RecipeListComponent,
+    RecipeDetailComponent,
+    RecipeItemComponent,
+    RecipeStartComponent,
+    RecipeEditComponent
+  ],
+  <span class="hljs-comment">//All the imports of directives, pipes and modules have to be set again in our separated component as these will be carried from the app.module.ts file that we set for our whole app.</span>
+  <span class="hljs-comment">//Our module is independent of the app and all imports have to be declared. Only services are app wide and do not have to be imported again. Hence the HttpClientModule does not need to be imported here again.</span>
+  imports: [RouterModule, CommonModule, ReactiveFormsModule],
+  <span class="hljs-comment">//We export all the components as they will be used in our main files</span>
+  exports: [
+    <span class="hljs-comment">//As our module has its own router we dont need to export the components our of the Module.</span>
+    <span class="hljs-comment">//We would only want to export the component if we were using the components outside of this module that we created or if we had set the routing for the module in our main app routing file.</span>
+    <span class="hljs-comment">// RecipesComponent,</span>
+    <span class="hljs-comment">// RecipeListComponent,</span>
+    <span class="hljs-comment">// RecipeDetailComponent,</span>
+    <span class="hljs-comment">// RecipeItemComponent,</span>
+    <span class="hljs-comment">// RecipeStartComponent,</span>
+    <span class="hljs-comment">// RecipeEditComponent</span>
+  ]
+})
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> RecipesModule {}
+
+<span class="hljs-comment">//We also want to separate Routing for our module.</span>
+<span class="hljs-comment">//recipes-routing.module.ts</span>
+<span class="hljs-keyword">import</span> { NgModule } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/core'</span>;
+<span class="hljs-keyword">import</span> { Routes, RouterModule } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/router'</span>;
+
+<span class="hljs-keyword">import</span> { RecipesComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./recipes.component'</span>;
+<span class="hljs-keyword">import</span> { AuthGuard } <span class="hljs-keyword">from</span> <span class="hljs-string">'../auth/auth.guard'</span>;
+<span class="hljs-keyword">import</span> { RecipeStartComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./recipe-start/recipe-start.component'</span>;
+<span class="hljs-keyword">import</span> { RecipeEditComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./recipe-edit/recipe-edit.component'</span>;
+<span class="hljs-keyword">import</span> { RecipeDetailComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./recipe-detail/recipe-detail.component'</span>;
+<span class="hljs-keyword">import</span> { RecipesResolverService } <span class="hljs-keyword">from</span> <span class="hljs-string">'./recipes-resolver.service'</span>;
+
+<span class="hljs-comment">//We create routes object.</span>
+const routes: Routes = [
+  {
+    path: <span class="hljs-string">'recipes'</span>,
+    component: RecipesComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { path: <span class="hljs-string">''</span>, component: RecipeStartComponent },
+      { path: <span class="hljs-string">'new'</span>, component: RecipeEditComponent },
+      {
+        path: <span class="hljs-string">':id'</span>,
+        component: RecipeDetailComponent,
+        resolve: [RecipesResolverService]
+      },
+      {
+        path: <span class="hljs-string">':id/edit'</span>,
+        component: RecipeEditComponent,
+        resolve: [RecipesResolverService]
+      }
+    ]
+  }
+];
+
+@NgModule({
+    <span class="hljs-comment">//We export the routes object and export the route.</span>
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> RecipesRoutingModule {}
+
+<span class="hljs-comment">//recipes.component.html</span>
+&lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">"row"</span>&gt;
+  &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">"col-md-5"</span>&gt;
+    &lt;app-recipe-list&gt;&lt;/app-recipe-list&gt;
+  &lt;/div&gt;
+  &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">"col-md-7"</span>&gt;
+    &lt;router-outlet&gt;&lt;/router-outlet&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+<span class="hljs-comment">//app.module.ts</span>
+<span class="hljs-keyword">import</span> { BrowserModule } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/platform-browser'</span>;
+<span class="hljs-keyword">import</span> { NgModule } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/core'</span>;
+<span class="hljs-keyword">import</span> { FormsModule, ReactiveFormsModule } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/forms'</span>;
+<span class="hljs-keyword">import</span> { HttpClientModule, HTTP_INTERCEPTORS } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/common/http'</span>;
+
+<span class="hljs-keyword">import</span> { AppComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./app.component'</span>;
+<span class="hljs-keyword">import</span> { HeaderComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./header/header.component'</span>;
+<span class="hljs-keyword">import</span> { ShoppingListComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./shopping-list/shopping-list.component'</span>;
+<span class="hljs-keyword">import</span> { ShoppingEditComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./shopping-list/shopping-edit/shopping-edit.component'</span>;
+<span class="hljs-keyword">import</span> { DropdownDirective } <span class="hljs-keyword">from</span> <span class="hljs-string">'./shared/dropdown.directive'</span>;
+<span class="hljs-keyword">import</span> { ShoppingListService } <span class="hljs-keyword">from</span> <span class="hljs-string">'./shopping-list/shopping-list.service'</span>;
+<span class="hljs-keyword">import</span> { AppRoutingModule } <span class="hljs-keyword">from</span> <span class="hljs-string">'./app-routing.module'</span>;
+<span class="hljs-keyword">import</span> { RecipeService } <span class="hljs-keyword">from</span> <span class="hljs-string">'./recipes/recipe.service'</span>;
+<span class="hljs-keyword">import</span> { AuthComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./auth/auth.component'</span>;
+<span class="hljs-keyword">import</span> { LoadingSpinnerComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./shared/loading-spinner/loading-spinner.component'</span>;
+<span class="hljs-keyword">import</span> { AuthInterceptorService } <span class="hljs-keyword">from</span> <span class="hljs-string">'./auth/auth-interceptor.service'</span>;
+<span class="hljs-keyword">import</span> { AlertComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./shared/alert/alert.component'</span>;
+<span class="hljs-keyword">import</span> { PlaceholderDirective } <span class="hljs-keyword">from</span> <span class="hljs-string">'./shared/placeholder/placeholder.directive'</span>;
+<span class="hljs-keyword">import</span> { RecipesModule } <span class="hljs-keyword">from</span> <span class="hljs-string">'./recipes/recipes.module'</span>;
+
+@NgModule({
+<span class="hljs-comment">//We remove the Component of recipe from the declarations</span>
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    ShoppingListComponent,
+    ShoppingEditComponent,
+    DropdownDirective,
+    AuthComponent,
+    LoadingSpinnerComponent,
+    AlertComponent,
+    PlaceholderDirective
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    AppRoutingModule,
+    RecipesModule
+  ],
+  providers: [
+    ShoppingListService,
+    RecipeService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    }
+  ],
+  bootstrap: [AppComponent],
+  entryComponents: [
+    AlertComponent
+  ]
+})
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> AppModule {}
+
+<span class="hljs-comment">//app-routing.module.ts</span>
+<span class="hljs-comment">//We removed the route of all the recipe</span>
+<span class="hljs-keyword">import</span> { NgModule } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/core'</span>;
+<span class="hljs-keyword">import</span> { Routes, RouterModule } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/router'</span>;
+
+<span class="hljs-keyword">import</span> { ShoppingListComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./shopping-list/shopping-list.component'</span>;
+<span class="hljs-keyword">import</span> { AuthComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'./auth/auth.component'</span>;
+
+const appRoutes: Routes = [
+  { path: <span class="hljs-string">''</span>, redirectTo: <span class="hljs-string">'/recipes'</span>, pathMatch: <span class="hljs-string">'full'</span> },
+  { path: <span class="hljs-string">'shopping-list'</span>, component: ShoppingListComponent },
+  { path: <span class="hljs-string">'auth'</span>, component: AuthComponent }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(appRoutes)],
+  exports: [RouterModule]
+})
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> AppRoutingModule {}
+
+<span class="hljs-comment">//app.component.html</span>
+&lt;app-header&gt;&lt;/app-header&gt;
+&lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">"container"</span>&gt;
+  &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">"row"</span>&gt;
+    &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">"col-md-12"</span>&gt;
+      &lt;router-outlet&gt;&lt;/router-outlet&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h3 id="shared-modules">Shared Modules</h3>
+<p>Shared modules are just modules as we declared above but containing the parts that are being shared by multiple modules in our project.</p>
+<p>They declare and export these parts so we can import this shared module and use these components, directives or pipes.</p>
+<blockquote>
+<p>Note : All the components, directive, pipes and other parts that we create for our application should only be declared once in the application. So we cannot declare a component in the app.module.ts and also in shared.module.ts that we create.</p>
+</blockquote>
+<p>In such a condition we just have to have the shared modules declared in the shared modules file and import the shared modules in the app.modules.ts in imports array.</p>
+<h3 id="core-module">Core Module</h3>
+<p>This is used to make our main app.module.ts file leaner by declaring the providers in a different file that is the Core Modules file and then importing the module in the app.module.ts file.</p>
+<blockquote>
+<p>Note : If we are declaring a service with `@Injectable({ providedIn: &#39;root&#39; }), then the service is already available everywhere in the project and is a prefered way of declaring a service, and does not need to be included in the provides of either the app.modules.ts or in Core module that we might create.</p>
+</blockquote>
+<h2 id="lazy-loading-and-other-optimizations">Lazy Loading And other Optimizations</h2>
+<p>This is used for optimization.</p>
+<p>We need multiple modules, that is our app should be divided into multiple modules to take advantage of Lazy Loading.</p>
+<p>This will help us bundle the code in smaller parts and download only the required files when we start the code and as we use.</p>
+<blockquote>
+<p>Note : The example below shows the modern way of declaring route for lazing loading in the appRoutes. For older version we can delcare it as <code>{ path: &#39;recipes&#39;, loadChildren: &#39;./recipes/recipes.module#RecipesModule&#39; }</code>. Only use this if the using older version of angular and the new apprach does not work as this older appraoch will give errors and might even bug the application while using newer version of angular.</p>
+</blockquote>
+<p>Things to check when lazy loading component :</p>
+<ul>
+<li><p>Declare the route path to the component that need to be lazy loaded as <code>{ path: &#39;recipes&#39;, loadChildren: ()=&gt; import(&#39;./recipes/recipes.module&#39;).then(m=&gt;m.RecipesModule)}</code></p>
+</li>
+<li><p>Remove the declaration of the component we are trying to lazy load from the app.module.ts file as we are trying to lazy load it and if we have a decalaration in the main file we will be trying to also actively load it.</p>
+</li>
+<li><p>Now we chagne the path that point to &#39;recipes&#39; in our Recipes.module.ts or recipes.routes.ts file to be &#39;&#39;(empty string) as we have added that route to our main routes file as shown above.</p>
+</li>
+</ul>
+<h3 id="pre-load-lazyloaded-modules">Pre-Load LazyLoaded Modules</h3>
+<p>In app=routing.module.ts file where we declare our root routing we can declare a strategy on how and which modules are preloaded.</p>
+<pre><code class="lang-ts"><span class="hljs-string">imports:</span>[
+    RouterModule.forRoot(appRoutes, { <span class="hljs-string">preloadingStrategy:</span> PreloadAllModules });
+]
+</code></pre>
+<h3 id="services-and-modules-relations">Services and Modules Relations</h3>
+<p>Service can be declared in the following scopes and places :</p>
+<table>
+<thead>
+<tr>
+<th>Service Declaration</th>
+<th>Available To Use At</th>
+<th>Injector Used by Angular</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AppModules in providers</td>
+<td>Service available app wide</td>
+<td>Use root Injector</td>
+<td>Should be default</td>
+</tr>
+<tr>
+<td>AppComponent(or Other Component)</td>
+<td>Service availabe in the component-tree</td>
+<td>Use Component-specific Injector</td>
+<td>Use if service is only relevant for component tree</td>
+</tr>
+<tr>
+<td>Eager-loaded Modules</td>
+<td>Service avaliable application wide</td>
+<td>Use root injector</td>
+<td>Avoid using this as it might be confusing for other developers</td>
+</tr>
+<tr>
+<td>Lazy-Loaded modules</td>
+<td>Service avaliable in loaded module only</td>
+<td>Angular creates and uses child injector</td>
+<td>Use if service should be scoped to loaded module</td>
+</tr>
+</tbody>
+</table>
+<p>When we use the @Injectable to declare a service in the root it has the same effect as if it was declared in AppModules providers array.</p>
+<h2 id="prepare-angular-project-for-deployment">Prepare Angular project For deployment</h2>
+<p>Use <code>ng build --prod</code> to compile the application and let angular perform the optimization that it can to get it production ready.</p>
+<h3 id="ahead-of-time-compilation">Ahead of time compilation</h3>
+<p>Just-In-Time Compilation :</p>
+<p>When we are developing our app the template code that is the html has part of angular specific commands that need to be complied so that our brower can display them as they should. These commands are complied during development at the time the app runs in our browser just before it is displayed by angular template compiler which is shipped with our code while development.</p>
+<p>But this complier is big and should not be a part of our production application as it increases the size of our application significantly and thus increase load times.</p>
+<p>Thus we use Ahead of time compliation to compile these files before we upload the application to the server to make the application production ready.</p>
+<p>This removes the need for the angular just in time complier to be shipped wiht our production app making the size of our app payload significantly smaller and also does other optimization that make the overall file size of our files smaller.</p>
+<h2 id="setting-up-proxy-server">Setting Up Proxy Server</h2>
+<p>During development we could have our backend running online or on a different localhost port. When we send a http request to our backend through our brower the browser actually sends a <em>Preflight Request</em> which is a request with a header for the backend to check if the frontend application has permissions to send the request and whether the backend will allow the operation that the request will contain.</p>
+<p>In many cases when we use Spring or many other backend frameworks this will not be supported as Spring does not allow preflight request and will give us rather the browser a CORS(Cross Origin Resource Sharing) error.</p>
+<blockquote>
+<p>Note : Postman will not get such errors because Postman does not send preflight requests but our browsers do.</p>
+</blockquote>
+<p>To fix this we can set up a proxy server.</p>
+<blockquote>
+<p>Note : Proxy servers will only work during developement that is they work with <code>ng serve</code> which set up a developement server and not with <code>ng build</code>. So we have to change our backend if are going to host our frontend on a different domain than that of our backend. For Spring boot it can be done by using : <code>@CrossOrigin(origins = &quot;http://localhost:4200&quot;)</code> over our <code>@RequestMapping</code>.</p>
+</blockquote>
+<p>For an Indetail explanation on creating proxy Servers <a href="https://medium.com/better-programming/setup-a-proxy-for-api-calls-for-your-angular-cli-app-6566c02a8c4d">visit</a>.</p>
+<ul>
+<li><p>Create <code>proxy.conf.json</code> in our project root that is in the same folder as <code>package.json</code>.</p>
+</li>
+<li><p>We write our proxy Configuration in the file.</p>
+</li>
+</ul>
+<pre><code class="lang-json">
+{
+  <span class="hljs-attr">"/api"</span>: {
+    <span class="hljs-attr">"target"</span>: <span class="hljs-string">"http://localhost:8080"</span>,
+    <span class="hljs-attr">"secure"</span>: <span class="hljs-literal">false</span>
+  }
+}
+</code></pre>
+<p>Now to start our development server with the proxy configuration we do <code>ng serve --proxy-config proxy.conf.json</code>.</p>
+<p>We can set up <code>&quot;start&quot;: &quot;ng serve --proxy-config proxy.conf.json&quot;</code> in our package.json so that we dont have to type it every time we want to start the server, we can just use <code>npm start</code> and npm will run the command for us.</p>
+<h2 id="-ng-eject-"><code>ng-eject</code></h2>
+<blockquote>
+<p>From : <a href="https://stackoverflow.com/questions/44110064/what-is-the-purpose-of-ng-eject">stackoverflow</a>.</p>
+</blockquote>
+<p>angular-cli is something magic, everything is done in a simple and automatic way.</p>
+<p>But sometimes, you may want to act on how the package is done, add a plugin or you are simply curious to see the Webpack configuration on which it is based.</p>
+<p>When running ng eject, you generate a webpack.config.json file. Looking at the file package.json you will see that the commands to launch have slightly changed:</p>
+<p><code>ng serve</code> --&gt; npm start
+<code>ng build</code> --&gt; npm run build
+<code>ng e2e</code>  --&gt; npm run e2</p>
+<p>If you want to undo <code>ng eject</code>, you will have to edit your .angular.cli.json file and set ejected to false:</p>
+<pre><code class="lang-json"><span class="hljs-string">"project"</span>: { 
+  <span class="hljs-params">...</span>
+  <span class="hljs-string">"ejected"</span>: <span class="hljs-literal">false</span>
+}
+</code></pre>
+<h2 id="display-code">Display code</h2>
+<p><code>&lt;div&gt;&lt;code&gt;&lt;pre&gt;{{code1}}&lt;/pre&gt;&lt;/code&gt;&lt;/div&gt;</code> could be used to display code frosm the script file.</p>
+<p>Or</p>
+<p><code>&lt;div [innerText]=&quot;code1&quot;&gt;&lt;/div&gt;</code> But innerHTML might be prone to XSS attacks, especially when the code in being injected by the user or by user input.</p>
+<p>The altenative to innerHTML when we just want to render text and not execute the <em>markup</em>, we could use <code>textContent</code>. As we know we want the code to show and not have any markup execute from the html we could use this approach.</p>
+<pre><code class="lang-js">// <span class="hljs-type">Renders</span> a <span class="hljs-built_in">string</span> <span class="hljs-keyword">with</span> escaped characters
+// <span class="hljs-type">This</span> would show up <span class="hljs-keyword">in</span> the <span class="hljs-type">DOM</span> <span class="hljs-keyword">as</span> &lt;img src=x onerror=<span class="hljs-string">"alert('XSS Attack')"</span>&gt; instead <span class="hljs-keyword">of</span> <span class="hljs-keyword">as</span> an image element
+<span class="hljs-keyword">div</span>.textContent = '&lt;img src=x onerror=<span class="hljs-string">"alert(\'XSS Attack\')"</span>&gt;';
+</code></pre>
+<h3 id="sanitizing-content-before-adding-it-to-the-dom">Sanitizing content before adding it to the DOM</h3>
+<p>As we might want to use innerHTML we would have to sanitize the content that is run.</p>

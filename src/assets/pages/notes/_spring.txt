@@ -1,0 +1,2279 @@
+<h1 id="jackson-annotations">Jackson annotations</h1>
+<blockquote>
+<p>Serialization : Convert a object to JSON String
+Desrialization : Convert a json string into CustomObject</p>
+</blockquote>
+<ul>
+<li><p>The <code>@JsonCreator</code> annotation can be used on constructors or factory methods for mapping incoming JSON properties to the constructor/factory method arguments. This annotation is used only during <em>deserialization</em> and can be particularly useful for immutable objects.</p>
+</li>
+<li><p><code>@JsonIgnoreProperties(ignoreUnknown= true)</code></p>
+</li>
+<li><p><code>@JsonAnyGetter</code> : The @JsonAnyGetter annotation allows the flexibility of using a Map field as standard properties.</p>
+</li>
+</ul>
+<pre><code class="lang-java"><span class="hljs-comment">//The Object definition :</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ExtendableBean</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">String</span> name;
+    <span class="hljs-keyword">private</span> Map&lt;<span class="hljs-keyword">String</span>, <span class="hljs-keyword">String</span>&gt; properties;
+
+    @JsonAnyGetter
+    <span class="hljs-keyword">public</span> Map&lt;<span class="hljs-keyword">String</span>, <span class="hljs-keyword">String</span>&gt; getProperties() {
+        <span class="hljs-keyword">return</span> properties;
+    }
+}
+</code></pre>
+<pre><code class="lang-json">{
+    <span class="hljs-attr">"name"</span>:<span class="hljs-string">"My bean"</span>,
+    <span class="hljs-attr">"attr2"</span>:<span class="hljs-string">"val2"</span>,
+    <span class="hljs-attr">"attr1"</span>:<span class="hljs-string">"val1"</span>
+}
+</code></pre>
+<ul>
+<li><code>@JsonPropertyOrder</code> : Orders the json as specified.</li>
+</ul>
+<pre><code class="lang-java"><span class="hljs-meta">@JsonPropertyOrder</span>({ <span class="hljs-string">"name"</span>, <span class="hljs-string">"id"</span> })
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyBean</span> {</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> id;
+    <span class="hljs-keyword">public</span> String name;
+}
+</code></pre>
+<p> <code>@JsonPropertyOrder(alphabetic=true)</code> could also be used.</p>
+<ul>
+<li><p>For more : <a href="https://www.baeldung.com/jackson-annotations">Jackson-Annotations</a></p>
+</li>
+<li><p><code>@JsonFormat(shape = JsonFormat.Shape.STRING)</code> OR <code>@JsonFormat(shape = JsonFormat.Shape.STRING, pattern= &quot;yyyy-MM-dd&quot;)</code></p>
+</li>
+<li><p><code>@JsonProperty(&quot;date&quot;)</code> : Specify custom name for the property.</p>
+</li>
+</ul>
+<pre><code class="lang-java">
+<span class="hljs-variable">@JsonProperty</span>(<span class="hljs-string">"date"</span>)
+<span class="hljs-variable">@JsonFormat</span>(shape = JsonFormat.Shape.STRING, pattern=<span class="hljs-string">"yyyy-MM-dd"</span>)
+private Calendar someDate;
+</code></pre>
+<pre><code class="lang-json">{
+  <span class="hljs-attr">"fieldOne"</span>: <span class="hljs-string">"Some text"</span>,
+  <span class="hljs-attr">"date"</span>: <span class="hljs-string">"2019-02-26"</span>
+}
+</code></pre>
+<ul>
+<li><p><code>@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)</code></p>
+</li>
+<li><p>Or the above acan be achieved by <code>@JsonIgnore</code></p>
+</li>
+</ul>
+<pre><code class="lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> </span>{
+
+    <span class="hljs-comment">// More fields here</span>
+    <span class="hljs-meta">@JsonIgnore</span>
+    <span class="hljs-keyword">private</span> String password;
+
+    <span class="hljs-meta">@JsonIgnore</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getPassword</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> password;
+    }
+
+    <span class="hljs-meta">@JsonProperty</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setPassword</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String password)</span> </span>{
+        <span class="hljs-keyword">this</span>.password = password;
+    }
+}
+</code></pre>
+<ul>
+<li><p>Restricting seralizing and deseralizing : (Does not work : The getter and setters are important for some reason to start the project)</p>
+</li>
+<li><p>If not getters and setters are set for the properties of a class only the properties with public access modifiers are seralized and deseralized.</p>
+</li>
+<li>If getters are set only those properties will be seralized and deseralized when all properties are private. Or the above rule will apply for allproperties that have public access modifier.</li>
+<li>If a property is private and has a setter it only will be considered for deseralizing and not seralizing.</li>
+</ul>
+<hr>
+<h2 id="using-environment-variables">Using Environment Variables</h2>
+<p>In the application.properties file we could use environment variables.</p>
+<p>Environment variables without default value : <code>api.key=${API_KEY}</code></p>
+<p>Environment variables with default value : <code>api.key=${API_KEY:123abc}</code></p>
+<p><code>@Value(&quot;${message.default.welcome}&quot;)</code>
+Can be used in our java program to get the values of the set environment variable.</p>
+<p>It also helps us to set a default value if this variable was not found.
+<code>@Value(&quot;${message.default.welcome:SomeDefaultValue}&quot;)</code></p>
+<p>If our properties have some common context like the same prefix, we can use the <code>@ConfigurationProperties</code> annotation which will map these properties to Java objects:</p>
+<pre><code class="lang-java">
+<span class="hljs-comment">/*
+* @Configuration will tell Spring to create a bean of this class.
+* @ConfigurationProperties will initialize the fields with corresponding property names.
+*/</span>
+<span class="hljs-variable">@Configuration</span>
+<span class="hljs-variable">@ConfigurationProperties</span>(prefix = <span class="hljs-string">"message.default"</span>)
+public class MessageProperties {
+
+    <span class="hljs-selector-tag">private</span> <span class="hljs-selector-tag">String</span> <span class="hljs-selector-tag">welcome</span>;
+    <span class="hljs-selector-tag">private</span> <span class="hljs-selector-tag">String</span> <span class="hljs-selector-tag">goodbye</span>;
+
+    <span class="hljs-comment">// Getters and Setters</span>
+}
+</code></pre>
+<pre><code class="lang-java">//We can now <span class="hljs-keyword">use</span> this bean anywhere <span class="hljs-keyword">in</span> our <span class="hljs-keyword">project</span>
+@Autowired
+<span class="hljs-keyword">private</span> MessageProperties messageProperties;
+</code></pre>
+<h2 id="using-spring-profiles">Using Spring Profiles</h2>
+<p>Following files can be defined for different environments:</p>
+<ol>
+<li>application-dev.properties</li>
+<li>application-qa.properties</li>
+<li>application-production.properties</li>
+</ol>
+<p>To change between these environments we have to set the environment variable: <code>--spring.profiles.active=&quot;dev&quot;</code> while we run the program like so : <code>java -jar app.jar --name=&quot;Spring&quot;</code>.</p>
+<blockquote>
+<p>Note : application.properties is always loaded, irrespective of the spring.profiles.active value. If there is the same key-value present both in application.properties and <code>application-&lt;environment&gt;</code>.properties, the latter will override the former.
+While Using IntelliJ IDE we can set the environment variables in Run -&gt; Edit Configuration -&gt; EnvironmentVariables while we run the program with IntelliJ.</p>
+</blockquote>
+<h3 id="-value">@Value</h3>
+<p>@Value annotation is used to read the environment in the java code.</p>
+<blockquote>
+<p>@Value(&quot;${property_key_name}&quot;)</p>
+</blockquote>
+<pre><code class="lang-java"><span class="hljs-keyword">import</span> org.springframework.beans.factory.<span class="hljs-keyword">annotation</span>.Value;
+<span class="hljs-keyword">import</span> org.springframework.boot.SpringApplication;
+<span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.RequestMapping;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.RestController;
+
+<span class="hljs-meta">@SpringBootApplication</span>
+<span class="hljs-meta">@RestController</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DemoApplication</span> </span>{
+   <span class="hljs-meta">@Value(<span class="hljs-meta-string">"<span class="hljs-subst">${spring.application.name}</span>"</span>)</span>
+   <span class="hljs-keyword">private</span> String name;
+   <span class="hljs-keyword">public</span> static void main(String[] args) {
+      SpringApplication.run(DemoApplication.<span class="hljs-keyword">class</span>, args);
+   }
+   <span class="hljs-meta">@RequestMapping(value = <span class="hljs-meta-string">"/"</span>)</span>
+   <span class="hljs-keyword">public</span> String name() {
+      <span class="hljs-keyword">return</span> name;
+   }
+}
+</code></pre>
+<h3 id="active-profile">Active Profile</h3>
+<p>We could either use multiple application.properties file or one yaml file to store properties for different profiles.</p>
+<ul>
+<li>Using application.properties file.</li>
+</ul>
+<blockquote>
+<p>application.properties
+application-dev.properties
+application-prod.properties</p>
+</blockquote>
+<p>To activate a given profile we could use :</p>
+<p><code>--spring-profile-active=prod</code></p>
+<ul>
+<li>Use a single yaml file and add all properties to the file :</li>
+</ul>
+<pre><code class="lang-yaml"><span class="hljs-attr">spring:</span>
+<span class="hljs-attr">   application:</span>
+<span class="hljs-attr">      name:</span> demoservice
+<span class="hljs-attr">server:</span>
+<span class="hljs-attr">   port:</span> <span class="hljs-number">8080</span>
+
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">spring:</span>
+<span class="hljs-attr">   profiles:</span> dev
+<span class="hljs-attr">   application:</span>
+<span class="hljs-attr">      name:</span> demoservice
+<span class="hljs-attr">server:</span>
+<span class="hljs-attr">   port:</span> <span class="hljs-number">9090</span>
+
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">spring:</span>
+<span class="hljs-attr">   profiles:</span> prod
+<span class="hljs-attr">   application:</span>
+<span class="hljs-attr">      name:</span> demoservice
+<span class="hljs-attr">server:</span>
+<span class="hljs-attr">   port:</span> <span class="hljs-number">4431</span>
+</code></pre>
+<p>The command to activate a given profile still remains the same :</p>
+<p><code>--spring-profile-active=prod</code></p>
+<hr>
+<h2 id="logging">Logging</h2>
+<p>Spring Boot uses Apache Commons logging for all internal logging. Spring Boot’s default configurations provides a support for the use of Java Util Logging, Log4j2, and Logback. Using these, we can configure the console logging as well as file logging.</p>
+<p>If you are using Spring Boot Starters, Logback will provide a good support for logging. Besides, Logback also provides a use of good support for Common Logging, Util Logging, Log4J, and SLF4J.</p>
+<hr>
+<h2 id="building-a-restapi">Building a RestApi</h2>
+<h3 id="annotations">Annotations</h3>
+<ul>
+<li><p>@RestController :
+The @RestController annotation is used to define the RESTful web services. It serves JSON, XML and custom response.</p>
+</li>
+<li><p>@RequestMapping(value =  &quot;/products&quot;) :
+The @RequestMapping annotation is used to define the Request URI to access the REST Endpoints. We can define Request method to consume and produce object.</p>
+</li>
+</ul>
+<p>The default request method is GET, but we can also define it to be post by using <code>@RequestMapping(value = &quot;/ex/foos&quot;, method = POST)</code>.</p>
+<p>We could also map request with particular headers bu adding headers to it like <code>@RequestMapping(value = &quot;/ex/foos&quot;, headers = { &quot;key1=val1&quot;, &quot;key2=val2&quot; }, method = GET)</code>.</p>
+<p>@RequestMapping can also be set to handle multiple paths by adding additional paths to it like <code>@RequestMapping(value = { &quot;/ex/advanced/bars&quot;, &quot;/ex/advanced/foos&quot; }, method = GET)</code>.</p>
+<p>We can also define fallback paths for all the request or for get.</p>
+<pre><code class="lang-java"><span class="hljs-meta">@RequestMapping(value = <span class="hljs-meta-string">"*"</span>, method = RequestMethod.GET)</span>
+<span class="hljs-meta">@ResponseBody</span>
+<span class="hljs-keyword">public</span> String getFallback() {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">"Fallback for GET Requests"</span>;
+}
+
+<span class="hljs-comment">//Or even for all requests:</span>
+<span class="hljs-meta">@RequestMapping(
+  value = <span class="hljs-meta-string">"*"</span>,
+  method = { RequestMethod.GET, RequestMethod.POST ... })</span>
+<span class="hljs-meta">@ResponseBody</span>
+<span class="hljs-keyword">public</span> String allFallback() {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">"Fallback for All Requests"</span>;
+}
+</code></pre>
+<p>If we want our whole controller to have a fixed path and all the other mappings defined in the controller to have path relative to this defined path we can define a <code>@RequestMapping</code> on top of the controller class.</p>
+<pre><code class="lang-java"><span class="hljs-comment">//Using RestController and RequestMapping</span>
+<span class="hljs-variable">@RestController</span>
+<span class="hljs-variable">@RequestMapping</span>(<span class="hljs-string">"api/v1"</span>)
+public class StudentController{
+   <span class="hljs-variable">@GetMapping</span>(path = student)
+   public Student getStudent(){
+      <span class="hljs-selector-tag">return</span> <span class="hljs-selector-tag">new</span> <span class="hljs-selector-tag">Student</span>(<span class="hljs-string">"Adwait"</span>);
+   }
+}
+</code></pre>
+<ul>
+<li>@RequestBody :
+Used to define the request body content property.</li>
+</ul>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> ResponseEntity&lt;Object&gt; createProduct(@RequestBody <span class="hljs-built_in">Product</span> <span class="hljs-built_in">product</span>) {
+}
+</code></pre>
+<ul>
+<li>ResponseEntity :
+ResponseEntity represents the whole HTTP response: status code, headers, and body. Because of it, we can use it to fully configure the HTTP response.</li>
+</ul>
+<pre><code class="lang-java"><span class="hljs-comment">//For different entities different response status could be send</span>
+<span class="hljs-meta">@GetMapping</span>(<span class="hljs-string">"/age"</span>)
+ResponseEntity&lt;<span class="hljs-built_in">String</span>&gt; age(
+  <span class="hljs-meta">@RequestParam</span>(<span class="hljs-string">"yearOfBirth"</span>) <span class="hljs-built_in">int</span> yearOfBirth) {
+
+    <span class="hljs-keyword">if</span> (isInFuture(yearOfBirth)) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResponseEntity&lt;&gt;(
+          <span class="hljs-string">"Year of birth cannot be in the future"</span>,
+          HttpStatus.BAD_REQUEST);
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResponseEntity&lt;&gt;(
+      <span class="hljs-string">"Your age is "</span> + calculateAge(yearOfBirth),
+      HttpStatus.OK);
+}
+
+<span class="hljs-comment">//We could also add header for the request send :</span>
+<span class="hljs-meta">@GetMapping</span>(<span class="hljs-string">"/customHeader"</span>)
+ResponseEntity&lt;<span class="hljs-built_in">String</span>&gt; customHeader() {
+    HttpHeaders headers = <span class="hljs-keyword">new</span> HttpHeaders();
+    headers.add(<span class="hljs-string">"Custom-Header"</span>, <span class="hljs-string">"foo"</span>);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResponseEntity&lt;&gt;(
+      <span class="hljs-string">"Custom header set"</span>, headers, HttpStatus.OK);
+}
+</code></pre>
+<ul>
+<li>@PathVariable :</li>
+</ul>
+<p>The @PathVariable annotation is used to define the custom or dynamic request URI. The Path variable in request URI is
+defined as curly braces {}</p>
+<pre><code class="lang-java"><span class="hljs-variable">@GetMapping</span>(<span class="hljs-string">"/product/{id}"</span>)
+public ResponseEntity&lt;Object&gt; updateProduct(<span class="hljs-variable">@PathVariable</span>(<span class="hljs-string">"id"</span>) String id) {
+}
+</code></pre>
+<ul>
+<li>@RequestParam :
+The @RequestParam annotation is used to read the request parameters from the Request URL. By default, it is a required
+parameter.</li>
+</ul>
+<pre><code class="lang-java"><span class="hljs-function"><span class="hljs-keyword">public</span> ResponseEntity&lt;Object&gt; <span class="hljs-title">getProduct</span>(<span class="hljs-params">
+   @RequestParam(<span class="hljs-keyword">value</span> = <span class="hljs-string">"name"</span>, required = <span class="hljs-literal">false</span>, defaultValue = <span class="hljs-string">"honey"</span></span>) String name) </span>{
+}
+</code></pre>
+<h2 id="implementation-of-the-restapi">Implementation of The restApi</h2>
+<pre><code class="lang-java"><span class="hljs-keyword">import</span> java.util.HashMap;
+<span class="hljs-keyword">import</span> java.util.Map;
+
+<span class="hljs-keyword">import</span> org.springframework.http.HttpStatus;
+<span class="hljs-keyword">import</span> org.springframework.http.ResponseEntity;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.PathVariable;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.RequestBody;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.RequestMapping;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.RequestMethod;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.RestController;
+
+<span class="hljs-keyword">import</span> com.tutorialspoint.demo.model.Product;
+
+<span class="hljs-meta">@RestController</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ProductServiceController</span> </span>{
+   <span class="hljs-keyword">private</span> static Map&lt;String, Product&gt; productRepo = new HashMap&lt;&gt;();
+   static {
+      Product honey = new Product();
+      honey.setId(<span class="hljs-string">"1"</span>);
+      honey.setName(<span class="hljs-string">"Honey"</span>);
+      productRepo.put(honey.getId(), honey);
+
+      Product almond = new Product();
+      almond.setId(<span class="hljs-string">"2"</span>);
+      almond.setName(<span class="hljs-string">"Almond"</span>);
+      productRepo.put(almond.getId(), almond);
+   }
+
+   <span class="hljs-meta">@RequestMapping(value = <span class="hljs-meta-string">"/products/{id}"</span>, method = RequestMethod.DELETE)</span>
+   <span class="hljs-keyword">public</span> ResponseEntity&lt;Object&gt; delete(<span class="hljs-meta">@PathVariable(<span class="hljs-meta-string">"id"</span>)</span> String id) {
+      productRepo.remove(id);
+      <span class="hljs-keyword">return</span> new ResponseEntity&lt;&gt;(<span class="hljs-string">"Product is deleted successsfully"</span>, HttpStatus.OK);
+   }
+
+   <span class="hljs-meta">@RequestMapping(value = <span class="hljs-meta-string">"/products/{id}"</span>, method = RequestMethod.PUT)</span>
+   <span class="hljs-keyword">public</span> ResponseEntity&lt;Object&gt; updateProduct(<span class="hljs-meta">@PathVariable(<span class="hljs-meta-string">"id"</span>)</span> String id, <span class="hljs-meta">@RequestBody</span> Product product) {
+      productRepo.remove(id);
+      product.setId(id);
+      productRepo.put(id, product);
+      <span class="hljs-keyword">return</span> new ResponseEntity&lt;&gt;(<span class="hljs-string">"Product is updated successsfully"</span>, HttpStatus.OK);
+   }
+
+   <span class="hljs-meta">@RequestMapping(value = <span class="hljs-meta-string">"/products"</span>, method = RequestMethod.POST)</span>
+   <span class="hljs-keyword">public</span> ResponseEntity&lt;Object&gt; createProduct(<span class="hljs-meta">@RequestBody</span> Product product) {
+      productRepo.put(product.getId(), product);
+      <span class="hljs-keyword">return</span> new ResponseEntity&lt;&gt;(<span class="hljs-string">"Product is created successfully"</span>, HttpStatus.CREATED);
+   }
+
+   <span class="hljs-meta">@RequestMapping(value = <span class="hljs-meta-string">"/products"</span>)</span>
+   <span class="hljs-keyword">public</span> ResponseEntity&lt;Object&gt; getProduct() {
+      <span class="hljs-keyword">return</span> new ResponseEntity&lt;&gt;(productRepo.values(), HttpStatus.OK);
+   }
+}
+</code></pre>
+<h2 id="exception-handling">Exception Handling</h2>
+<h3 id="annotations-in-spring">Annotations in Spring</h3>
+<ul>
+<li>@ControllerAdvice : Is used to note the class as a global exception handling class.</li>
+</ul>
+<pre><code class="lang-java"><span class="hljs-selector-tag">package</span> <span class="hljs-selector-tag">com</span><span class="hljs-selector-class">.tutorialspoint</span><span class="hljs-selector-class">.demo</span><span class="hljs-selector-class">.exception</span>;
+
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.web</span><span class="hljs-selector-class">.bind</span><span class="hljs-selector-class">.annotation</span><span class="hljs-selector-class">.ControllerAdvice</span>;
+
+@<span class="hljs-keyword">ControllerAdvice</span>
+   public class ProductExceptionController {
+}
+</code></pre>
+<ul>
+<li>@ExceptionHandler :
+Used to mark the methods that will handle the exceptions.</li>
+</ul>
+<pre><code class="lang-java"><span class="hljs-keyword">package</span> com.tutorialspoint.demo.exception;
+
+public <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ProductNotfoundException</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">RuntimeException</span> </span>{
+   <span class="hljs-keyword">private</span> static <span class="hljs-keyword">final</span> long serialVersionUID = <span class="hljs-number">1</span>L;
+}
+</code></pre>
+<pre><code class="lang-java">@ExceptionHandler(value = ProductNotfoundException.<span class="hljs-keyword">class</span>)
+
+<span class="hljs-keyword">public</span> ResponseEntity&lt;Object&gt; <span class="hljs-keyword">exception</span>(ProductNotfoundException <span class="hljs-keyword">exception</span>) {
+}
+</code></pre>
+<ul>
+<li>Example code :</li>
+</ul>
+<pre><code class="lang-java">
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.http</span><span class="hljs-selector-class">.HttpStatus</span>;
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.http</span><span class="hljs-selector-class">.ResponseEntity</span>;
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.web</span><span class="hljs-selector-class">.bind</span><span class="hljs-selector-class">.annotation</span><span class="hljs-selector-class">.ControllerAdvice</span>;
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.web</span><span class="hljs-selector-class">.bind</span><span class="hljs-selector-class">.annotation</span><span class="hljs-selector-class">.ExceptionHandler</span>;
+
+@<span class="hljs-keyword">ControllerAdvice</span>
+public class ProductExceptionController {
+   @<span class="hljs-keyword">ExceptionHandler</span>(<span class="hljs-keyword">value</span> = ProductNotfoundException.class)
+   public ResponseEntity&lt;Object&gt; exception(ProductNotfoundException exception) {
+      <span class="hljs-selector-tag">return</span> <span class="hljs-selector-tag">new</span> <span class="hljs-selector-tag">ResponseEntity</span>&lt;&gt;("<span class="hljs-selector-tag">Product</span> <span class="hljs-selector-tag">not</span> <span class="hljs-selector-tag">found</span>", <span class="hljs-selector-tag">HttpStatus</span><span class="hljs-selector-class">.NOT_FOUND</span>);
+   }
+}
+</code></pre>
+<h2 id="spring-boot-interceptor">Spring Boot - Interceptor</h2>
+<hr>
+<h2 id="rest-templates">Rest Templates</h2>
+<p>Rest Template is used to create applications that consume RESTful Web Services.</p>
+<p>We will have to follow the given points to consume the API −</p>
+<ol>
+<li>@Autowired the Rest Template Object.</li>
+<li>Use HttpHeaders to set the Request Headers.</li>
+<li>Use HttpEntity to wrap the request object.</li>
+<li>Provide the URL, HttpMethod, and Return type for Exchange() method.</li>
+</ol>
+<p>Example : @GetMapping :</p>
+<pre><code class="lang-java"><span class="hljs-meta">@RestController</span>
+public <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConsumeWebService</span> </span>{
+   <span class="hljs-meta">@Autowired</span>
+   RestTemplate restTemplate;
+
+   <span class="hljs-meta">@RequestMapping</span>(value = <span class="hljs-string">"/template/products"</span>)
+   public <span class="hljs-built_in">String</span> getProductList() {
+      HttpHeaders headers = <span class="hljs-keyword">new</span> HttpHeaders();
+      headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+      HttpEntity &lt;<span class="hljs-built_in">String</span>&gt; entity = <span class="hljs-keyword">new</span> HttpEntity&lt;<span class="hljs-built_in">String</span>&gt;(headers);
+
+      <span class="hljs-keyword">return</span> restTemplate.exchange(<span class="hljs-string">"http://localhost:8080/products"</span>, HttpMethod.GET, entity, <span class="hljs-built_in">String</span>.<span class="hljs-keyword">class</span>).getBody();
+   }
+}
+</code></pre>
+<p>Similar code can be done for Post, delete and put mapping.</p>
+<h2 id="file-handling">File Handling</h2>
+<h3 id="file-upload">File upload</h3>
+<p>For uploading a file, you can use MultipartFile as a Request Parameter and this API should consume Multi-Part form data value.</p>
+<pre><code class="lang-java"><span class="hljs-meta"><span class="hljs-meta-keyword">import</span> java.io.File;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> java.io.FileOutputStream;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> java.io.IOException;</span>
+
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> org.springframework.http.MediaType;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> org.springframework.web.bind.annotation.RequestParam;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> org.springframework.web.bind.annotation.RestController;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> org.springframework.web.multipart.MultipartFile;</span>
+
+@RestController
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FileUploadController</span> </span>{
+   @RequestMapping(value = <span class="hljs-string">"/upload"</span>, method = RequestMethod.POST,
+      consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+
+   <span class="hljs-keyword">public</span> String fileUpload(@RequestParam(<span class="hljs-string">"file"</span>) MultipartFile file) throws IOException {
+      File convertFile = <span class="hljs-keyword">new</span> File(<span class="hljs-string">"/var/tmp/"</span>+file.getOriginalFilename());
+      convertFile.createNewFile();
+      FileOutputStream fout = <span class="hljs-keyword">new</span> FileOutputStream(convertFile);
+      fout.write(file.getBytes());
+      fout.close();
+      <span class="hljs-keyword">return</span> <span class="hljs-string">"File is upload successfully"</span>;
+   }
+}
+</code></pre>
+<h3 id="file-downloading">File downloading</h3>
+<p>For file download, you should use InputStreamResource for downloading a File. We need to set the HttpHeader Content-Disposition in Response and need to specify the response Media Type of the application.</p>
+<p>Note − In the following example, file should be available on the specified path where the application is running.</p>
+<pre><code class="lang-java"><span class="hljs-meta"><span class="hljs-meta-keyword">import</span> java.io.File;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> java.io.FileInputStream;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> java.io.IOException;</span>
+
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> org.springframework.core.io.InputStreamResource;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> org.springframework.http.HttpHeaders;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> org.springframework.http.MediaType;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> org.springframework.http.ResponseEntity;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> org.springframework.web.bind.annotation.RestController;</span>
+
+@RestController
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FileDownloadController</span> </span>{
+   @RequestMapping(value = <span class="hljs-string">"/download"</span>, method = RequestMethod.GET)
+   <span class="hljs-keyword">public</span> ResponseEntity&lt;Object&gt; downloadFile() throws IOException  {
+      String filename = <span class="hljs-string">"/var/tmp/mysql.png"</span>;
+      File file = <span class="hljs-keyword">new</span> File(filename);
+      InputStreamResource resource = <span class="hljs-keyword">new</span> InputStreamResource(<span class="hljs-keyword">new</span> FileInputStream(file));
+      HttpHeaders headers = <span class="hljs-keyword">new</span> HttpHeaders();
+
+      headers.add(<span class="hljs-string">"Content-Disposition"</span>, String.format(<span class="hljs-string">"attachment; filename=\"%s\""</span>, file.getName()));
+      headers.add(<span class="hljs-string">"Cache-Control"</span>, <span class="hljs-string">"no-cache, no-store, must-revalidate"</span>);
+      headers.add(<span class="hljs-string">"Pragma"</span>, <span class="hljs-string">"no-cache"</span>);
+      headers.add(<span class="hljs-string">"Expires"</span>, <span class="hljs-string">"0"</span>);
+
+      ResponseEntity&lt;Object&gt;
+      responseEntity = ResponseEntity.ok().headers(headers).contentLength(
+         file.length()).contentType(MediaType.parseMediaType(<span class="hljs-string">"application/txt"</span>)).body(resource);
+
+      <span class="hljs-keyword">return</span> responseEntity;
+   }
+}
+</code></pre>
+<hr>
+<h2 id="service-components">Service Components</h2>
+<p>Service Components are the class file which contains @Service annotation. These class files are used to write business logic in a different layer, separated from @RestController class file.</p>
+<p>In the initial examples we had written all the business login in the controller class, we could use the @service
+class to store our business logic from here on.</p>
+<p>Interface contract ProductService</p>
+<pre><code class="lang-java"><span class="hljs-keyword">import</span> java.util.Collection;
+<span class="hljs-keyword">import</span> com.tutorialspoint.demo.model.Product;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ProductService</span> </span>{
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">createProduct</span><span class="hljs-params">(Product product)</span></span>;
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">updateProduct</span><span class="hljs-params">(String id, Product product)</span></span>;
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">deleteProduct</span><span class="hljs-params">(String id)</span></span>;
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> Collection&lt;Product&gt; <span class="hljs-title">getProducts</span><span class="hljs-params">()</span></span>;
+}
+</code></pre>
+<p>ProductServiceImpl.java : Service class for business implementation</p>
+<pre><code class="lang-java"><span class="hljs-keyword">import</span> java.util.Collection;
+<span class="hljs-keyword">import</span> java.util.HashMap;
+<span class="hljs-keyword">import</span> java.util.Map;
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Service;
+<span class="hljs-keyword">import</span> com.tutorialspoint.demo.model.Product;
+
+<span class="hljs-meta">@Service</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ProductServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">ProductService</span> </span>{
+   <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Map&lt;String, Product&gt; productRepo = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+   <span class="hljs-keyword">static</span> {
+      Product honey = <span class="hljs-keyword">new</span> Product();
+      honey.setId(<span class="hljs-string">"1"</span>);
+      honey.setName(<span class="hljs-string">"Honey"</span>);
+      productRepo.put(honey.getId(), honey);
+
+      Product almond = <span class="hljs-keyword">new</span> Product();
+      almond.setId(<span class="hljs-string">"2"</span>);
+      almond.setName(<span class="hljs-string">"Almond"</span>);
+      productRepo.put(almond.getId(), almond);
+   }
+   <span class="hljs-meta">@Override</span>
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">createProduct</span><span class="hljs-params">(Product product)</span> </span>{
+      productRepo.put(product.getId(), product);
+   }
+   <span class="hljs-meta">@Override</span>
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">updateProduct</span><span class="hljs-params">(String id, Product product)</span> </span>{
+      productRepo.remove(id);
+      product.setId(id);
+      productRepo.put(id, product);
+   }
+   <span class="hljs-meta">@Override</span>
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">deleteProduct</span><span class="hljs-params">(String id)</span> </span>{
+      productRepo.remove(id);
+
+   }
+   <span class="hljs-meta">@Override</span>
+   <span class="hljs-function"><span class="hljs-keyword">public</span> Collection&lt;Product&gt; <span class="hljs-title">getProducts</span><span class="hljs-params">()</span> </span>{
+      <span class="hljs-keyword">return</span> productRepo.values();
+   }
+}
+</code></pre>
+<p>ProductServiceController.java : RestContoller</p>
+<pre><code class="lang-java"><span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.beans</span><span class="hljs-selector-class">.factory</span><span class="hljs-selector-class">.annotation</span><span class="hljs-selector-class">.Autowired</span>;
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.http</span><span class="hljs-selector-class">.HttpStatus</span>;
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.http</span><span class="hljs-selector-class">.ResponseEntity</span>;
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.web</span><span class="hljs-selector-class">.bind</span><span class="hljs-selector-class">.annotation</span><span class="hljs-selector-class">.PathVariable</span>;
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.web</span><span class="hljs-selector-class">.bind</span><span class="hljs-selector-class">.annotation</span><span class="hljs-selector-class">.RequestBody</span>;
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.web</span><span class="hljs-selector-class">.bind</span><span class="hljs-selector-class">.annotation</span><span class="hljs-selector-class">.RequestMapping</span>;
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.web</span><span class="hljs-selector-class">.bind</span><span class="hljs-selector-class">.annotation</span><span class="hljs-selector-class">.RequestMethod</span>;
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.web</span><span class="hljs-selector-class">.bind</span><span class="hljs-selector-class">.annotation</span><span class="hljs-selector-class">.RestController</span>;
+
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">com</span><span class="hljs-selector-class">.tutorialspoint</span><span class="hljs-selector-class">.demo</span><span class="hljs-selector-class">.model</span><span class="hljs-selector-class">.Product</span>;
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">com</span><span class="hljs-selector-class">.tutorialspoint</span><span class="hljs-selector-class">.demo</span><span class="hljs-selector-class">.service</span><span class="hljs-selector-class">.ProductService</span>;
+
+@<span class="hljs-keyword">RestController</span>
+public class ProductServiceController {
+   @<span class="hljs-keyword">Autowired</span>
+   ProductService productService;
+
+   @<span class="hljs-keyword">RequestMapping</span>(<span class="hljs-keyword">value</span> = <span class="hljs-string">"/products"</span>)
+   public ResponseEntity&lt;Object&gt; getProduct() {
+      <span class="hljs-selector-tag">return</span> <span class="hljs-selector-tag">new</span> <span class="hljs-selector-tag">ResponseEntity</span>&lt;&gt;(<span class="hljs-selector-tag">productService</span><span class="hljs-selector-class">.getProducts</span>(), <span class="hljs-selector-tag">HttpStatus</span><span class="hljs-selector-class">.OK</span>);
+   }
+   @<span class="hljs-keyword">RequestMapping</span>(<span class="hljs-keyword">value</span> = <span class="hljs-string">"/products/{id}"</span>, method = RequestMethod.PUT)
+   public ResponseEntity&lt;Object&gt;
+      updateProduct(@PathVariable(<span class="hljs-string">"id"</span>) String id, @RequestBody Product product) {
+
+      <span class="hljs-selector-tag">productService</span><span class="hljs-selector-class">.updateProduct</span>(<span class="hljs-selector-tag">id</span>, <span class="hljs-selector-tag">product</span>);
+      <span class="hljs-selector-tag">return</span> <span class="hljs-selector-tag">new</span> <span class="hljs-selector-tag">ResponseEntity</span>&lt;&gt;("<span class="hljs-selector-tag">Product</span> <span class="hljs-selector-tag">is</span> <span class="hljs-selector-tag">updated</span> <span class="hljs-selector-tag">successsfully</span>", <span class="hljs-selector-tag">HttpStatus</span><span class="hljs-selector-class">.OK</span>);
+   }
+   @<span class="hljs-keyword">RequestMapping</span>(<span class="hljs-keyword">value</span> = <span class="hljs-string">"/products/{id}"</span>, method = RequestMethod.DELETE)
+   public ResponseEntity&lt;Object&gt; delete(@PathVariable(<span class="hljs-string">"id"</span>) String id) {
+      <span class="hljs-selector-tag">productService</span><span class="hljs-selector-class">.deleteProduct</span>(<span class="hljs-selector-tag">id</span>);
+      <span class="hljs-selector-tag">return</span> <span class="hljs-selector-tag">new</span> <span class="hljs-selector-tag">ResponseEntity</span>&lt;&gt;("<span class="hljs-selector-tag">Product</span> <span class="hljs-selector-tag">is</span> <span class="hljs-selector-tag">deleted</span> <span class="hljs-selector-tag">successsfully</span>", <span class="hljs-selector-tag">HttpStatus</span><span class="hljs-selector-class">.OK</span>);
+   }
+   @<span class="hljs-keyword">RequestMapping</span>(<span class="hljs-keyword">value</span> = <span class="hljs-string">"/products"</span>, method = RequestMethod.POST)
+   public ResponseEntity&lt;Object&gt; createProduct(@RequestBody Product product) {
+      <span class="hljs-selector-tag">productService</span><span class="hljs-selector-class">.createProduct</span>(<span class="hljs-selector-tag">product</span>);
+      <span class="hljs-selector-tag">return</span> <span class="hljs-selector-tag">new</span> <span class="hljs-selector-tag">ResponseEntity</span>&lt;&gt;("<span class="hljs-selector-tag">Product</span> <span class="hljs-selector-tag">is</span> <span class="hljs-selector-tag">created</span> <span class="hljs-selector-tag">successfully</span>", <span class="hljs-selector-tag">HttpStatus</span><span class="hljs-selector-class">.CREATED</span>);
+   }
+}
+</code></pre>
+<p>product.java : POJO</p>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> Product {
+   <span class="hljs-keyword">private</span> <span class="hljs-keyword">String</span> id;
+   <span class="hljs-keyword">private</span> <span class="hljs-keyword">String</span> name;
+
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">String</span> getId() {
+      <span class="hljs-built_in">return</span> id;
+   }
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> setId(<span class="hljs-keyword">String</span> id) {
+      <span class="hljs-keyword">this</span>.id = id;
+   }
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">String</span> getName() {
+      <span class="hljs-built_in">return</span> name;
+   }
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> setName(<span class="hljs-keyword">String</span> name) {
+      <span class="hljs-keyword">this</span>.name = name;
+   }
+}
+</code></pre>
+<hr>
+<h2 id="thymeleaf">Thymeleaf</h2>
+<p>Thymeleaf is a Java-based library used to create a web application. It provides a good support for serving a XHTML/HTML5 in web applications.</p>
+<p>Thymeleaf converts your files into well-formed XML files :</p>
+<ul>
+<li>XML</li>
+<li>Valid XML</li>
+<li>XHTML</li>
+<li>Valid XHTML</li>
+<li>HTML5</li>
+<li>Legacy HTML5</li>
+</ul>
+<p>All templates, except Legacy HTML5, are referring to well-formed valid XML files. Legacy HTML5 allows us to render the HTML5 tags in web page including not closed tags.</p>
+<p>Dependency :</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-thymeleaf<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<h3 id="web-applications">Web Applications</h3>
+<p>We use the @Controller class to map the address :</p>
+<pre><code class="lang-java"><span class="hljs-selector-tag">package</span> <span class="hljs-selector-tag">com</span><span class="hljs-selector-class">.tutorialspoint</span><span class="hljs-selector-class">.demo</span><span class="hljs-selector-class">.controller</span>;
+
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.stereotype</span><span class="hljs-selector-class">.Controller</span>;
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.web</span><span class="hljs-selector-class">.bind</span><span class="hljs-selector-class">.annotation</span><span class="hljs-selector-class">.RequestMapping</span>;
+
+@<span class="hljs-keyword">Controller</span>
+public class WebController {
+   @<span class="hljs-keyword">RequestMapping</span>(<span class="hljs-keyword">value</span> = <span class="hljs-string">"/index"</span>)
+   public String index() {
+      <span class="hljs-selector-tag">return</span> "<span class="hljs-selector-tag">index</span>";
+   }
+}
+</code></pre>
+<p>We then place all our HTML under : <code>src &gt; main &gt; resource &gt; templates</code>. It is necessary the html file be placed in the template class or it would not work.</p>
+<p>All other files like the css and js scripts can be placed in the static package.</p>
+<hr>
+<h2 id="consuming-rest-api-web-service-using-jquery-ajax">Consuming Rest Api Web Service Using JQuery Ajax</h2>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-thymeleaf<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<p>Example :</p>
+<p>Controller class to serve the Restful Api :</p>
+<pre><code class="lang-java"><span class="hljs-meta">@Controller</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ViewController</span> </span>{
+
+    <span class="hljs-meta">@RequestMapping(“/view-products”)</span>
+    <span class="hljs-keyword">public</span> String viewProducts() {
+       <span class="hljs-keyword">return</span> “view-products”
+    }
+
+    <span class="hljs-meta">@RequestMapping(“/add-products”)</span>
+    <span class="hljs-keyword">public</span> String addProducts() {
+       <span class="hljs-keyword">return</span> “add-products”;
+    }
+
+}
+</code></pre>
+<p>The request ot the above controller as <code>http://localhost:9090/products</code> return the following result</p>
+<pre><code class="lang-json">[
+   {
+      <span class="hljs-attr">"id"</span>: <span class="hljs-string">"1"</span>,
+      <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Honey"</span>
+   },
+   {
+      <span class="hljs-attr">"id"</span>: <span class="hljs-string">"2"</span>,
+      <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Almond"</span>
+   }
+]
+</code></pre>
+<p>view-product.html</p>
+<pre><code class="lang-html">
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span> = <span class="hljs-string">"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+$(<span class="hljs-built_in">document</span>).ready(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+   $.getJSON(<span class="hljs-string">"http://localhost:9090/products"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>)</span>{
+      $.each(result, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key,value</span>) </span>{
+         $(<span class="hljs-string">"#productsJson"</span>).append(value.id+<span class="hljs-string">" "</span>+value.name+<span class="hljs-string">" "</span>);
+      });
+   });
+});
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+<p>add-product.html</p>
+<pre><code class="lang-html"><span class="hljs-meta">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span> = <span class="hljs-string">"ISO-8859-1"</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Add Products<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span> = <span class="hljs-string">"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+         $(<span class="hljs-built_in">document</span>).ready(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+            $(<span class="hljs-string">"button"</span>).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+               <span class="hljs-keyword">var</span> productmodel = {
+                  <span class="hljs-attr">id</span> : <span class="hljs-string">"3"</span>,
+                  <span class="hljs-attr">name</span> : <span class="hljs-string">"Ginger"</span>
+               };
+               <span class="hljs-keyword">var</span> requestJSON = <span class="hljs-built_in">JSON</span>.stringify(productmodel);
+               $.ajax({
+                  <span class="hljs-attr">type</span> : <span class="hljs-string">"POST"</span>,
+                  <span class="hljs-attr">url</span> : <span class="hljs-string">"http://localhost:9090/products"</span>,
+                  <span class="hljs-attr">headers</span> : {
+                     <span class="hljs-string">"Content-Type"</span> : <span class="hljs-string">"application/json"</span>
+                  },
+                  <span class="hljs-attr">data</span> : requestJSON,
+                  <span class="hljs-attr">success</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{
+                     alert(data);
+                  },
+                  <span class="hljs-attr">error</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{
+                  }
+               });
+            });
+         });
+      </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+
+   <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>Click here to submit the form<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+</code></pre>
+<hr>
+<h2 id="cross-origin-resource-sharing-cors-support">Cross Origin Resource Sharing : CORS Support</h2>
+<p>Cross-Origin Resource Sharing (CORS) is a security concept that allows restricting the resources implemented in web browsers. It prevents the JavaScript code producing or consuming the requests against different origin.</p>
+<p>For example, your web application is running on 8080 port and by using JavaScript you are trying to consuming RESTful web services from 9090 port. Under such situations, you will face the Cross-Origin Resource Sharing security issue on your web browsers.</p>
+<p>Two requirements are needed to handle this issue −</p>
+<ul>
+<li><p>RESTful web services should support the Cross-Origin Resource Sharing.</p>
+</li>
+<li><p>RESTful web service application should allow accessing the API(s) from the 8080 port.*</p>
+</li>
+</ul>
+<h3 id="global-cors-configuration">Global CORS configuration</h3>
+<pre><code class="lang-java">//other imports above, does not have all imports added only relevant imports.
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+@EnableWebSecurity
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.cors().and()
+            //other config
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+      CorsConfiguration config = new CorsConfiguration();
+      config.setAllowCredentials(true); //Not needed can be skipped
+      config.addAllowedOrigin(<span class="hljs-string">"https://domain1.com"</span>);
+      config.addAllowedHeader(<span class="hljs-string">"*"</span>); //allows all headers
+      //If allowed methods are not added, the default methods allowed are <span class="hljs-string">"<span class="hljs-keyword">GET</span>"</span> and <span class="hljs-string">"<span class="hljs-keyword">HEAD</span>"</span>.
+      config.addAllowedMethod(<span class="hljs-string">"*"</span>); //allow all methods eg <span class="hljs-string">"<span class="hljs-keyword">POST</span>"</span>, <span class="hljs-string">"<span class="hljs-keyword">GET</span>"</span>, <span class="hljs-string">"<span class="hljs-keyword">DELETE</span>"</span> ...
+      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+      source.registerCorsConfiguration(<span class="hljs-string">"/**"</span>, config);//For all mappings
+      return source;
+   }
+}
+</code></pre>
+<p>For more info and other more specific configuration of CORS :</p>
+<blockquote>
+<p><a href="https://howtodoinjava.com/spring5/webmvc/spring-mvc-cors-configuration/#global-cors">CORS with Spring</a></p>
+<p><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/cors/CorsConfiguration.html#addAllowedMethod-java.lang.String-">DOCUMENTATION</a></p>
+<p><a href="https://docs.spring.io/spring-framework/docs/4.3.x/spring-framework-reference/html/cors.html">DOCS Example</a></p>
+</blockquote>
+<h2 id="internationalization">Internationalization</h2>
+<p>Internationalization is a process that makes your application adaptable to different languages and regions without engineering changes on the source code. In ither words, Internationalization is a readiness of Localization.</p>
+<hr>
+<h2 id="scheduling">Scheduling</h2>
+<p>Scheduling is a process of executing the tasks for the specific time period.</p>
+<h3 id="fixed-rate">Fixed Rate</h3>
+<p>Fixed Rate scheduler is used to execute the tasks at the specific time. It does not wait for the completion of previous task. The values should be in milliseconds.</p>
+<pre><code class="lang-java"><span class="hljs-keyword">package</span> com.tutorialspoint.demo.scheduler;
+
+<span class="hljs-keyword">import</span> java.text.SimpleDateFormat;
+<span class="hljs-keyword">import</span> java.util.Date;
+<span class="hljs-keyword">import</span> org.springframework.scheduling.annotation.Scheduled;
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Component;
+
+<span class="hljs-meta">@Component</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Scheduler</span> </span>{
+   <span class="hljs-meta">@Scheduled</span>(fixedRate = <span class="hljs-number">1000</span>)
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">fixedRateSch</span><span class="hljs-params">()</span> </span>{
+      SimpleDateFormat sdf = <span class="hljs-keyword">new</span> SimpleDateFormat(<span class="hljs-string">"yyyy-MM-dd HH:mm:ss.SSS"</span>);
+
+      Date now = <span class="hljs-keyword">new</span> Date();
+      String strDate = sdf.format(now);
+      System.out.println(<span class="hljs-string">"Fixed Rate scheduler:: "</span> + strDate);
+   }
+}
+</code></pre>
+<h3 id="fixed-delay">Fixed Delay</h3>
+<p>Fixed Delay scheduler is used to execute the tasks at a specific time. It should wait for the previous task completion.
+The values should be in milliseconds.</p>
+<pre><code class="lang-java"><span class="hljs-meta"><span class="hljs-meta-keyword">import</span> java.text.SimpleDateFormat;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> java.util.Date;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> org.springframework.scheduling.annotation.Scheduled;</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">import</span> org.springframework.stereotype.Component;</span>
+
+@Component
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Scheduler</span> </span>{
+   @Scheduled(fixedDelay = <span class="hljs-number">1000</span>, initialDelay = <span class="hljs-number">3000</span>)
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> fixedDelaySch() {
+      SimpleDateFormat sdf = <span class="hljs-keyword">new</span> SimpleDateFormat(<span class="hljs-string">"yyyy-MM-dd HH:mm:ss.SSS"</span>);
+      Date now = <span class="hljs-keyword">new</span> Date();
+      String strDate = sdf.format(now);
+      System.out.println(<span class="hljs-string">"Fixed Delay scheduler:: "</span> + strDate);
+   }
+}
+</code></pre>
+<h2 id="enabling-https">Enabling HTTPS</h2>
+<p><a href="https://www.tutorialspoint.com/spring_boot/spring_boot_enabling_https.htm">Tutorial on Enabling Https</a></p>
+<hr>
+<h2 id="servers">Servers</h2>
+<p>Eureka Server is an application that holds the information about all client-service applications. Every Micro service will register into the Eureka server and Eureka server knows all the client applications running on each port and IP address. Eureka Server is also known as Discovery Server.</p>
+<p>Zuul Server is a gateway application that handles all the requests and does the dynamic routing of microservice applications. The Zuul Server is also known as Edge Server.</p>
+<p>For Example, /api/user is mapped to the user service and /api/products is mapped to the product service and Zuul Server dynamically routes the requests to the respective backend application</p>
+<p>Spring Cloud Configuration Server is a centralized application that manages all the application related configuration properties.</p>
+<p>Some applications may need configuration properties that may need a change and developers may need to take them down or restart the application to perform this. However, this might be lead to downtime in production and the need ofrestarting the application. Spring Cloud Configuration Server lets developers to load the new configuration properties without restarting the application and without any downtime.</p>
+<hr>
+<h2 id="actuator">Actuator</h2>
+<p>Spring Boot Actuator provides secured endpoints for monitoring and managing your Spring Boot application. By default, all actuator endpoints are secured.</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<h2 id="admin-server">Admin Server</h2>
+<p>Monitoring your application by using Spring Boot Actuator Endpoint is slightly difficult. Because, if you have ‘n’ number of applications, every application has separate actuator endpoints, thus making monitoring difficult. Spring Boot Admin Server is an application used to manage and monitor your Microservice application.</p>
+<p>To handle such situations, CodeCentric Team provides a Spring Boot Admin UI to manage and monitor all your Spring Boot application Actuator endpoints at one place.</p>
+<h2 id="admin-client">Admin Client</h2>
+<p>For monitoring and managing your microservice application via Spring Boot Admin Server, you should add the Spring Boot Admin starter client dependency and point out the Admin Server URI into the application properties file.</p>
+<p>Note − For monitoring an application, you should enable the Spring Boot Actuator Endpoints for your Microservice application.</p>
+<hr>
+<h2 id="swagger2">Swagger2</h2>
+<p>Swagger2 is an open source project used to generate the REST API documents for RESTful web services. It provides a user interface to access our RESTful web services via the web browser.</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>io.springfox<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>springfox-swagger2<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.7.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>io.springfox<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>springfox-swagger-ui<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.7.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<pre><code class="lang-java"><span class="hljs-keyword">import</span> org.springframework.boot.SpringApplication;
+<span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
+<span class="hljs-keyword">import</span> springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+<span class="hljs-meta">@SpringBootApplication</span>
+<span class="hljs-meta">@EnableSwagger</span>2
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SwaggerDemoApplication</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{
+      SpringApplication.run(SwaggerDemoApplication.class, args);
+    }
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Docket <span class="hljs-title">productApi</span><span class="hljs-params">()</span> </span>{
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Docket(DocumentationType.SWAGGER_2).select()
+         .apis(RequestHandlerSelectors.basePackage(<span class="hljs-string">"com.tutorialspoint.swaggerdemo"</span>)).build();
+   }
+
+}
+</code></pre>
+<blockquote>
+<p>We can find the documentation at : <a href="http://localhost:8080/swagger-ui.html">Swagger generated Doc Url at port 8080</a></p>
+</blockquote>
+<hr>
+<h2 id="flyway-database">Flyway Database</h2>
+<p>Flyway is a version control application to evolve your Database schema easily and reliably across all your instances.</p>
+<p>Many software projects use relational databases. This requires the handling of database migrations, also often called schema migrations.</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.flywaydb<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>flyway-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-jdbc<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<p>application.properties</p>
+<pre><code class="lang-properties">spring<span class="hljs-selector-class">.application</span><span class="hljs-selector-class">.name</span> = flywayapp  
+
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.driverClassName</span> = com<span class="hljs-selector-class">.mysql</span><span class="hljs-selector-class">.jdbc</span><span class="hljs-selector-class">.Driver</span>
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.url</span> = jdbc:mysql:<span class="hljs-comment">//localhost:3306/USERSERVICE?autoreconnect=true</span>
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.username</span> = root
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.password</span> = root
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.testOnBorrow</span> = true
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.testWhileIdle</span> = true
+spring<span class="hljs-selector-class">.datasource</span><span class="hŬjs-selector-class">.timeBetweenEvictionRunsMillis</span> = <span class="hljs-number">60000</span>
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.minEvictableIdleTimeMillis</span> = <span class="hljs-number">30000</span>
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.validationQuery</span> = SELECT <span class="hljs-number">1</span>
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.max-active</span> = <span class="hljs-number">15</span>
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.max-idle</span> = <span class="hljs-number">10</span>
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.max-wait</span> = <span class="hljs-number">8000</span>
+
+flyway<span class="hljs-selector-class">.url</span> = jdbc:mysql:<span class="hljs-comment">//localhost:3306/mysql</span>
+flyway<span class="hljs-selector-class">.schemas</span> = USERSERVICE
+flyway<span class="hljs-selector-class">.user</span> = root
+flyway<span class="hljs-selector-class">.password</span> = root
+</code></pre>
+<p>application.yml</p>
+<pre><code class="lang-yaml"><span class="hljs-attribute">spring</span>:
+   <span class="hljs-attribute">application</span>:
+      <span class="hljs-attribute">name</span>: flywayapp  
+   <span class="hljs-attribute">datasource</span>:
+      <span class="hljs-attribute">driverClassName</span>: com.mysql.jdbc.Driver
+      <span class="hljs-attribute">url</span>: <span class="hljs-string">"jdbc:mysql://localhost:3306/USERSERVICE?autoreconnect=true"</span>
+      <span class="hljs-attribute">password</span>: <span class="hljs-string">"root"</span>
+      <span class="hljs-attribute">username</span>: <span class="hljs-string">"root"</span>
+      <span class="hljs-attribute">testOnBorrow</span>: true
+      <span class="hljs-attribute">testWhileIdle</span>: true
+      <span class="hljs-attribute">timeBetweenEvictionRunsMillis</span>: <span class="hljs-number">60000</span>
+      <span class="hljs-attribute">minEvictableIdleTimeMillis</span>: <span class="hljs-number">30000</span>
+      <span class="hljs-attribute">validationQuery</span>: SELECT <span class="hljs-number">1</span>
+      <span class="hljs-attribute">max-active</span>: <span class="hljs-number">15</span>
+      <span class="hljs-attribute">max-idle</span>: <span class="hljs-number">10</span>
+      <span class="hljs-attribute">max-wait</span>: <span class="hljs-number">8000</span>
+<span class="hljs-attribute">flyway</span>:
+   <span class="hljs-attribute">url</span>: <span class="hljs-attribute">jdbc</span>:<span class="hljs-attribute">mysql</span>:<span class="hljs-comment">//localhost:3306/mysql</span>
+   <span class="hljs-attribute">schemas</span>: USERSERVICE
+   <span class="hljs-attribute">user</span>: <span class="hljs-string">"root"</span>
+   <span class="hljs-attribute">password</span>: <span class="hljs-string">"root"</span>
+</code></pre>
+<p>Now, create a SQL file under the src/main/resources/db/migration directory. Name the SQL file as “V1__Initial.sql”</p>
+<pre><code class="lang-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">USERS</span> (<span class="hljs-keyword">ID</span> <span class="hljs-built_in">INT</span> AUTO_INCREMENT PRIMARY <span class="hljs-keyword">KEY</span>, USERID <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">45</span>));
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">USERS</span> (<span class="hljs-keyword">ID</span>, USERID) <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>, <span class="hljs-string">'tutorialspoint.com'</span>);
+</code></pre>
+<hr>
+<h2 id="sending-email">Sending Email</h2>
+<p>By using Spring Boot RESTful web service, you can send an email with Gmail Transport Layer Security.</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-mail<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<p><a href="https://www.tutorialspoint.com/spring_boot/spring_boot_sending_email.htm">Sending Email Tutuorial</a></p>
+<hr>
+<h2 id="hystrix">Hystrix</h2>
+<p>Hystrix is a library from Netflix. Hystrix isolates the points of access between the services, stops cascading failures across them and provides the fallback options.</p>
+<p>For example, when you are calling a 3rd party application, it takes more time to send the response. So at that time, the control goes to the fallback method and returns the custom response to your application.</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-starter-hystrix<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<pre><code class="lang-java">
+mport org.springframework.boot.SpringApplication;
+<span class="hljs-keyword">import</span> com.netflix.hystrix.contrib.javanica.<span class="hljs-keyword">annotation</span>.HystrixProperty;
+<span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
+<span class="hljs-keyword">import</span> org.springframework.cloud.netflix.hystrix.EnableHystrix;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.RequestMapping;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.RestController;
+
+<span class="hljs-keyword">import</span> com.netflix.hystrix.contrib.javanica.<span class="hljs-keyword">annotation</span>.HystrixCommand;
+
+<span class="hljs-meta">@SpringBootApplication</span>
+<span class="hljs-meta">@EnableHystrix</span>
+<span class="hljs-meta">@RestController</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HystrixappApplication</span> </span>{
+   <span class="hljs-keyword">public</span> static void main(String[] args) {
+      SpringApplication.run(HystrixappApplication.<span class="hljs-keyword">class</span>, args);
+   }
+   <span class="hljs-meta">@RequestMapping(value = <span class="hljs-meta-string">"/"</span>)</span>
+   <span class="hljs-meta">@HystrixCommand(fallbackMethod = <span class="hljs-meta-string">"fallback_hello"</span>, commandProperties = {
+      @HystrixProperty(name = <span class="hljs-meta-string">"execution.isolation.thread.timeoutInMilliseconds"</span>, value = <span class="hljs-meta-string">"1000"</span>)</span>
+   })
+   <span class="hljs-keyword">public</span> String hello() throws InterruptedException {
+      Thread.sleep(<span class="hljs-number">3000</span>);
+      <span class="hljs-keyword">return</span> <span class="hljs-string">"Welcome Hystrix"</span>;
+   }
+   <span class="hljs-keyword">private</span> String fallback_hello() {
+      <span class="hljs-keyword">return</span> <span class="hljs-string">"Request fails. It takes long time to response"</span>;
+   }
+}
+</code></pre>
+<hr>
+<h2 id="web-socket">Web Socket</h2>
+<pre><code class="lang-xml">
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-websocket<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.webjars<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>webjars-locator<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.webjars<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>sockjs-client<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.webjars<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>stomp-websocket<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.3.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.webjars<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>bootstrap<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.3.7<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.webjars<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jquery<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.1.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<hr>
+<h2 id="twilio-send-sms">Twilio : Send SMS</h2>
+<p>Twilio is a 3rd party application used to send SMS and make voice calls from our application. It allows us to send the SMS and make voice calls programmatically.</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.twilio.sdk<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>twilio<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>7.16.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<blockquote>
+<p><a href="https://www.tutorialspoint.com/spring_boot/spring_boot_twilio.htm">Spring Boot Twilio Tutorial</a></p>
+</blockquote>
+<hr>
+<h2 id="unit-test-cases">Unit Test Cases</h2>
+<p>Unit Testing is a one of the testing done by the developers to make sure individual unit or component functionalities are working fine.</p>
+<h3 id="mockito">Mockito</h3>
+<pre><code class="lang-xml">
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.mockito<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mockito-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.13.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<hr>
+<h2 id="-bean-validation-validating-domain-objects-in-spring-boot">@Bean Validation : Validating domain objects in Spring boot</h2>
+<p>Dependency : Starting from Spring Boot 2.3 we need to explicitly add the dependency.</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-validation<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<p>For Gradle</p>
+<blockquote>
+<p>implementation(&#39;org.springframework.boot:spring-boot-starter-validation&#39;)</p>
+</blockquote>
+<p>Spring Boot supports seamless integration with custom validators, the de-facto standard for performing validation is Hibernate Validator, the Bean Validation framework&#39;s reference implementation.</p>
+<blockquote>
+<p>List of all annotations : <a href="https://docs.jboss.org/hibernate/beanvalidation/spec/2.0/api/javax/validation/constraints/package-summary.html">Hibernate Validation all annotation List</a></p>
+</blockquote>
+<h3 id="validate-request-body">Validate Request Body</h3>
+<p>In POST and PUT requests, it’s common to pass a JSON payload within the request body. Spring automatically maps the incoming JSON to a Java object. Now, we want to check if the incoming Java object meets our requirements.</p>
+<p>Object to map json to :</p>
+<pre><code class="lang-java"><span class="hljs-selector-tag">class</span> <span class="hljs-selector-tag">Input</span> {
+
+  <span class="hljs-variable">@Min</span>(<span class="hljs-number">1</span>)
+  <span class="hljs-variable">@Max</span>(<span class="hljs-number">10</span>)
+  private int numberBetweenOneAndTen;
+
+  <span class="hljs-variable">@Pattern</span>(regexp = <span class="hljs-string">"^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$"</span>)
+  private String ipAddress;
+
+  <span class="hljs-comment">// ...</span>
+}
+</code></pre>
+<p>Controller class:</p>
+<pre><code class="lang-java"><span class="hljs-variable">@RestController</span>
+class ValidateRequestBodyController {
+
+  <span class="hljs-variable">@PostMapping</span>(<span class="hljs-string">"/validateBody"</span>)
+  ResponseEntity&lt;String&gt; validateBody(<span class="hljs-variable">@Valid</span> <span class="hljs-variable">@RequestBody</span> Input input) {
+    <span class="hljs-selector-tag">return</span> <span class="hljs-selector-tag">ResponseEntity</span><span class="hljs-selector-class">.ok</span>(<span class="hljs-string">"valid"</span>);
+  }
+
+}
+</code></pre>
+<p>If the validation fails, it will trigger a <code>MethodArgumentNotValidException</code>. By default, Spring will translate this exception to a HTTP status 400 (Bad Request).</p>
+<h3 id="validating-request-parameter-and-path-variables">Validating Request Parameter and Path Variables</h3>
+<p>Validating path variables and request parameters works a little differently.</p>
+<p>We’re not validating complex Java objects in this case, since path variables and request parameters are primitive types like int or their counterpart objects like Integer or String.</p>
+<p>Instead of annotating a class field like above, we’re adding a constraint annotation (in this case <code>@Min</code>) directly to the method parameter in the Spring controller</p>
+<pre><code class="lang-java"><span class="hljs-meta">@RestController</span>
+<span class="hljs-meta">@Validated</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ValidateParametersController</span> </span>{
+
+  <span class="hljs-meta">@GetMapping(<span class="hljs-meta-string">"/validatePathVariable/{id}"</span>)</span>
+  ResponseEntity&lt;String&gt; validatePathVariable(
+      <span class="hljs-meta">@PathVariable(<span class="hljs-meta-string">"id"</span>)</span> <span class="hljs-meta">@Min(5)</span> int id) {
+    <span class="hljs-keyword">return</span> ResponseEntity.ok(<span class="hljs-string">"valid"</span>);
+  }
+
+  <span class="hljs-meta">@GetMapping(<span class="hljs-meta-string">"/validateRequestParameter"</span>)</span>
+  ResponseEntity&lt;String&gt; validateRequestParameter(
+      <span class="hljs-meta">@RequestParam(<span class="hljs-meta-string">"param"</span>)</span> <span class="hljs-meta">@Min(5)</span> int param) {
+    <span class="hljs-keyword">return</span> ResponseEntity.ok(<span class="hljs-string">"valid"</span>);
+  }
+
+   <span class="hljs-comment">//If we want to return a HTTP status 400 instead we can add a custom exception handler to our contoller:</span>
+   <span class="hljs-meta">@ExceptionHandler(ConstraintViolationException.class)</span>
+   <span class="hljs-meta">@ResponseStatus(HttpStatus.BAD_REQUEST)</span>
+   ResponseEntity&lt;String&gt; handleConstraintViolationException(ConstraintViolationException e) {
+    <span class="hljs-keyword">return</span> new ResponseEntity&lt;&gt;(<span class="hljs-string">"not valid due to validation error: "</span> + e.getMessage(), HttpStatus.BAD_REQUEST);
+  }
+}
+</code></pre>
+<p>In contrast to request body validation a failed validation will trigger a <code>ConstraintViolationException</code>. Spring does not register a default exception handler for this exception, so it will by default cause a response with HTTP status 500 (Internal Server Error).</p>
+<h3 id="validating-input-to-a-spring-service-method">Validating Input to a Spring Service Method</h3>
+<p>Instead of (or additionally to) validating input on the controller level, we can also validate the input to any Spring components. In order to to this, we use a combination of the @Validated and @Valid annotations:</p>
+<pre><code class="lang-java"><span class="hljs-variable">@Service</span>
+<span class="hljs-variable">@Validated</span>
+class ValidatingService{
+
+    <span class="hljs-selector-tag">void</span> <span class="hljs-selector-tag">validateInput</span>(<span class="hljs-variable">@Valid</span> Input input){
+      <span class="hljs-comment">// do something</span>
+    }
+
+}
+</code></pre>
+<p>Again, the @Validated annotation is only evaluated on class level, so don’t put it on a method in this use case.</p>
+<h3 id="validating-jpa-entities">Validating JPA Entities</h3>
+<p>The last line of defense for validation is the persistence layer. By default, Spring Data uses Hibernate underneath, which supports Bean Validation out of the box.</p>
+<blockquote>
+<p>We usually don&#39;t want to do validation as late as in the persistence layer because it means that the business code above has worked with potentially invalid objects which may lead to unforeseen errors.</p>
+</blockquote>
+<pre><code class="lang-java"><span class="hljs-variable">@Entity</span>
+public class Input {
+
+  <span class="hljs-variable">@Id</span>
+  <span class="hljs-variable">@GeneratedValue</span>
+  private Long id;
+
+  <span class="hljs-variable">@Min</span>(<span class="hljs-number">1</span>)
+  <span class="hljs-variable">@Max</span>(<span class="hljs-number">10</span>)
+  private int numberBetweenOneAndTen;
+
+  <span class="hljs-variable">@Pattern</span>(regexp = <span class="hljs-string">"^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$"</span>)
+  private String ipAddress;
+
+  <span class="hljs-comment">// ...</span>
+
+}
+</code></pre>
+<p>We create a Spring Data repository that provides us with methods to persist and query for Input objects:</p>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ValidatingRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">CrudRepository</span>&lt;<span class="hljs-title">Input</span>, <span class="hljs-title">Long</span>&gt; </span>{}
+</code></pre>
+<p>By default, any time we use the repository to store an Input object whose constraint annotations are violated, we’ll get a <code>ConstraintViolationException</code>.</p>
+<pre><code class="lang-java">@ExtendWith(SpringExtension.class)
+@DataJpaTest
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ValidatingRepositoryTest</span> {</span>
+
+  @Autowired
+  private ValidatingRepository repository;
+
+  @Autowired
+  private EntityManager entityManager;
+
+  @Test
+  <span class="hljs-literal">void</span> whenInputIsInvalid_thenThrowsException() {
+    Input input = invalidInput();
+
+    assertThrows<span class="hljs-function"><span class="hljs-params">(ConstraintViolationException.class, () -&gt; {
+      repository.save(input);
+      entityManager.flush();
+    })</span>;
+  }
+
+}</span>
+</code></pre>
+<h3 id="implementing-a-custom-validator">Implementing a Custom Validator</h3>
+<p>In the Input class from above, we used a regular expression to validate that a String is a valid IP address. However, the regular expression is not complete: it allows octets with values greater than 255 (i.e. “111.111.111.333” would be considered valid).</p>
+<p>Let’s fix this by implementing a validator that implements this check in Java instead of with a regular expression (yes, I know that we could just use a more complex regular expression to achieve the same result, but we like to implement validations in Java, don’t we?).</p>
+<p>We Create the custom constraint annotation IpAddress.</p>
+<pre><code class="lang-java"><span class="hljs-meta">@Target({ FIELD })</span>
+<span class="hljs-meta">@Retention(RUNTIME)</span>
+<span class="hljs-meta">@Constraint(validatedBy = IpAddressValidator.class)</span>
+<span class="hljs-meta">@Documented</span>
+<span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> IpAddress {
+
+  String message() <span class="hljs-keyword">default</span> <span class="hljs-string">"{IpAddress.invalid}"</span>;
+
+  Class&lt;?&gt;[] groups() <span class="hljs-keyword">default</span> { };
+
+  Class&lt;? extends Payload&gt;[] payload() <span class="hljs-keyword">default</span> { };
+
+}
+</code></pre>
+<pre><code class="lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IpAddressValidator</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">ConstraintValidator</span>&lt;<span class="hljs-title">IpAddress</span>, <span class="hljs-title">String</span>&gt; </span>{
+
+  <span class="hljs-meta">@Override</span>
+  public boolean isValid(<span class="hljs-built_in">String</span> value, ConstraintValidatorContext context) {
+    <span class="hljs-built_in">Pattern</span> pattern =
+      <span class="hljs-built_in">Pattern</span>.compile(<span class="hljs-string">"^([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})$"</span>);
+    Matcher matcher = pattern.matcher(value);
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">if</span> (!matcher.matches()) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">4</span>; i++) {
+          <span class="hljs-built_in">int</span> octet = Integer.valueOf(matcher.group(i));
+          <span class="hljs-keyword">if</span> (octet &gt; <span class="hljs-number">255</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+          }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+      }
+    } <span class="hljs-keyword">catch</span> (Exception e) {
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+  }
+}
+</code></pre>
+<p>We can now use the @IpAddress annotation just like any other constraint annotation:</p>
+<pre><code class="lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InputWithCustomValidator</span> </span>{
+
+  <span class="hljs-meta">@IpAddress</span>
+  private <span class="hljs-built_in">String</span> ipAddress;
+
+  <span class="hljs-comment">// ...</span>
+
+}
+</code></pre>
+<blockquote>
+<p>For even more much more on validators and validation : <a href="https://reflectoring.io/bean-validation-with-spring-boot/#using-validation-groups-to-validate-objects-differently-for-different-use-cases">Bean Validation with Spring-Boot</a></p>
+</blockquote>
+<hr>
+<h2 id="exception-handling-with-spring">Exception Handling With Spring</h2>
+<ul>
+<li>Handling a particular Type of Exception - Controller Level :</li>
+</ul>
+<pre><code class="lang-java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">String</span> NOT_FOUND_MESSAGE = <span class="hljs-string">"Flight not found for number"</span>;
+
+@ExceptionHandler(IndexOutOfBoundsException.class)
+@ResponseStatus(HttpStatus.NOT_FOUND, reason = NOT_FOUND_MESSAGE)
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">HashMap</span>&lt;<span class="hljs-keyword">String</span>, <span class="hljs-keyword">String</span>&gt; handleIndexOutOfBoundsException(Exception e) {
+    <span class="hljs-keyword">HashMap</span>&lt;<span class="hljs-keyword">String</span>, <span class="hljs-keyword">String</span>&gt; response = <span class="hljs-keyword">new</span> <span class="hljs-keyword">HashMap</span>&lt;&gt;();
+    response.put(<span class="hljs-string">"message"</span>, NOT_FOUND_MESSAGE);
+    response.put(<span class="hljs-string">"error"</span>, e.getClass().getSimpleName());
+    <span class="hljs-keyword">return</span> response;
+}
+</code></pre>
+<p>In this the <code>@ResponseStatus</code> Sets the response status to be displayed.</p>
+<ul>
+<li>Global Exception Handler</li>
+</ul>
+<pre><code class="lang-java">@RestControllerAdvice<span class="hljs-comment">//The annotation signifies that the class be used as the global exception handler class.</span>
+@ResponseStatus(HttpStatus.NOT_FOUND, reason = NOT_FOUND_MESSAGE)<span class="hljs-comment">//Sends the status code with the response entity.</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> ControllerExceptionHandler {
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> final <span class="hljs-keyword">String</span> NOT_FOUND_MESSAGE = <span class="hljs-string">"Information not found for number"</span>;
+
+    @ExceptionHandler(IndexOutOfBoundsException.<span class="hljs-keyword">class</span>)
+    <span class="hljs-keyword">public</span> HashMap&lt;<span class="hljs-keyword">String</span>, <span class="hljs-keyword">String</span>&gt; handleIndexOutOfBoundsException(Exception e) {
+        HashMap&lt;<span class="hljs-keyword">String</span>, <span class="hljs-keyword">String</span>&gt; response = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        response.<span class="hljs-built_in">put</span>(<span class="hljs-string">"message"</span>, NOT_FOUND_MESSAGE);
+        response.<span class="hljs-built_in">put</span>(<span class="hljs-string">"error"</span>, e.getClass().getSimpleName());
+        <span class="hljs-built_in">return</span> response;
+    }
+}
+</code></pre>
+<ul>
+<li>Throw an Exception at any place :</li>
+</ul>
+<pre><code class="lang-java">@RestController
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">AirportController</span> {
+
+    <span class="hljs-keyword">private</span> List&lt;AirportInfo&gt; airportInfoList = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> final String SERVICE_WARNING_MESSAGE = <span class="hljs-string">"Berlin Schönefeld is closed for service today"</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">AirportController</span>(<span class="hljs-params"></span>) </span>{
+        airportInfoList.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> AirportInfo(<span class="hljs-string">"Kilimanjaro Arusha"</span>, <span class="hljs-string">"ARK"</span>, <span class="hljs-string">"HTAR"</span>));
+        airportInfoList.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> AirportInfo(<span class="hljs-string">"Berlin Schönefeld"</span>, <span class="hljs-string">"TXL"</span>, <span class="hljs-string">"EDDT"</span>));
+        airportInfoList.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> AirportInfo(<span class="hljs-string">"Delhi Indira Gandhi"</span>, <span class="hljs-string">"DEL"</span>, <span class="hljs-string">"VIDP"</span>));
+        airportInfoList.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> AirportInfo(<span class="hljs-string">"Tokio Haneda"</span>, <span class="hljs-string">"HND"</span>, <span class="hljs-string">"RJTT"</span>));
+    }
+
+    @GetMapping(<span class="hljs-string">"airports/{id}"</span>)
+    <span class="hljs-function"><span class="hljs-keyword">public</span> AirportInfo <span class="hljs-title">getAirportInfo</span>(<span class="hljs-params">@PathVariable <span class="hljs-keyword">int</span> id</span>) </span>{
+        AirportInfo airportInfo = airportInfoList.<span class="hljs-keyword">get</span>(id);
+        <span class="hljs-comment">//For this case we respond with an exception.</span>
+        <span class="hljs-keyword">if</span> (Objects.<span class="hljs-keyword">equals</span>(airportInfo.getName(), <span class="hljs-string">"Berlin Schönefeld"</span>)) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> ResponseStatusException(HttpStatus.BAD_REQUEST, SERVICE_WARNING_MESSAGE);
+        }
+        <span class="hljs-keyword">return</span> airportInfo;
+    }
+
+}
+</code></pre>
+<ul>
+<li><p>When we have a global and a Controller level we can give prefernece to which handles the exception by giving <code>@Order(Ordered.HIGHEST_PRECEDENCE)</code> to the handler that we want to handle the exception.</p>
+</li>
+<li><p>Creating Custom Exceptions :</p>
+</li>
+</ul>
+<p>The exception class</p>
+<pre><code class="lang-java"><span class="hljs-meta">@ResponseStatus</span>(code = <span class="hljs-type">HttpStatus</span>.<span class="hljs-type">BAD_REQUEST</span>)
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FlightNotFoundException</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">RuntimeException</span> </span>{}
+</code></pre>
+<pre><code class="lang-java"><span class="hljs-variable">@GetMapping</span>(<span class="hljs-string">"flights/{id}"</span>)
+public FlightInfo getFlightInfo(<span class="hljs-variable">@PathVariable</span> int id) {
+    <span class="hljs-selector-tag">if</span> (id &gt; flightInfoList.size()) {
+        <span class="hljs-selector-tag">throw</span> <span class="hljs-selector-tag">new</span> <span class="hljs-selector-tag">FlightNotFoundException</span>(<span class="hljs-string">"Flight not found for id ="</span> + id);
+    }
+    <span class="hljs-selector-tag">return</span> <span class="hljs-selector-tag">flightInfoList</span><span class="hljs-selector-class">.get</span>(id);
+}
+</code></pre>
+<ul>
+<li>Conclusion</li>
+</ul>
+<p>Here you have learned different ways of handling exceptions. You can make it:</p>
+<ul>
+<li>Globally with @RestControllerAdvice;</li>
+<li>On controller level with @ExceptionHandler;</li>
+<li>In the most flexible way by throwing ResponseStatusException at any place you want.</li>
+<li>You can also set the order of handlers with the @Order annotation to control the system of them.</li>
+</ul>
+<hr>
+<h2 id="data-base">Data-Base</h2>
+<p>A database is a collection of data that is specifically organized for rapid search and retrieval processed by a computer.</p>
+<h3 id="database-management-system">Database Management System</h3>
+<p>Database Management System (DBMS) is a type of software that allows users to define, create, and control data in a database.</p>
+<p>DBMS is an mediator between a user and a database, which means that users can work with databases through the interface of DBMS.</p>
+<p>Although it sounds like all databases have different syntax, most of them actually implement common standards. Almost all relational databases use the SQL standard, so you can apply the same commands in different DBMS&#39;s.</p>
+<h3 id="access-to-data">Access to data</h3>
+<p>Databases provide schemas and metadata that allow for a quick search of the needed data.</p>
+<p>A <code>schema</code> describes how YOU organize the data. <code>Metadata</code> holds structural and statistical information.</p>
+<h3 id="data-consistency">Data Consistency</h3>
+<p>One of the best features of databases is their ability to keep and restore the data correctly. It doesn&#39;t mean that the DBMS knows how to be correct, but once you define the correctness with the configuration or schema, you can be sure that nothing will break these rules.</p>
+<hr>
+<h2 id="persistance">Persistance</h2>
+<p>Persistence is a concept referring to data that stays alive even after the death of the process that had created this data. Persistence can be achieved by storing your data.</p>
+<p>Imagine that you are developing an application that creates a shopping list, and you decided to keep your products inside an array, list, or any other Java object. When you terminate your app, all Java objects, including your shopping list, will be removed from the memory, and you will lose all products from the list! To prevent it, we can save the shopping list, for example, to a database, so after restarting or termination, the app shopping list will not be erased. Such data are called &quot;persistent&quot;.</p>
+<hr>
+<h2 id="spring-data">Spring Data</h2>
+<blockquote>
+<p><a href="https://spring.io/projects/spring-data">Sprint Data Docs</a></p>
+</blockquote>
+<p>Note : The main distinction between data and object mapping is that object mapping not only stores data but also emulates the behavior of an object and reflects changes in its source system.</p>
+<h3 id="java-persistence-api">Java Persistence API</h3>
+<p>Java Persistence API is a specification that defines an object-relational mapping (ORM) standard for storing, accessing, and managing Java objects in a relational database.</p>
+<p>While originally intended for use with relational/SQL databases only, JPA&#39;s ORM model has been since extended for use with NoSQL data stores as well. At the moment, two most popular implementations of JPA&#39;s specification are Hibernate and EclipseLink.</p>
+<p>Spring Data JPA is not a JPA provider but just an extra layer of abstraction on top of an existing JPA provider such as Hibernate. This means that it uses all features defined by the JPA specification such as the entity and association mappings, the entity lifecycle management, and JPA&#39;s query capabilities.</p>
+<h3 id="repository-abstraction">Repository Abstraction</h3>
+<p>The real strength of Spring Data JPA lies in the repository abstraction provided by the Spring Data Commons project. It hides the data store specific implementation details and allows you to write your business logic code on a higher abstraction level.</p>
+<p><code>Spring Data Commons</code> provides the following repository interfaces:</p>
+<ol>
+<li>Repository — Central repository marker interface. Captures the domain type to manage as well as the domain type&#39;s id type.</li>
+<li>CrudRepository — Interface for generic CRUD operations on a repository for a specific type.</li>
+<li>PagingAndSortingRepository — Extension of CrudRepository to provide additional methods to retrieve entities using the pagination and sorting abstraction.</li>
+<li>QuerydslPredicateExecutor — Interface to allow execution of QueryDSL Predicate instances. It is not a repository interface.</li>
+</ol>
+<p>Spring Data JPA provides the following additional repository interfaces:</p>
+<ul>
+<li>JpaRepository — JPA specific extension of Repository interface. It combines all methods declared by the Spring Data Commons repository interfaces behind a single interface.</li>
+<li>JpaSpecificationExecutor — It is not a repository interface. It allows the execution of Specifications based on the JPA criteria API.</li>
+</ul>
+<blockquote>
+<p>Example :
+<code>public interface UserRepository extends CrudRepository&lt;User, Long&gt; {}</code></p>
+</blockquote>
+<p>Things you can do by using the above UserRepository interface:</p>
+<ol>
+<li>Persist, update and remove one or multiple User entities.</li>
+<li>Find one or more users by their primary keys.</li>
+<li>Count, get and remove all users.</li>
+<li>Check if a User exists with a given primary key.</li>
+</ol>
+<h3 id="auto-generated-queries">Auto-Generated Queries</h3>
+<p>Another cool feature of Spring Data JPA is the auto-generation of database queries based on method names. When you implement a Spring Data JPA repository interface, it analyses all the methods defined by the entity class and tries to generate the queries automatically from the method names.</p>
+<p>Auto-generated queries may not be well-suited for complex use cases. But for simple scenarios, these queries are very useful. You just define a method on your repository interface with a name that starts with find...By. Spring then parses the method name and creates a query for it automatically.</p>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">UserRepository</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span> <span class="hljs-type">CrudRepository</span></span>&lt;<span class="hljs-title">User</span>, <span class="hljs-title">Long</span>&gt; </span>{
+    User findByName(<span class="hljs-keyword">String</span> name);
+}
+</code></pre>
+<p>Dependency</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-data-jpa<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<pre><code class="lang-gradle"><span class="hljs-keyword">implementation</span> <span class="hljs-string">'org.springframework.boot:spring-boot-starter-data-jpa'</span>
+</code></pre>
+<h3 id="configure-data-source">Configure Data Source</h3>
+<p>Spring Boot automatically configures Hibernate as a default JPA provider. So it&#39;s no longer required to explicitly configure the EntityManagerFactory bean unless we want to customize it.</p>
+<p>Similarly, if you are using an in-memory database such as H2, HSQLDB, or Apache Derby, Spring Boot will auto-configure the DataSource bean for you as well. You only need to make sure that the corresponding database dependency is available in the classpath.</p>
+<h3 id="h2-configuration">H2 Configuration</h3>
+<p>Just add the following H2 database dependency to your Project :</p>
+<ul>
+<li><p>Gradle : <code>runtimeOnly &#39;com.h2database:h2&#39;</code></p>
+</li>
+<li><p>Maven</p>
+</li>
+</ul>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.h2database<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>h2<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>runtime<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<p>That&#39;s it. Spring Boot will automatically configure the DataSource bean for you when it will detect the H2 database dependency in the classpath.</p>
+<h3 id="mysql-configuration">MySQL Configuration</h3>
+<ol>
+<li><p>First of all, add the following MySQL driver dependency to your project.</p>
+</li>
+<li><p>Gradle : runtimeOnly &#39;mysql:mysql-connector-java&#39;</p>
+</li>
+<li><p>Maven</p>
+</li>
+</ol>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>runtime<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<ul>
+<li><p>Next, you need to define the DataSource configuration. There are two ways to do this. You can either define it as a bean in a Java class with @Configuration annotation or use the Spring Boot properties file to define data source properties.</p>
+</li>
+<li><p>Java-based data source configuration looks like in a Spring Boot project:</p>
+</li>
+</ul>
+<pre><code class="lang-java">@<span class="hljs-keyword">Bean
+</span>public DataSource dataSource() {
+    DriverManagerDataSource dataSource = new DriverManagerDataSource()<span class="hljs-comment">;</span>
+
+    dataSource.setDriverClassName(<span class="hljs-string">"com.mysql.cj.jdbc.Driver"</span>)<span class="hljs-comment">;</span>
+    dataSource.setUsername(<span class="hljs-string">"root"</span>)<span class="hljs-comment">;</span>
+    dataSource.setPassword(<span class="hljs-string">"rootpass"</span>)<span class="hljs-comment">;</span>
+    dataSource.setUrl(<span class="hljs-string">"jdbc:mysql://localhost:3306/testdb?createDatabaseIfNotExist=true&amp;useSSL=false"</span>)<span class="hljs-comment">;</span>
+
+    return dataSource<span class="hljs-comment">;</span>
+}
+</code></pre>
+<ul>
+<li>To configure the data source using a properties file : application.properties or application.yml</li>
+</ul>
+<p>```yml or properties
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.username=root
+spring.datasource.password=rootpass
+spring.datasource.url=jdbc:mysql://localhost:3306/testdb?createDatabaseIfNotExist=true&amp;useSSL=false</p>
+<pre><code>
+Spring Boot will automatically configure a DataSource bean based on the above properties.
+
+### Define an Entity
+
+Define a simple entity <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">for</span> <span class="hljs-title">storing</span> <span class="hljs-title">User</span> <span class="hljs-title">object</span> :
+
+<span class="hljs-type">```java</span></span>
+<span class="hljs-keyword">package</span> com.attacomsian.jpa.domains;
+
+<span class="hljs-keyword">import</span> javax.persistence.Entity;
+<span class="hljs-keyword">import</span> javax.persistence.GeneratedValue;
+<span class="hljs-keyword">import</span> javax.persistence.GenerationType;
+<span class="hljs-keyword">import</span> javax.persistence.Id;
+
+<span class="hljs-comment">/*
+*
+* The User class annotated with Entity, indicates that is a JPA entity
+*
+* Since no @Table annotation is provided, it is assumed that this entity is mapped to a table named User.
+*
+* @Entity annotation corresponds to the table with the same name as the class name. If you want to bind the entity with a table that has a different name, you can use @Table annotation with the "name = " parameter.
+*
+*/</span>
+<span class="hljs-meta">@Entity</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> </span>{
+
+   <span class="hljs-comment">/*
+   * Three attributes.
+   *
+   * The No argument constructor is only required for JPA. The other can be used for creating instace of the User to be saved to database.
+   *
+   * The id property is annotated with @Id so that JPA recognizes it as the object’s ID. The id property is also annotated with @GeneratedValue to indicate that the ID should be generated automatically.
+   *  
+   * The other two properties, name and email, are left unannotated. It means that they are mapped to columns that have the same names as the properties themselves.
+   */</span>
+
+   <span class="hljs-comment">//Note that you can use @Id annotation together with @Column annotation</span>
+    <span class="hljs-meta">@Id</span>
+    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.AUTO)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-built_in">Long</span> id;
+    <span class="hljs-comment">/*
+    *
+    * If you want to bind the entity field with a table column that has a different name, you can use @Column annotation with the "name = " parameter.
+    *
+    */</span>
+    <span class="hljs-meta">@Column(name = <span class="hljs-meta-string">"UserName"</span>)</span>
+    <span class="hljs-keyword">private</span> String name;
+    <span class="hljs-keyword">private</span> String email;
+
+    <span class="hljs-keyword">public</span> User() {
+    }
+
+    <span class="hljs-keyword">public</span> User(String name, String email) {
+        <span class="hljs-keyword">this</span>.name = name;
+        <span class="hljs-keyword">this</span>.email = email;
+    }
+
+    <span class="hljs-comment">// getters and setters removed for brevity</span>
+}
+</code></pre><h3 id="create-a-repository">Create a Repository</h3>
+<p>Create a repository interface for the above User entity:</p>
+<pre><code class="lang-java">package com.attacomsian.jpa.repositories;
+
+<span class="hljs-keyword">import</span> com.attacomsian.jpa.domains.User;
+<span class="hljs-keyword">import</span> org.springframework.data.repository.CrudRepository;
+
+<span class="hljs-keyword">import</span> java.util.<span class="hljs-built_in">List</span>;
+
+public <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">UserRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">CrudRepository</span>&lt;<span class="hljs-title">User</span>, <span class="hljs-title">Long</span>&gt; </span>{
+
+    <span class="hljs-built_in">List</span>&lt;User&gt; findByName(<span class="hljs-built_in">String</span> name);
+
+    User findByEmail(<span class="hljs-built_in">String</span> email);
+}
+</code></pre>
+<p><code>UserRepository</code> extends the <code>CrudRepository</code> interface provided by the Spring Data Commons project. The type of entity and ID that it works with, User and Long, are specified in the generic parameters on <code>CrudRepository</code>. By extending <code>CrudRepository</code>, <code>UserRepository</code> inherits several methods for saving, deleting, and finding User entities.</p>
+<p>Spring Data JPA also allows you to define other query methods by declaring their method signature. For example, <code>UserRepository</code> declares two additional methods: <code>findByName()</code> and <code>findByEmail()</code>.</p>
+<p>In a typical Java application, you have to write a class that implements <code>UserRepository</code> interface methods. However, it is no longer required with Spring Data JPA. It will create the repository implementation automatically, at runtime, from the repository interface. That is what makes Spring Data JPA so much powerful.</p>
+<h3 id="create-an-application-class">Create an Application Class</h3>
+<p>Let us create the Spring Boot main application class to play with the above UserRepository interface. Since we don&#39;t need the web part of Spring Boot, we will implement the <code>CommandLineRunner</code> interface to make it a console application.</p>
+<pre><code class="lang-java"><span class="hljs-keyword">package</span> com.attacomsian.jpa;
+
+<span class="hljs-keyword">import</span> com.attacomsian.jpa.domains.User;
+<span class="hljs-keyword">import</span> com.attacomsian.jpa.repositories.UserRepository;
+<span class="hljs-keyword">import</span> org.slf4j.Logger;
+<span class="hljs-keyword">import</span> org.slf4j.LoggerFactory;
+<span class="hljs-keyword">import</span> org.springframework.boot.CommandLineRunner;
+<span class="hljs-keyword">import</span> org.springframework.boot.SpringApplication;
+<span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;
+
+@SpringBootApplication
+<span class="hljs-keyword">public</span> class Application {
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Logger <span class="hljs-built_in">log</span> = LoggerFactory.getLogger(Application.class);
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> main(<span class="hljs-keyword">String</span>[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
+    @Bean
+    <span class="hljs-keyword">public</span> CommandLineRunner userDemo(UserRepository userRepository) {
+        <span class="hljs-keyword">return</span> (args) -&gt; {
+
+            <span class="hljs-comment">// create users</span>
+            userRepository.<span class="hljs-built_in">save</span>(<span class="hljs-keyword">new</span> User(<span class="hljs-string">"John Doe"</span>, <span class="hljs-string">"john.doe@example.com"</span>));
+            userRepository.<span class="hljs-built_in">save</span>(<span class="hljs-keyword">new</span> User(<span class="hljs-string">"Emma Watson"</span>, <span class="hljs-string">"emma.watson@example.com"</span>));
+            userRepository.<span class="hljs-built_in">save</span>(<span class="hljs-keyword">new</span> User(<span class="hljs-string">"Seno Reta"</span>, <span class="hljs-string">"seno.reta@example.com"</span>));
+            userRepository.<span class="hljs-built_in">save</span>(<span class="hljs-keyword">new</span> User(<span class="hljs-string">"Mike Hassan"</span>, <span class="hljs-string">"mike.hassan@example.com"</span>));
+
+            <span class="hljs-comment">// fetch all users</span>
+            <span class="hljs-built_in">log</span>.info(<span class="hljs-string">"Users found with findAll():"</span>);
+            <span class="hljs-built_in">log</span>.info(<span class="hljs-string">"---------------------------"</span>);
+            <span class="hljs-keyword">for</span> (User user : userRepository.findAll()) {
+                <span class="hljs-built_in">log</span>.info(user.toString());
+            }
+            <span class="hljs-built_in">log</span>.info(<span class="hljs-string">""</span>);
+
+            <span class="hljs-comment">// fetch user by id</span>
+            User user = userRepository.findById(<span class="hljs-number">1</span>L).<span class="hljs-built_in">get</span>();
+            <span class="hljs-built_in">log</span>.info(<span class="hljs-string">"User found with findById(1L):"</span>);
+            <span class="hljs-built_in">log</span>.info(<span class="hljs-string">"-----------------------------"</span>);
+            <span class="hljs-built_in">log</span>.info(user.toString());
+            <span class="hljs-built_in">log</span>.info(<span class="hljs-string">""</span>);
+
+            <span class="hljs-comment">// fetch user by email address</span>
+            User userWithEmail = userRepository.findByEmail(<span class="hljs-string">"john.doe@example.com"</span>);
+            <span class="hljs-built_in">log</span>.info(<span class="hljs-string">"User found with findByEmail('john.doe@example.com'):"</span>);
+            <span class="hljs-built_in">log</span>.info(<span class="hljs-string">"----------------------------------------------------"</span>);
+            <span class="hljs-built_in">log</span>.info(userWithEmail.toString());
+            <span class="hljs-built_in">log</span>.info(<span class="hljs-string">""</span>);
+
+            <span class="hljs-comment">// delete all users</span>
+            userRepository.deleteAll();
+
+            <span class="hljs-comment">// confirm users deletion</span>
+            <span class="hljs-built_in">log</span>.info(<span class="hljs-string">"Total users after deletion with :"</span>);
+            <span class="hljs-built_in">log</span>.info(<span class="hljs-string">"--------------------------"</span>);
+            <span class="hljs-built_in">log</span>.info(userRepository.count() + <span class="hljs-string">" users are in DB"</span>);
+            <span class="hljs-built_in">log</span>.info(<span class="hljs-string">""</span>);
+        };
+    }
+}
+</code></pre>
+<blockquote>
+<p>Note: By default, Spring Boot enables JPA repository support and looks in the package (and its sub-packages) where the class with <code>@SpringBootApplication</code> annotation is located. If your application doesn&#39;t follow the default project structure, you need to configure your repositories package using the <code>@EnableJpaRepositories</code> annotation.</p>
+</blockquote>
+<hr>
+<p>Example : Spring Data JPA with h2 DataBase :</p>
+<blockquote>
+<p>H2 database documentation : <a href="http://www.h2database.com/html/features.html#connection_modes">H2 Database Documentations</a></p>
+</blockquote>
+<ul>
+<li>Dependencies and configuration
+Maven</li>
+</ul>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-data-jpa<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.h2database<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>h2<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>runtime<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<blockquote>
+<p>Gradle : implementation &#39;org.springframework.boot:spring-boot-starter-data-jpa&#39;
+runtimeOnly &#39;com.h2database:h2&#39;</p>
+</blockquote>
+<pre><code class="lang-Properties">spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.url</span>=jdbc:<span class="hljs-selector-tag">h2</span>:mem:jpadb
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.driverClassName</span>=org<span class="hljs-selector-class">.h2</span><span class="hljs-selector-class">.Driver</span>
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.username</span>=sa
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.password</span>=mypass
+spring<span class="hljs-selector-class">.jpa</span><span class="hljs-selector-class">.database-platform</span>=org<span class="hljs-selector-class">.hibernate</span><span class="hljs-selector-class">.dialect</span><span class="hljs-selector-class">.H2Dialect</span>
+</code></pre>
+<h3 id="properties">Properties</h3>
+<ul>
+<li><code>spring.datasource.driverClassName=org.h2.Driver</code> :</li>
+</ul>
+<p>This parameter sets the class of the datasource driver. If you tap on the value, you will be able to see that it is a regular Java class in the org.h2 package:</p>
+<blockquote>
+<p>public class Driver implements java.sql.Driver, JdbcDriverBackwardsCompat</p>
+</blockquote>
+<ul>
+<li><p><code>spring.datasource.url=jdbc:h2:file:~/sampleDB</code> :
+The next parameter sets the place where your db files would be stored. As H2 commonly is used to manage an in-memory database, all the files will be placed on your drive. For example, the following string creates a database named &quot;sampleDB&quot; in the current user&#39;s directory</p>
+</li>
+<li><p>The last two options describe the database username and password :
+<code>spring.datasource.username=sa</code>
+<code>spring.datasource.password=abc123</code></p>
+</li>
+</ul>
+<p>As H2 is a in-memory database and is removed when the application is shut down and we lose data, we could prevent it by switch to dile based storage by updating datasource property :</p>
+<blockquote>
+<p>spring.datasource.url=jdbc:h2:file:/opt/jpadb</p>
+</blockquote>
+<ul>
+<li><code>spring.jpa.database-platform=org.hibernate.dialect.H2Dialect</code> :
+You can also set the database type you are about to use. Otherwise, it will be set automatically.</li>
+</ul>
+<h3 id="h2-console">H2 Console</h3>
+<p>Now we enable the h2 console so it can run our application and use the console functionality :</p>
+<p><code>spring.h2.console.enabled=true</code>
+<code>spring.h2.console.settings.trace=false</code></p>
+<p>The trace parameter value above hides all the H2 console trace in the application log. You can set it to true and look at how console actions are traced.</p>
+<blockquote>
+<p>We can not get ot the h2 database at <code>/h2-console</code>.
+To Change the path of the database we could use :  spring.h2.console.path=/h2</p>
+</blockquote>
+<p>Replace the JDBC URL value with the one you set at spring.datasource.url parameter and connect with the username and password you set at spring.datasource.username and spring.datasource.password parameters.</p>
+<p>Hibernate can create the table according to this model. To enable updating schema by models, we set some properties at the application.properties file again:</p>
+<p><code>spring.jpa.hibernate.ddl-auto=update</code></p>
+<p>This parameter can get different values to change the schema creation behavior on the application startup:</p>
+<ul>
+<li>update: updating schema if some changes were made to entity classes;</li>
+<li>create: always drops the previous schema and generates a new one;</li>
+<li>create-drop: creates the new schema and drops the previous when an application is stopped;</li>
+<li>validate: just validating the schema and making no changes to the existing one.</li>
+</ul>
+<blockquote>
+<p>spring.jpa.show-sql=true :  To see what queries sql runs during runtime.</p>
+</blockquote>
+<h3 id="complete-code-to-set-up-h2-database">Complete code to set up H2 database</h3>
+<pre><code class="lang-properties"><span class="hljs-selector-id">#datasource</span> settings
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.url</span>=jdbc:<span class="hljs-selector-tag">h2</span>:file:~/sampleDB
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.driverClassName</span>=org<span class="hljs-selector-class">.h2</span><span class="hljs-selector-class">.Driver</span>
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.username</span>=sa
+spring<span class="hljs-selector-class">.datasource</span><span class="hljs-selector-class">.password</span>=abc123
+
+<span class="hljs-selector-id">#data</span> settings
+spring<span class="hljs-selector-class">.jpa</span><span class="hljs-selector-class">.database-platform</span>=org<span class="hljs-selector-class">.hibernate</span><span class="hljs-selector-class">.dialect</span><span class="hljs-selector-class">.H2Dialect</span>
+spring<span class="hljs-selector-class">.jpa</span><span class="hljs-selector-class">.hibernate</span><span class="hljs-selector-class">.ddl-auto</span>=update
+
+<span class="hljs-selector-id">#console</span> settings
+spring<span class="hljs-selector-class">.h2</span><span class="hljs-selector-class">.console</span><span class="hljs-selector-class">.enabled</span>=true
+spring<span class="hljs-selector-class">.h2</span><span class="hljs-selector-class">.console</span><span class="hljs-selector-class">.path</span>=/<span class="hljs-selector-tag">h2</span>
+spring<span class="hljs-selector-class">.h2</span><span class="hljs-selector-class">.console</span><span class="hljs-selector-class">.settings</span><span class="hljs-selector-class">.trace</span>=false
+spring<span class="hljs-selector-class">.jpa</span><span class="hljs-selector-class">.show-sql</span>=true
+</code></pre>
+<ul>
+<li>Create a Book entity :</li>
+</ul>
+<pre><code class="lang-java"><span class="hljs-keyword">import</span> javax.persistence.*;
+
+<span class="hljs-meta">@Entity</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Book</span> </span>{
+
+    <span class="hljs-meta">@Id</span>
+    <span class="hljs-comment">//This means that it is the object's auto-generated primary key</span>
+    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.AUTO)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-built_in">Long</span> id;
+    <span class="hljs-keyword">private</span> String title;
+    <span class="hljs-comment">/*
+    *
+    * The @Column annotation is used to specify the mapped column for a persistent property or field in the database. We set the unique property to true to indicate that this column is a unique key.
+    * In simple words, the isbn property must be unique for all books.
+    *
+    */</span>
+    <span class="hljs-meta">@Column(unique = true)</span>
+    <span class="hljs-keyword">private</span> String isbn;
+
+    <span class="hljs-keyword">public</span> Book() {
+    }
+
+    <span class="hljs-keyword">public</span> Book(String title, String isbn) {
+        <span class="hljs-keyword">this</span>.title = title;
+        <span class="hljs-keyword">this</span>.isbn = isbn;
+    }
+
+    <span class="hljs-comment">// getters and setters removed for brevity</span>
+}
+</code></pre>
+<ul>
+<li>Create The Repository Interface :</li>
+</ul>
+<pre><code class="lang-java">package com.attacomsian.jpa.repositories;
+
+<span class="hljs-keyword">import</span> com.attacomsian.jpa.domains.Book;
+<span class="hljs-keyword">import</span> org.springframework.data.repository.CrudRepository;
+
+<span class="hljs-keyword">import</span> java.util.<span class="hljs-built_in">List</span>;
+
+public <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">BookRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">CrudRepository</span>&lt;<span class="hljs-title">Book</span>, <span class="hljs-title">Long</span>&gt; </span>{
+
+    Book findByIsbn(<span class="hljs-built_in">String</span> isbn);
+
+    <span class="hljs-built_in">List</span>&lt;Book&gt; findByTitleContaining(<span class="hljs-built_in">String</span> title);
+}
+</code></pre>
+<ul>
+<li>Create the Application :</li>
+</ul>
+<pre><code class="lang-java">package com.attacomsian.jpa;
+
+<span class="hljs-keyword">import</span> com.attacomsian.jpa.domains.Book;
+<span class="hljs-keyword">import</span> com.attacomsian.jpa.repositories.BookRepository;
+<span class="hljs-keyword">import</span> org.springframework.boot.CommandLineRunner;
+<span class="hljs-keyword">import</span> org.springframework.boot.SpringApplication;
+<span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;
+
+@<span class="hljs-type">SpringBootApplication</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Application</span> </span>{
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> void main(<span class="hljs-type">String</span>[] args) {
+        <span class="hljs-type">SpringApplication</span>.run(<span class="hljs-type">Application</span>.<span class="hljs-keyword">class</span>, args);
+    }
+
+    @<span class="hljs-type">Bean</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">CommandLineRunner</span> bookDemo(<span class="hljs-type">BookRepository</span> bookRepository) {
+        <span class="hljs-keyword">return</span> (args) -&gt; {
+
+            <span class="hljs-comment">// create books</span>
+            bookRepository.save(new <span class="hljs-type">Book</span>(<span class="hljs-string">"Thinking in Java"</span>, <span class="hljs-string">"0136597238"</span>));
+            bookRepository.save(new <span class="hljs-type">Book</span>(<span class="hljs-string">"Beginning Java 2"</span>, <span class="hljs-string">"1861002238"</span>));
+            bookRepository.save(new <span class="hljs-type">Book</span>(<span class="hljs-string">"Java Gently"</span>, <span class="hljs-string">"0201342979"</span>));
+            bookRepository.save(new <span class="hljs-type">Book</span>(<span class="hljs-string">"Java 2 Platform Unleashed"</span>, <span class="hljs-string">"0672316315"</span>));
+
+            <span class="hljs-comment">// fetch all books</span>
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"Books found with findAll():"</span>);
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"---------------------------"</span>);
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">Book</span> book : bookRepository.findAll()) {
+                <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(book.<span class="hljs-built_in">toString</span>());
+            }
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>();
+
+            <span class="hljs-comment">// fetch book by id</span>
+            <span class="hljs-type">Book</span> book = bookRepository.findById(1L).<span class="hljs-keyword">get</span>();
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"Book found with findById(1L):"</span>);
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"-----------------------------"</span>);
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(book.<span class="hljs-built_in">toString</span>());
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>();
+
+            <span class="hljs-comment">// fetch book by ISBN</span>
+            <span class="hljs-type">Book</span> bookWithIBSN = bookRepository.findByIsbn(<span class="hljs-string">"0201342979"</span>);
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"Book found with findByEmail('0201342979'):"</span>);
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"------------------------------------------"</span>);
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(bookWithIBSN.<span class="hljs-built_in">toString</span>());
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>();
+
+            <span class="hljs-comment">// fetch all books that contain keyword `java`</span>
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"Books that contain keyword 'java':"</span>);
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"----------------------------------"</span>);
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">Book</span> b : bookRepository.findByTitleContaining(<span class="hljs-string">"java"</span>)) {
+                <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(b.<span class="hljs-built_in">toString</span>());
+            }
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>();
+
+            <span class="hljs-comment">// update book title</span>
+            <span class="hljs-type">Book</span> bookUpdate = bookRepository.findById(2L).<span class="hljs-keyword">get</span>();
+            bookUpdate.setTitle(<span class="hljs-string">"Java Gently 2nd Edition"</span>);
+            bookRepository.save(bookUpdate);
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"Update book title:"</span>);
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"------------------"</span>);
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(bookUpdate.<span class="hljs-built_in">toString</span>());
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>();
+
+            <span class="hljs-comment">// total books in DB</span>
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"Total books in DB:"</span>);
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"------------------"</span>);
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>(bookRepository.<span class="hljs-built_in">count</span>());
+            <span class="hljs-type">System</span>.out.<span class="hljs-built_in">println</span>();
+
+            <span class="hljs-comment">// delete all books</span>
+            bookRepository.deleteAll();
+        };
+    }
+}
+</code></pre>
+<h3 id="to-ignore-a-field-from-getting-persisted-in-database">To Ignore a field from getting persisted in database</h3>
+<p>To ignore a field, annotate it with @Transient so it will not be mapped by hibernate.</p>
+<p>But then jackson will not serialize the field when converting to JSON.</p>
+<p>If you need mix JPA with JSON(omit by JPA but still include in Jackson) use @JsonInclude :</p>
+<pre><code class="lang-java"><span class="hljs-variable">@JsonInclude</span>()
+<span class="hljs-variable">@Transient</span>
+private String token;
+</code></pre>
+<p>TIP:</p>
+<p>You can also use JsonInclude.Include.NON_NULL and hide fields in JSON during deserialization when token == null:</p>
+<pre><code class="lang-java"><span class="hljs-variable">@JsonInclude</span>(JsonInclude.Include.NON_NULL)
+<span class="hljs-variable">@Transient</span>
+private String token;
+</code></pre>
+<hr>
+<h2 id="sql">SQL</h2>
+<p>SQL (Structured Query Language) is a domain-specific programming language designed to handle data in tables.</p>
+<p><img src="../NotesImages/SQL1.jpg" alt="SQL basic operations Image here"></p>
+<ol>
+<li><p>SQL is a language used to extract and update data structured as tables.</p>
+</li>
+<li><p>Data is organized in a bunch of tables with names, what is usually called a database.</p>
+</li>
+<li><p>SQL is a programming language with a large feature set for data processing. SQL is a declarative language and thus any statement written in it is a query that states to the system what should be done or evaluated, but not how.
+Let&#39;s focus on the simplest and most basic functionality of data extraction from a table. For example, if we have a table named &quot;Customers&quot;, a query that extracts all rows and columns is the following:</p>
+</li>
+</ol>
+<p><code>SELECT * FROM Customers;</code></p>
+<ul>
+<li>That simple query from the example above may be read as &quot;select everything from customers&quot;. SQL was designed to be similar to natural language. Declarative nature of SQL hides the complexities from the user and, to some extent, you just declare your will while the system analyses the query, chooses the control flow, and executes it.</li>
+</ul>
+<h2 id="object-relational-mapping">Object-Relational Mapping</h2>
+<p>Object-Relational Mapping is a concept of converting data from an object-oriented programming language to relational database representation and vice versa. It solves the problem of matching two different type systems together and synchronize the data flow between them.</p>
+<h3 id="main-parts-of-orms">Main parts of ORMs</h3>
+<ul>
+<li>Virtual Tables :
+Relational databases use tuples and tables to store data.</li>
+</ul>
+<p>The main idea is to use classes as tables descriptions. We create a class as a virtual table for the given table in the database. We use or define methods for this class to retrieve, change and delete data</p>
+<p>To represent one row from the table, we can define another class (for some libraries it can be the same class), and match its attributes to columns of the table. The instance of this class can manipulate not only the values of the row but also relations this row has, we will discuss it below.</p>
+<p>Let&#39;s look at the example with the class City. We match values in tables with scalar attributes in the class. The name can be a string. Longitude and latitude can be real numbers.</p>
+<p><img src="../NotesImages/table-class-relation.svg" alt="Table in database to Class relation Image"></p>
+<p>As you know, a class can have attributes that represent a list of other objects. For example, a city may have a lot of streets. It contradicts attribute-to-column mapping, but the ORM provides instruments for these cases too. In terms of relational databases, the link between one object and several others is called <em>one-to-many relation</em>. It&#39;s quite similar to a list attribute of an object.</p>
+<p>   <code>One to Many Replations</code> : Taking above example a city might have many streets. This relation between city and street is called as One to many relation.</p>
+<ul>
+<li>Relations :</li>
+</ul>
+<p>The relation is a link that connects a value from one table to the row in another. The database can store such links as keys. You can think about it as an object containing another object as an attribute.</p>
+<p>Relations in databases are more than simple links. When you delete the root row from one table, it can imply cascade deletions of all related rows from other tables. It&#39;s not the same logic as for a programming language. If you have a link in an object, you expect that when you delete this link, only the link will disappear, not the connected object itself. On the other hand, if your database has a table &quot;City&quot; and London city in it, you can suppose when you delete London city from the table, all related rows from the table &quot;Street&quot; will disappear too. A street belongs to the city; without the city, there are no streets.</p>
+<p><img src="../NotesImages/City-Street-relation-One-to-Many.svg" alt="Relation-of-city-with-Street"></p>
+<p>You may expect that if you delete the city, you will remove it with all the appropriate streets. However, if you delete the street and it has an attribute city, the city will stay in the database. It means that relations have directions. The cascade deletions imply the deletion of dependent objects, not dependent on ones.</p>
+<hr>
+<h2 id="jpa-relationships">JPA Relationships</h2>
+<p>We&#39;ve considered JPA capabilities for only one table in the database. However, in the real world, it is common to interact with several entities that are connected. There are four types of connections or relationships between two entities.</p>
+<h3 id="unidirectional-onetomany-">Unidirectional <code>@OneToMany</code></h3>
+<p>Imagine you are developing Tweeter. A Tweeter user can post a lot of tweets, and each tweet can be posted by only one user. Such a relationship between the entities User and Tweet is called a one-to-many relationship: one user can post many tweets.</p>
+<p>For defining the one-to-many relationship between the User and Tweet entities, you can use JPA <code>@OneToMany</code>annotation. This annotation is placed on top of the entity field or property that refers to the associated entity. Except for <code>@OneToMany</code> annotation, we need <code>@JoinColumn</code> annotation with the <code>&quot;name = &quot;</code> parameter for specifying a mapped column. It allows to join an entity association: such column connects User Table and Tweet table, so it is a UserId column in the Tweet table.</p>
+<pre><code class="lang-java"><span class="hljs-variable">@Entity</span>
+public class User {
+
+    <span class="hljs-variable">@Id</span>
+    private long id;
+
+   <span class="hljs-comment">/*
+   The @JoinColumn annotation on top of the tweets field indicates that the Tweet table has a UserID foreign key column specifying an entity association between these tables.
+
+   Parameter "nullable = false" of the @JoinColumn annotation indicates that the annotated field shall not be null.
+   */</span>
+
+    <span class="hljs-variable">@OneToMany</span>
+    <span class="hljs-variable">@JoinColumn</span>(name = <span class="hljs-string">"UserID"</span>, nullable = false)
+    private List&lt;Tweet&gt; tweets = new ArrayList&lt;&gt;();
+}
+
+<span class="hljs-variable">@Entity</span>
+public class Tweet {
+
+    <span class="hljs-variable">@Id</span>
+    <span class="hljs-variable">@Column</span>(name = <span class="hljs-string">"TweetID"</span>)
+    private long id;
+}
+</code></pre>
+<p>The User entity has a field Tweets. In other words, the User entity &quot;knows&quot; about Tweets to which it refers. However, the entity Tweet doesn&#39;t have any fields that would refer to the User, so Tweet doesn&#39;t &quot;know&quot; to which User it refers. Such a relationship is called Unidirectional. The unidirectional relationship has only an owning side meaning the side of the relation that owns the foreign key in the database.</p>
+<h3 id="bidirectional-manytoone-">Bidirectional <code>@ManyToOne</code></h3>
+<p>As you might have guessed, in the Bidirectional relationship, each entity &quot;knows&quot; about each other. It means that each entity has a field or property that refers to the other entity. The bidirectional relationship has both an owning side and an inverse side, which is the opposite side of the bidirectional relationship.</p>
+<p>&quot;Many&quot; side is always the owning side of the relationship. In our case, the <code>User</code> has many <code>Tweets</code>, so <code>Tweet</code> is a &quot;many&quot; side, so it is an owning side of the relationship, and the <code>User</code> is the opposite one.</p>
+<p>The <code>Tweet</code> entity should have a reference to the User entity and vice versa. Let&#39;s define the <code>Tweet</code> entity field that refers to the <code>User</code> entity. We know that Tweet and <code>User</code> have the next relationship: many Tweets can belong to one <code>User</code> (many-to-one relationship), so you can use <code>@ManyToOne</code> annotation on top of the field for specifying such a relationship. Except for the type of relationship, we should define a mapped column (UserID column in the table Tweet) for joining an entity association using the <code>@JoinColumn</code> annotation.</p>
+<pre><code class="lang-java"><span class="hljs-variable">@Entity</span>
+public class Tweet {
+
+    <span class="hljs-variable">@Id</span>
+    <span class="hljs-variable">@Column</span>(name = <span class="hljs-string">"TweetID"</span>)
+    private long id;
+
+    <span class="hljs-variable">@ManyToOne</span>
+    <span class="hljs-variable">@JoinColumn</span>(name = <span class="hljs-string">"UserID"</span>)
+    private User user;
+}
+</code></pre>
+<p>Now we have to define another side of the relationship: the entity <code>User</code>. Once again: many <code>Tweets</code> can belong to one <code>User</code>; in other words, one <code>User</code> has many <code>Tweets</code>. It means that we can define the field <code>Tweets</code> with a type of List <code>&lt;Tweet&gt;</code> in the <code>User</code> entity. It helps us to refer to the Tweet entity using @OneToMany annotation with the <code>&quot;mappedBy = &quot; parameter</code>. This one indicates that the entity in this side (<code>User</code> entity) is the inverse of the relationship, and the owner resides in the &quot;other&quot; entity (<code>Tweet</code> entity).</p>
+<pre><code class="lang-java"><span class="hljs-meta">@Entity</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> {</span>
+
+    <span class="hljs-meta">@Id</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> id;
+
+   <span class="hljs-comment">/*
+   * The mappedBy = "user" parameter specifies that the Tweet entity private User user; field contains the foreign key to the user table so that we can find all tweets for the specified user.
+   *
+   * */</span>
+    <span class="hljs-meta">@OneToMany</span>(mappedBy = <span class="hljs-string">"user"</span>)
+    <span class="hljs-keyword">private</span> List&lt;Tweet&gt; tweets = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+
+}
+</code></pre>
+<h3 id="cascade-operations">Cascade Operations</h3>
+<p>Now we have a bidirectional relationship between tweets and user entities, so each tweet knows about its user, and a user can refer to their tweets. Great! But let&#39;s imagine that we deleted a user, and from that moment, all their tweets should be deleted as well. Often entities that are in a relationship are dependent. It means that action that was performed on one entity should be executed for each entity that is dependent on it. As you can see, the tweets depend on the user, and the user removal entails the removal of all dependent tweets. Such operations are called cascade operations.</p>
+<p>JPA presents six cascade types:</p>
+<ul>
+<li>REMOVE</li>
+<li>PERSIST</li>
+<li>MERGE</li>
+<li>DETACH</li>
+<li>REFRESH</li>
+<li>ALL</li>
+</ul>
+<p>The cascade type is indicated in the annotation @OneToMany by &quot;cascade = &quot; parameter. All six enumerated cascade types are defined in the javax.persistence.CascadeType enum. Let&#39;s see an example with the REMOVE cascade type. This one indicates that if the parent entity (User) is removed from the current persistence context (specified row is deleted from the table Users), the related entities (all related Tweets) will also be removed.</p>
+<pre><code class="lang-java"><span class="hljs-meta">@Entity</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> {</span>
+
+    <span class="hljs-meta">@Id</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> id;
+
+    <span class="hljs-meta">@OneToMany</span>(mappedBy = <span class="hljs-string">"user"</span>, cascade = CascadeType.REMOVE)
+    <span class="hljs-keyword">private</span> List&lt;Tweet&gt; tweets = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+
+}
+</code></pre>
+<p>The name of the CascadeType indicates which type of action would be shared between a parent and a child entity. <code>PERSIST</code> cascade type indicates that If the parent entity is saved (persisted) to the database table, the related entity will also be saved to the corresponding database table. <code>MERGE</code> cascade type indicates that if the parent entity is updated (merged), the related entity will also be merged. <code>DETACH</code> cascade type indicates that if the parent entity is detached (parent is still stored in the database table, but not managed by JPA anymore), the related entity will also be detached. <code>REFRESH</code> cascade type indicates that if the parent entity is refreshed (re-read from the database), the related entity will also be refreshed. ALL applies all cascade types.</p>
+<p>What if we want to use not all, but only two cascade types, for example, REMOVE and PERSIST? Just indicate them in the list of comma-separated properties.</p>
+<pre><code class="lang-java"><span class="hljs-meta">@Entity</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> {</span>
+
+    <span class="hljs-meta">@Id</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> id;
+
+    <span class="hljs-meta">@OneToMany</span>(mappedBy = <span class="hljs-string">"user"</span>, cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    <span class="hljs-keyword">private</span> List&lt;Tweet&gt; tweets = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+
+}
+</code></pre>
+<h3 id="conclusion">Conclusion</h3>
+<p>JPA can manage not only one entity but also a relationship between entities. There are four types of relationships between entities. However, one-to-many and many-to-one are the most popular types. You have learned how to deal with the unidirectional relationship by using @ManyToOne and @JoinColumn annotations. Now you also know how to deal with the bidirectional relationships by using @OneToMany annotation with the &quot;mappedBy = &quot; parameter. Entities can be dependent on each other, and we can handle dependencies by cascade operations. JPA has six types of cascade operations, and you have learned how to use them together with @OneToMany annotation and &quot;cascade = &quot; parameter that specifies the type of cascade operations.</p>
+<h2 id="-onetoone-relations">@OneToOne Relations</h2>
+<p>Let us consider an application scenario where you want to store users&#39; information along with their addresses. We want to make sure that a user can have just one address, and an address can only be associated with a single user.</p>
+<p><img src="../NotesImages/OneToOneRelations.png" alt="OneToOne relations Image"></p>
+<p>The one-to-one relationship is defined by using a foreign key called user_id in the addresses table.</p>
+<pre><code class="lang-java"><span class="hljs-keyword">package</span> com.attacomsian.jpa.one2one.domains;
+
+<span class="hljs-keyword">import</span> javax.persistence.*;
+<span class="hljs-keyword">import</span> java.io.Serializable;
+
+<span class="hljs-meta">@Entity</span>
+<span class="hljs-meta">@Table(name = <span class="hljs-meta-string">"users"</span>)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> <span class="hljs-title">implements</span> <span class="hljs-title">Serializable</span> </span>{
+
+    <span class="hljs-meta">@Id</span>
+    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-built_in">Long</span> id;
+
+    <span class="hljs-keyword">private</span> String name;
+    <span class="hljs-keyword">private</span> String email;
+    <span class="hljs-keyword">private</span> String password;
+
+    <span class="hljs-meta">@OneToOne(mappedBy = <span class="hljs-meta-string">"user"</span>, fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)</span>
+    <span class="hljs-keyword">private</span> Address address;
+
+    <span class="hljs-keyword">public</span> User() {
+    }
+
+    <span class="hljs-keyword">public</span> User(String name, String email, String password) {
+        <span class="hljs-keyword">this</span>.name = name;
+        <span class="hljs-keyword">this</span>.email = email;
+        <span class="hljs-keyword">this</span>.password = password;
+    }
+
+    <span class="hljs-comment">// getters and setters, equals(), toString() .... (omitted for brevity)</span>
+}
+</code></pre>
+<pre><code class="lang-java"><span class="hljs-keyword">package</span> com.attacomsian.jpa.one2one.domains;
+
+<span class="hljs-keyword">import</span> javax.persistence.*;
+<span class="hljs-keyword">import</span> java.io.Serializable;
+
+<span class="hljs-meta">@Entity</span>
+<span class="hljs-meta">@Table(name = <span class="hljs-meta-string">"addresses"</span>)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Address</span> <span class="hljs-title">implements</span> <span class="hljs-title">Serializable</span> </span>{
+
+    <span class="hljs-meta">@Id</span>
+    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-built_in">Long</span> id;
+
+    <span class="hljs-keyword">private</span> String street;
+    <span class="hljs-keyword">private</span> String city;
+    <span class="hljs-keyword">private</span> String state;
+    <span class="hljs-keyword">private</span> String zipCode;
+    <span class="hljs-keyword">private</span> String country;
+
+    <span class="hljs-meta">@OneToOne(fetch = FetchType.LAZY, optional = false)</span>
+    <span class="hljs-meta">@JoinColumn(name = <span class="hljs-meta-string">"user_id"</span>, nullable = false)</span>
+    <span class="hljs-keyword">private</span> User user;
+
+    <span class="hljs-keyword">public</span> Address() {
+    }
+
+    <span class="hljs-keyword">public</span> Address(String street, String city, String state, String zipCode,
+                   String country) {
+        <span class="hljs-keyword">this</span>.street = street;
+        <span class="hljs-keyword">this</span>.city = city;
+        <span class="hljs-keyword">this</span>.state = state;
+        <span class="hljs-keyword">this</span>.zipCode = zipCode;
+        <span class="hljs-keyword">this</span>.country = country;
+    }
+
+    <span class="hljs-comment">// getters and setters, equals(), toString() .... (omitted for brevity)</span>
+}
+</code></pre>
+<p>The <code>@Table</code> annotation is used to specify the name of the database table that should be mapped to this entity.</p>
+<h3 id="-onetoone-annotation">@OneToOne Annotation</h3>
+<p>In Spring Data JPA, a one-to-one relationship between two entities is declared by using the @OneToOne annotation. It accepts the following parameters:</p>
+<ol>
+<li><code>fetch</code> — Defines a strategy for fetching data from the database. By default, it is EAGER which means that the data must be eagerly fetched. We have set it to LAZY to fetch the entities lazily from the database.</li>
+<li><code>cascade</code> — Defines a set of cascadable operations that are applied to the associated entity. CascadeType.ALL means to apply all cascading operations to the related entity. Cascading operations are applied when you delete or update the parent entity.</li>
+<li><code>mappedBy</code> — Defines the entity that owns the relationship which is the Address entity in our case.</li>
+<li><code>optional</code> — Defines whether the relationship is optional. If set to false then a non-null relationship must always exist.</li>
+</ol>
+<p>In a bidirectional relationship, we have to specify the <code>@OneToOne</code> annotation in both entities. But only one entity is the owner of the association. Usually, the child entity is one that owns the relationship and the parent entity is the inverse side of the relationship.</p>
+<h3 id="-joincolumn-annotation">@JoinColumn Annotation</h3>
+<p>The <code>@JoinColumn</code> annotation is used to specify the foreign key column in the owner of the relationship. The inverse-side of the relationship sets the <code>@OneToOne&#39;s</code> mappedBy parameter to indicate that the relationship is mapped by the other entity.</p>
+<p>The @JoinColumn accepts the following two important parameters, among others:</p>
+<ol>
+<li>name — Defines the name of the foreign key column.</li>
+<li>nullable — Defines whether the foreign key column is nullable. By default, it is true.</li>
+</ol>
+<h3 id="create-repositories">Create Repositories</h3>
+<pre><code class="lang-java"><span class="hljs-selector-tag">package</span> <span class="hljs-selector-tag">com</span><span class="hljs-selector-class">.attacomsian</span><span class="hljs-selector-class">.jpa</span><span class="hljs-selector-class">.one2one</span><span class="hljs-selector-class">.repositories</span>;
+
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">com</span><span class="hljs-selector-class">.attacomsian</span><span class="hljs-selector-class">.jpa</span><span class="hljs-selector-class">.one2one</span><span class="hljs-selector-class">.domains</span><span class="hljs-selector-class">.User</span>;
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.data</span><span class="hljs-selector-class">.repository</span><span class="hljs-selector-class">.CrudRepository</span>;
+
+<span class="hljs-selector-tag">public</span> <span class="hljs-selector-tag">interface</span> <span class="hljs-selector-tag">UserRepository</span> <span class="hljs-selector-tag">extends</span> <span class="hljs-selector-tag">CrudRepository</span>&lt;<span class="hljs-selector-tag">User</span>, <span class="hljs-selector-tag">Long</span>&gt; {
+
+}
+</code></pre>
+<pre><code class="lang-java"><span class="hljs-selector-tag">package</span> <span class="hljs-selector-tag">com</span><span class="hljs-selector-class">.attacomsian</span><span class="hljs-selector-class">.jpa</span><span class="hljs-selector-class">.one2one</span><span class="hljs-selector-class">.repositories</span>;
+
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">com</span><span class="hljs-selector-class">.attacomsian</span><span class="hljs-selector-class">.jpa</span><span class="hljs-selector-class">.one2one</span><span class="hljs-selector-class">.domains</span><span class="hljs-selector-class">.Address</span>;
+<span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.springframework</span><span class="hljs-selector-class">.data</span><span class="hljs-selector-class">.repository</span><span class="hljs-selector-class">.CrudRepository</span>;
+
+<span class="hljs-selector-tag">public</span> <span class="hljs-selector-tag">interface</span> <span class="hljs-selector-tag">AddressRepository</span> <span class="hljs-selector-tag">extends</span> <span class="hljs-selector-tag">CrudRepository</span>&lt;<span class="hljs-selector-tag">Address</span>, <span class="hljs-selector-tag">Long</span>&gt; {
+
+}
+</code></pre>
+<pre><code class="lang-java">package com.attacomsian.jpa;
+
+<span class="hljs-keyword">import</span> com.attacomsian.jpa.one2one.domains.Address;
+<span class="hljs-keyword">import</span> com.attacomsian.jpa.one2one.domains.User;
+<span class="hljs-keyword">import</span> com.attacomsian.jpa.one2one.repositories.AddressRepository;
+<span class="hljs-keyword">import</span> com.attacomsian.jpa.one2one.repositories.UserRepository;
+<span class="hljs-keyword">import</span> org.springframework.boot.CommandLineRunner;
+<span class="hljs-keyword">import</span> org.springframework.boot.SpringApplication;
+<span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;
+
+@<span class="hljs-type">SpringBootApplication</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Application</span> </span>{
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> void main(<span class="hljs-type">String</span>[] args) {
+        <span class="hljs-type">SpringApplication</span>.run(<span class="hljs-type">Application</span>.<span class="hljs-keyword">class</span>, args);
+    }
+
+    @<span class="hljs-type">Bean</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">CommandLineRunner</span> mappingDemo(<span class="hljs-type">UserRepository</span> userRepository,
+                                         <span class="hljs-type">AddressRepository</span> addressRepository) {
+        <span class="hljs-keyword">return</span> args -&gt; {
+
+            <span class="hljs-comment">// create a user instance</span>
+            <span class="hljs-type">User</span> user = new <span class="hljs-type">User</span>(<span class="hljs-string">"John Doe"</span>, <span class="hljs-string">"john.doe@example.com"</span>, <span class="hljs-string">"1234abcd"</span>);
+
+            <span class="hljs-comment">// create an address instance</span>
+            <span class="hljs-type">Address</span> address = new <span class="hljs-type">Address</span>(<span class="hljs-string">"Lake View 321"</span>, <span class="hljs-string">"Berlin"</span>, <span class="hljs-string">"Berlin"</span>,
+                    <span class="hljs-string">"95781"</span>, <span class="hljs-string">"DE"</span>);
+
+            <span class="hljs-comment">// set child reference</span>
+            address.setUser(user);
+
+            <span class="hljs-comment">// set parent reference</span>
+            user.setAddress(address);
+
+            <span class="hljs-comment">// save the parent</span>
+            <span class="hljs-comment">// which will save the child (address) as well</span>
+            userRepository.save(user);
+        };
+    }
+}
+</code></pre>
+<h3 id="id-generation-strategies">ID Generation Strategies</h3>
+<p><a href="https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/basic-mapping.html#identifiers-primary-keys">Documentation On Identifiers / Primary Keys For DataBases</a></p>
+<p>The list of possible generation strategies:</p>
+<p><code>AUTO</code> (default): Tells Doctrine to pick the strategy that is preferred by the used database platform. The preferred strategies are IDENTITY for MySQL, SQLite and MsSQL and SEQUENCE for Oracle and PostgreSQL. This strategy provides full portability.</p>
+<p><code>SEQUENCE</code>: Tells Doctrine to use a database sequence for ID generation. This strategy does currently not provide full portability. Sequences are supported by Oracle and PostgreSql and SQL Anywhere.</p>
+<p><code>IDENTITY</code>: Tells Doctrine to use special identity columns in the database that generate a value on insertion of a row. This strategy does currently not provide full portability and is supported by the following platforms:</p>
+<p><code>MySQL/SQLite/SQL</code> Anywhere =&gt; <code>AUTO_INCREMENT</code>
+<code>MSSQL</code> =&gt; <code>IDENTITY</code>
+<code>PostgreSQL</code> =&gt; <code>SERIAL</code>
+<code>TABLE</code>: Tells Doctrine to use a separate table for ID generation. This strategy provides full portability. This strategy is not yet implemented!</p>
+<p>NONE: Tells Doctrine that the identifiers are assigned, and thus generated, by your code. The assignment must take place before a new entity is passed to EntityManager#persist. NONE is the same as leaving off the @GeneratedValue entirely.</p>
+<p>SINCE VERSION 2.3 :
+<code>UUID</code>: Tells Doctrine to use the built-in Universally Unique Identifier generator. This strategy provides full portability.</p>
+<h2 id="mongodb-with-spring">MongoDB With Spring</h2>
+<h3 id="setup">SetUp</h3>
+<ul>
+<li>Add the mongodb dependencies to the pom file.</li>
+</ul>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-data-mongodb<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<ul>
+<li>In <code>application.properties</code></li>
+</ul>
+<pre><code class="lang-properties">java<span class="hljs-selector-class">.runtime</span><span class="hljs-selector-class">.version</span>=<span class="hljs-number">8</span>
+
+spring<span class="hljs-selector-class">.data</span><span class="hljs-selector-class">.mongodb</span><span class="hljs-selector-class">.uri</span> = mongodb+srv:<span class="hljs-comment">//'databaseUserName':'Password@cluster'0.dszax.mongodb.net/'CollectionName'?retryWrites=true&amp;w=majority</span>
+
+spring<span class="hljs-selector-class">.data</span><span class="hljs-selector-class">.mongodb</span><span class="hljs-selector-class">.database</span>=test
+</code></pre>
+<p>All values to be added without the <code>&#39;&#39;</code>. The best way is to just copy it from connect with mongobd site and select connect -&gt; application -&gt; copy url.</p>
+<p>After adding the dependencies above and adding the link to application.properties file spring will automatically complete the connection on run and set up our Remote Database.</p>
+<blockquote>
+<p>Note : Do not forget to add the application.properties file to <code>.gitignore</code> before pushing the project to github as it contains access variables for the database.</p>
+</blockquote>
+<p>Uses <code>@Document</code> to define a “collection name” when you save this object. <code>@Document(collection = &quot;users&quot;)</code> : In this case, when “user” object saves, it will save into “users” collection. The @Document is placed on the class defining the object to be saved.</p>
+<p>Example Project files :</p>
+<pre><code class="lang-java"><span class="hljs-comment">//Main file</span>
+<span class="hljs-meta">@SpringBootApplication</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MongodbApplication</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">CommandLineRunner</span></span>{
+
+   <span class="hljs-meta">@Autowired</span>
+   UserRepository repository;
+
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{
+      SpringApplication.run(MongodbApplication.class, args);
+   }  
+   <span class="hljs-meta">@Override</span>
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">(String... args)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+      deleteAll();
+      addSampleData();
+      listAll();
+      findFirst();
+   }  
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">deleteAll</span><span class="hljs-params">()</span> </span>{
+      System.out.println(<span class="hljs-string">"Deleting all records.."</span>);
+      repository.deleteAll();
+   }  
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addSampleData</span><span class="hljs-params">()</span> </span>{
+      System.out.println(<span class="hljs-string">"Adding sample data"</span>);
+      repository.save(<span class="hljs-keyword">new</span> Users(<span class="hljs-string">"Jack Bauer"</span>, <span class="hljs-string">"New York"</span>, <span class="hljs-number">11111</span>d));
+      repository.save(<span class="hljs-keyword">new</span> Users(<span class="hljs-string">"Harvey Spectre"</span>, <span class="hljs-string">"London"</span>, <span class="hljs-number">22222</span>d));
+      repository.save(<span class="hljs-keyword">new</span> Users(<span class="hljs-string">"Mike Ross"</span>, <span class="hljs-string">"New Jersey"</span>, <span class="hljs-number">333333</span>d));
+      repository.save(<span class="hljs-keyword">new</span> Users(<span class="hljs-string">"Louise Litt"</span>, <span class="hljs-string">"Kathmandu"</span>, <span class="hljs-number">44444</span>d));
+   }  
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">listAll</span><span class="hljs-params">()</span> </span>{
+      System.out.println(<span class="hljs-string">"Listing sample data"</span>);
+      repository.findAll().forEach(u -&gt; System.out.println(u));
+   }  
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">findFirst</span><span class="hljs-params">()</span> </span>{
+      System.out.println(<span class="hljs-string">"Finding first by Name"</span>);
+      Users u = repository.findFirstByName(<span class="hljs-string">"Louise Litt"</span>);
+      System.out.println(u);
+   }
+}
+
+<span class="hljs-comment">//User Repository</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">UserRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">MongoRepository</span>&lt;<span class="hljs-title">Users</span>, <span class="hljs-title">String</span>&gt; </span>{
+
+    <span class="hljs-function">Users <span class="hljs-title">findFirstByName</span><span class="hljs-params">(String name)</span></span>;
+
+    <span class="hljs-meta">@Query</span>(<span class="hljs-string">"{address:'?0'}"</span>)
+    <span class="hljs-function">List&lt;Users&gt; <span class="hljs-title">findCustomByAddress</span><span class="hljs-params">(String address)</span></span>;
+
+    <span class="hljs-meta">@Query</span>(<span class="hljs-string">"{address : { $regex: ?0 } }"</span>)
+    <span class="hljs-function">List&lt;Users&gt; <span class="hljs-title">findCustomByRegExAddress</span><span class="hljs-params">(String domain)</span></span>;
+}
+
+<span class="hljs-comment">//User Object</span>
+<span class="hljs-meta">@Data</span>
+<span class="hljs-meta">@Document</span>(collection = <span class="hljs-string">"users"</span>)
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Users</span> </span>{
+
+   <span class="hljs-comment">//For finer control over how the id is mapped @MongoId can be used while using MongoDB</span>
+    <span class="hljs-meta">@Id</span>
+    <span class="hljs-keyword">private</span> String id;<span class="hljs-comment">//Note unlike SQL ids that are set to a Long We have set mongodb id as a string</span>
+    <span class="hljs-keyword">private</span> String name;
+    <span class="hljs-keyword">private</span> String address;
+    <span class="hljs-keyword">private</span> Double salary;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Users</span><span class="hljs-params">(String name, String address, Double salary)</span> </span>{
+        <span class="hljs-keyword">this</span>.name = name;
+        <span class="hljs-keyword">this</span>.address = address;
+        <span class="hljs-keyword">this</span>.salary = salary;
+    }
+}
+</code></pre>
+<p>Some environments require a customized approach to map Id values such as data stored in MongoDB that did not run through the Spring Data mapping layer. Documents can contain _id values that can be represented either as ObjectId or as String. Reading documents from the store back to the domain type works just fine. Querying for documents via their id can be cumbersome due to the implicit ObjectId conversion. Therefore documents cannot be retrieved that way. For those cases @MongoId provides more control over the actual id mapping attempts.</p>
+<p><img src="../NotesImages/MongoIDDescription.png" alt="@MongoId Description and Usage Image"></p>
+<h2 id="-getting-spring-application-ready-for-production-with-heroku-https-devcenter-heroku-com-articles-preparing-a-spring-boot-app-for-production-on-heroku-rate-limit-api-calls-"><a href="https://devcenter.heroku.com/articles/preparing-a-spring-boot-app-for-production-on-heroku#rate-limit-api-calls">Getting Spring Application ready for production with Heroku</a></h2>
+<h2 id="cross-origin-requests">Cross Origin Requests</h2>
+<p>When our spring Application is hosted on a different domain than that of our frontend application, the browser will send a <a href="https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request">PreFlightRequest</a> which our Spring Boot Backend rejects as it is a Cross Domain Request and we get an error in our Front End Project.</p>
+<p>Consider the following example where we use HttpClient in Angular application to send a request to our Spring Application.</p>
+<pre><code class="lang-error"><span class="hljs-keyword">Access</span> <span class="hljs-keyword">to</span> XMLHttpRequest at <span class="hljs-symbol">'https</span>://spring.boot.backend.link/something' from origin <span class="hljs-symbol">'http</span>://localhost:<span class="hljs-number">4200</span>' has been blocked by CORS policy: Response <span class="hljs-keyword">to</span> preflight request doesn<span class="hljs-symbol">'t</span> pass <span class="hljs-keyword">access</span> control check: No <span class="hljs-symbol">'Access</span>-Control-Allow-Origin' header <span class="hljs-keyword">is</span> present <span class="hljs-keyword">on</span> the requested resource.
+</code></pre>
+<p>We can solve this Problem by allowing request from particualar defined domain. We use the <code>@CrossOrigin(origins = &quot;http://FrontEndHostUrl.com&quot;)</code> annotation over the <code>@RequestMapping</code> annotation that we have set for our controller.</p>
+<p><a href="https://spring.io/guides/gs/rest-service-cors/">Guide On spring.io Website</a></p>
+<p>If we want to temporarily allow our frontend to be able to connect with our backend locally we can set up a ProxyServer with our development server.</p>
+<p>For Angular we can solve it as show <a href="https://medium.com/better-programming/setup-a-proxy-for-api-calls-for-your-angular-cli-app-6566c02a8c4d">here</a>. Or for a short tutorial refer to the angular notes <a href="https://github.com/Adwai-T/Notes/blob/master/WebDevelopment/AngularCourceNotes.md">here</a> and search for Proxy Server.</p>
+<blockquote>
+<p>Please note this is only for <code>ng serve</code>, you can&#39;t use proxy in <code>ng build</code>.
+Note: the reason it&#39;s working via postman is postman doesn&#39;t send preflight requests while your browser does.</p>
+</blockquote>

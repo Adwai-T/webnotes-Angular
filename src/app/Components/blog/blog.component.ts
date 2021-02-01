@@ -55,7 +55,7 @@ export class BlogComponent implements OnInit {
         {
           title: "MongoDB",
           imageSrc: "assets/images/languages/mongodb.png",
-          linkToComponent: "/blog/util/mongodb"
+          linkToFile: "assets/pages/notes/_mongodb.txt"
         }
       ]
     },
@@ -67,12 +67,12 @@ export class BlogComponent implements OnInit {
         {
           title: "Spring",
           imageSrc: "assets/images/languages/maven.png",
-          linkToComponent: "/blog/java/spring"
+          linkToFile: "assets/pages/notes/_spring.txt"
         },
         {
           title: "Threads",
           imageSrc: "assets/images/languages/Threads.png",
-          linkToFile: "assets/pages/notes/_javathreads.html"
+          linkToFile: "assets/pages/notes/_javathreads.txt"
         }
       ]
     },
@@ -84,17 +84,17 @@ export class BlogComponent implements OnInit {
         {
           title: "HTML",
           imageSrc: "assets/images/languages/html.png",
-          linkToComponent: "/blog/webdev/html"
+          linkToFile: "assets/pages/notes/_html.txt"
         },
         {
           title: "CSS",
           imageSrc: "assets/images/languages/css.png",
-          linkToComponent: "/blog/webdev/css"
+          linkToFile: "assets/pages/notes/_css.txt"
         },
         {
           title: "JavaScript",
           imageSrc: "assets/images/languages/javascript.png",
-          linkToComponent: "/blog/webdev/javascript"
+          linkToFile: "assets/pages/notes/_javascript.txt"
         },
         {
           title: 'AsyncJS',
@@ -104,7 +104,7 @@ export class BlogComponent implements OnInit {
         {
           title: "Angular",
           imageSrc: "assets/images/languages/angular.png",
-          linkToComponent: "/blog/webdev/angular"
+          linkToFile: "assets/pages/notes/_angular.txt"
         }
       ]
     },
@@ -116,7 +116,7 @@ export class BlogComponent implements OnInit {
         {
           title: "SQL",
           imageSrc: "/../../../../assets/images/languages/SQL.png",
-          linkToComponent: "/blog/database/sql"
+          linkToFile: "assets/pages/notes/_sql.txt"
         }
       ]
     },

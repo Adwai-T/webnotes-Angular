@@ -1,0 +1,246 @@
+<h1 id="javascript">JavaScript</h1>
+<h2 id="javascript-objects">JavaScript Objects</h2>
+<pre><code class="lang-javascript"><span class="hljs-comment">//There are two basic ways to create an empty object:</span>
+<span class="hljs-keyword">var</span> obj = <span class="hljs-keyword">new</span> Object();
+
+<span class="hljs-comment">//Object literal syntax can be used to initialize an object in its entirety:</span>
+<span class="hljs-keyword">var</span> obj = {
+  name: <span class="hljs-string">'Carrot'</span>,
+  <span class="hljs-keyword">for</span>: <span class="hljs-string">'Max'</span>, <span class="hljs-comment">// 'for' is a reserved word, use '_for' instead.</span>
+  details: {
+    color: <span class="hljs-string">'orange'</span>,
+    size: <span class="hljs-number">12</span>
+  }
+};
+
+<span class="hljs-comment">//Attribute access can be chained together:</span>
+obj.details.color; <span class="hljs-comment">// orange</span>
+obj[<span class="hljs-string">'details'</span>][<span class="hljs-string">'size'</span>]; <span class="hljs-comment">// 12</span>
+
+<span class="hljs-comment">//Creates an object prototype(Person) and an instance of that prototype(you)</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span><span class="hljs-params">(name, age)</span> </span>{
+  <span class="hljs-keyword">this</span>.name = name;
+  <span class="hljs-keyword">this</span>.age = age;
+}
+
+<span class="hljs-comment">// Define an object</span>
+<span class="hljs-keyword">var</span> you = <span class="hljs-keyword">new</span> Person(<span class="hljs-string">'You'</span>, <span class="hljs-number">24</span>);
+<span class="hljs-comment">// We are creating a new person named "You" aged 24.</span>
+
+<span class="hljs-comment">//Once Create and object can be access in simlar way as shown above</span>
+<span class="hljs-keyword">var</span> name = obj.name;
+<span class="hljs-keyword">var</span> name = obj[<span class="hljs-string">'name'</span>];
+obj[<span class="hljs-string">'name'</span>] = <span class="hljs-string">'Simon'</span>;
+</code></pre>
+<h2 id="array">Array</h2>
+<pre><code class="lang-javascript"><span class="hljs-comment">//Method 1 :</span>
+<span class="hljs-keyword">var</span> a = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>();
+a[<span class="hljs-number">0</span>] = <span class="hljs-string">'dog'</span>;
+a[<span class="hljs-number">1</span>] = <span class="hljs-string">'cat'</span>;
+a[<span class="hljs-number">2</span>] = <span class="hljs-string">'hen'</span>;
+a.length; <span class="hljs-comment">// 3</span>
+
+<span class="hljs-comment">//Method 2 :</span>
+<span class="hljs-keyword">var</span> a = [<span class="hljs-string">'dog'</span>, <span class="hljs-string">'cat'</span>, <span class="hljs-string">'hen'</span>];
+a[<span class="hljs-number">100</span>] = <span class="hljs-string">'fox'</span>;
+a.length; <span class="hljs-comment">// 101</span>
+
+
+<span class="hljs-comment">//Query non existing array item will return undefined</span>
+<span class="hljs-keyword">typeof</span> a[<span class="hljs-number">90</span>]; <span class="hljs-comment">// undefined</span>
+
+<span class="hljs-comment">//Iterate over an array</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> currentValue <span class="hljs-keyword">of</span> a) {
+  <span class="hljs-comment">// Do something with currentValue</span>
+}
+</code></pre>
+<h3 id="array-operations">Array Operations</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Array Method</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>a.toString()</code></td>
+<td style="text-align:left">Returns a string with the toString() of each element separated by commas.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a.toLocaleString()</code></td>
+<td style="text-align:left">Returns a string with the toLocaleString() of each element separated by commas.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a.concat(item1[, item2[, ...[, itemN]]])</code></td>
+<td style="text-align:left">Returns a new array with the items added on to it.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a.join(sep)</code></td>
+<td style="text-align:left">Converts the array to a string — with values delimited by the sep param</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a.pop()</code></td>
+<td style="text-align:left">Removes and returns the last item.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a.push(item1, ..., itemN)</code></td>
+<td style="text-align:left">Appends items to the end of the array.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a.shift()</code></td>
+<td style="text-align:left">Removes and returns the first item.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a.unshift(item1[, item2[, ...[, itemN]]])</code></td>
+<td style="text-align:left">Prepends items to the start of the array.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a.slice(start[, end])</code></td>
+<td style="text-align:left">Returns a sub-array.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a.sort([cmpfn])</code></td>
+<td style="text-align:left">Takes an optional comparison function.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a.splice(start, delcount[, item1[, ...[, itemN]]])</code></td>
+<td style="text-align:left">Lets you modify an array by deleting a section a`nd</td>
+<td>replacing it with more items.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a.reverse()</code></td>
+<td style="text-align:left">Reverses the array.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="functions">Functions</h2>
+<pre><code class="lang-javascript"><span class="hljs-comment">//The variable `...args` holds all the values that were passed into the function and can be accessed as an array.</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">avg</span><span class="hljs-params">(<span class="hljs-rest_arg">...args</span>)</span> </span>{
+  <span class="hljs-keyword">var</span> sum = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">for</span> (let value of args) {
+    sum += value;
+  }
+  <span class="hljs-keyword">return</span> sum / args.length;
+}
+
+avg(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>); <span class="hljs-comment">// 3.5</span>
+
+<span class="hljs-comment">//Recursion In function</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">countChars</span><span class="hljs-params">(elm)</span> </span>{
+  <span class="hljs-keyword">if</span> (elm.nodeType == <span class="hljs-number">3</span>) { <span class="hljs-comment">// TEXT_NODE</span>
+    <span class="hljs-keyword">return</span> elm.nodeValue.length;
+  }
+  <span class="hljs-keyword">var</span> count = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, child; child = elm.childNodes[i]; i++) {
+    count += countChars(child);
+  }
+  <span class="hljs-keyword">return</span> count;
+}
+
+<span class="hljs-comment">//Recursion with IIFEs : (Immediately Invoked Function Expressions)</span>
+<span class="hljs-keyword">var</span> charsInBody = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">counter</span><span class="hljs-params">(elm)</span> </span>{
+  <span class="hljs-keyword">if</span> (elm.nodeType == <span class="hljs-number">3</span>) { <span class="hljs-comment">// TEXT_NODE</span>
+    <span class="hljs-keyword">return</span> elm.nodeValue.length;
+  }
+  <span class="hljs-keyword">var</span> count = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, child; child = elm.childNodes[i]; i++) {
+    count += counter(child);
+  }
+  <span class="hljs-keyword">return</span> count;
+})(document.body);
+</code></pre>
+<pre><code class="lang-javascript">//Ternary Operator <span class="hljs-keyword">with</span> multiple conditions
+<span class="hljs-keyword">function</span> <span class="hljs-title">findGreaterOrEqual</span>(a, b) {
+  <span class="hljs-keyword">return</span> <span class="hljs-type">(a</span> === b) ? <span class="hljs-string">"a and b are equal"</span> : (<span class="hljs-type">a</span> &gt; b) ? <span class="hljs-string">"a is greater"</span> : "<span class="hljs-type">b</span> <span class="hljs-keyword">is</span> greater<span class="hljs-string">";
+}</span>
+</code></pre>
+<h2 id="object-oriented-programming-in-javascript">Object Oriented Programming in JavaScript</h2>
+<pre><code class="lang-javascript"><span class="hljs-comment">//--- Constructor function</span>
+<span class="hljs-comment">//By convention constructor functions are defined with capital</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Bird</span>(<span class="hljs-params">name, color</span>) </span>{
+  <span class="hljs-keyword">this</span>.name = name;
+  <span class="hljs-keyword">this</span>.color = <span class="hljs-built_in">color</span>;
+  <span class="hljs-keyword">this</span>.numLegs = <span class="hljs-number">2</span>;
+}
+<span class="hljs-comment">//Create an object from the constructor</span>
+<span class="hljs-keyword">let</span> blueBird = <span class="hljs-keyword">new</span> Bird(<span class="hljs-string">"Albert"</span>, <span class="hljs-string">"Red"</span>);
+blueBird.color = <span class="hljs-string">"Blue"</span>;
+
+<span class="hljs-comment">//Check to see which function created the given object.</span>
+blueBird <span class="hljs-keyword">instanceof</span> Bird; <span class="hljs-comment">// =&gt; true</span>
+
+<span class="hljs-comment">//Also this can be done by directly checking which is the contructor for the instance</span>
+<span class="hljs-built_in">console</span>.log(blueBird.constructor === Bird);  <span class="hljs-comment">//prints true</span>
+
+<span class="hljs-comment">//---Iterate Over all properties of an Object instance created.</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> <span class="hljs-keyword">property</span><span class="hljs-string"> in duck) {</span>
+  <span class="hljs-keyword">if</span>(duck.hasOwnProperty(<span class="hljs-keyword">property</span><span class="hljs-string">)) { </span><span class="hljs-comment">//hasOwnProperty</span>
+    ownProps.push(<span class="hljs-keyword">property</span><span class="hljs-string">)</span>;
+  } <span class="hljs-title">else</span> {
+    prototypeProps.push(<span class="hljs-keyword">property</span><span class="hljs-string">)</span>;
+  }
+}
+
+<span class="hljs-comment">//--- Using Prototype to reduce duplication</span>
+<span class="hljs-comment">//Prototype properties of a constructor function work similar to static in other programming languages.</span>
+<span class="hljs-comment">//All instances share the same value.</span>
+Bird.prototype.numLegs = <span class="hljs-number">2</span>; <span class="hljs-comment">//Variable</span>
+Bird.prototype.eat = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-comment">//Function</span>
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"nom nom nom"</span>);
+}
+
+<span class="hljs-comment">//Prototype of a constructor function can be direclty be set to a object</span>
+<span class="hljs-comment">//These are easy to manage.</span>
+Bird.prototype = {
+  <span class="hljs-attribute">constructor</span>: Bird, <span class="hljs-comment">// define the constructor property</span>
+  <span class="hljs-attribute">numLegs</span>: <span class="hljs-number">2</span>,
+  <span class="hljs-attribute">eat</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"nom nom nom"</span>);
+  },
+  <span class="hljs-attribute">describe</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"My name is "</span> + <span class="hljs-keyword">this</span>.name);
+  }
+}
+
+<span class="hljs-comment">//Sequence of inheritance</span>
+<span class="hljs-comment">//Object -&gt; Bird -&gt; blueBird</span>
+Bird.prototype.isPrototypeOf(blueBird); <span class="hljs-comment">//returns true.</span>
+<span class="hljs-built_in">Object</span>.prototype.isPrototypeOf(Bird.prototype); <span class="hljs-comment">// returns true</span>
+
+<span class="hljs-comment">//Create Objects from Parent</span>
+<span class="hljs-comment">//Animal Object/Constructor function is not shown here. Lets assume Animal.prototype has a eat function</span>
+Bird.prototype = <span class="hljs-built_in">Object</span>.create(Animal.prototype);
+
+<span class="hljs-keyword">let</span> duck = <span class="hljs-keyword">new</span> Bird(<span class="hljs-string">"Donald"</span>);
+duck.eat(); <span class="hljs-comment">// prints "nom nom nom"</span>
+<span class="hljs-comment">//duck inherits all of Animal's properties, including the eat method.</span>
+
+<span class="hljs-comment">//Inheritance properties and functions can be overwritten in the the proptotype of the child object.</span>
+
+<span class="hljs-comment">//--- Mixins</span>
+<span class="hljs-keyword">let</span> flyMixin = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">obj</span>) </span>{
+  obj.fly = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Flying, wooosh!"</span>);
+  }
+};
+
+flyMixin(bird);
+flyMixin(plane);
+
+bird.fly(); <span class="hljs-comment">// prints "Flying, wooosh!"</span>
+plane.fly(); <span class="hljs-comment">// prints "Flying, wooosh!"</span>
+
+<span class="hljs-comment">//---Closures to make varible private</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Bird</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">let</span> hatchedEgg = <span class="hljs-number">10</span>; <span class="hljs-comment">// private variable</span>
+
+  <span class="hljs-comment">/* publicly available method that a bird object can use */</span>
+  <span class="hljs-keyword">this</span>.getHatchedEggCount = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{ 
+    <span class="hljs-keyword">return</span> hatchedEgg;
+  };
+}
+<span class="hljs-keyword">let</span> ducky = <span class="hljs-keyword">new</span> Bird();
+ducky.getHatchedEggCount(); <span class="hljs-comment">// returns 10</span>
+</code></pre>
+<h2 id="classes">Classes</h2>

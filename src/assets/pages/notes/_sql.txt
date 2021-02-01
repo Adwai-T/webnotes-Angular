@@ -1,0 +1,96 @@
+<h1 id="sql">SQL</h1>
+<p>Structured Query Language</p>
+<p>Made for CRUD : Create Read Update Delete</p>
+<p>Relational Database :</p>
+<p><strong>Database</strong> <em>is</em> -&gt; <strong>Collection</strong> of tables <em>has</em>-&gt; Rows and Columns -&gt; Each row is called as a <strong>Record</strong></p>
+<p>Data in tables can be related to each other, that is why they are called as relational database.</p>
+<p>Taken together the collection of tables in a database is called as <strong>Schema</strong>.</p>
+<h2 id="commands">Commands</h2>
+<pre><code class="lang-sql"><span class="hljs-comment">/*Create a new database with name name_table*/</span>
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">DATABASE</span> name_table;
+<span class="hljs-comment">/*Create a new table in the database with name name_table and define its columns*/</span>
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">users</span>(
+    user_id <span class="hljs-built_in">int</span>,
+    first_name <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">100</span>),
+    last_name <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">100</span>),
+    email <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">255</span>)
+);
+
+<span class="hljs-comment">/*Update the database with name name_table and add a new column with name encrypted_password. It does not actually encrypt password, the name of the column is encrypted password */</span>
+<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">ADD</span> encrypted_password <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">1000</span>);
+
+<span class="hljs-comment">/*delete/remove column email from name_table*/</span>
+<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">COLUMN</span> email;
+
+<span class="hljs-comment">/*delete/remove table from database*/</span>
+<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">user</span>;
+
+<span class="hljs-comment">/*Remove/Delete Complete database with all its tables and entries.*/</span>
+<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">DATABASE</span> name_table;
+</code></pre>
+<h2 id="interacting-with-database">Interacting with DataBase</h2>
+<pre><code class="lang-sql"><span class="hljs-comment">/*Insert a record/row to the movies table*/</span>
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> movies (movies_id, title, description, price) <span class="hljs-keyword">VALUES</span>(<span class="hljs-number">1</span>, <span class="hljs-string">'Gattaca'</span>, <span class="hljs-string">'Movie or documentary'</span>, <span class="hljs-number">4.99</span>);
+<span class="hljs-comment">/*View All entries of movies table*/</span>
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> movies;
+<span class="hljs-comment">/*select a particular column to be viewed, they are in no praticular order. FROM selects tables and SELECT for columns*/</span>
+<span class="hljs-keyword">SELECT</span> title, price <span class="hljs-keyword">FROM</span> movies;
+<span class="hljs-comment">/*Select table by desc order*/</span>
+<span class="hljs-keyword">SELECT</span> title, price <span class="hljs-keyword">FROM</span> movies <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> price <span class="hljs-keyword">DESC</span>;
+<span class="hljs-comment">/*rows are selected with WHERE*/</span>
+<span class="hljs-keyword">UPDATE</span> movies <span class="hljs-keyword">SET</span> price = <span class="hljs-number">0.99</span> <span class="hljs-keyword">WHERE</span> title = <span class="hljs-string">'Jaws'</span>;
+<span class="hljs-comment">/**/</span>
+<span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> movies <span class="hljs-keyword">WHERE</span> title = <span class="hljs-string">'Star Wars'</span>
+<span class="hljs-comment">/*Gives us the number of rows in the tables*/</span>
+<span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">COUNT</span>(*) <span class="hljs-keyword">FROM</span> movies
+<span class="hljs-comment">/*Select by price range*/</span>
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> movies <span class="hljs-keyword">WHERE</span> price &gt;= <span class="hljs-number">1</span> <span class="hljs-keyword">AND</span> price &lt;= <span class="hljs-number">5</span>;
+<span class="hljs-comment">/*Use the number of rows that are given*/</span>
+LIMIT 10;
+</code></pre>
+<pre><code class="lang-sql"><span class="hljs-keyword">SELECT</span> *
+<span class="hljs-keyword">FROM</span> table_name
+<span class="hljs-keyword">WHERE</span> condition1 <span class="hljs-keyword">OR</span> condition2
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> column_name <span class="hljs-keyword">ASC</span>
+<span class="hljs-keyword">LIMIT</span> <span class="hljs-number">10</span>;
+
+<span class="hljs-comment">/*Gives min and max value in the table column*/</span>
+<span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">MIN</span>(column_name), <span class="hljs-keyword">MAX</span>(column_name)
+
+<span class="hljs-comment">/*Only show distinct entries*/</span>
+<span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">DISTINCT</span> column_name <span class="hljs-keyword">FROM</span> table_name
+</code></pre>
+<ul>
+<li>In the above <code>INSERT</code> we specified an ID(movies_id), these are used as unique identifiers for that entry. Most database softwares will generate an ID automatically and will not have to provide an id manually.</li>
+</ul>
+<h2 id="joins">Joins</h2>
+<pre><code class="lang-sql"><span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> table1
+<span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> table2
+<span class="hljs-keyword">ON</span> table1.base_id = table2.base_id
+</code></pre>
+<p>JOIN type :</p>
+<ol>
+<li><code>INNER JOIN</code> : Only joins the rows that have a match in both the tables.</li>
+<li><code>FULL JOIN</code> : Joins table irrespective if whether or not there is a matching id and puts null for the values that are not matched.</li>
+<li><code>LEFT JOIN</code> and <code>RIGHT JOIN</code> : Shows all the record from one of the tables whether there is a common id or not, but leaves the other tables entries that dont have a matching id with the other table.</li>
+</ol>
+<p>Note : Not all database support all the four types of joins. For example MySQL does not support full join.</p>
+<h2 id="views">Views</h2>
+<p>When we create Views it Give permission to a view instead of the whole table and can hide sensitive data. A view also returns a table but without the sensitive data.</p>
+<pre><code class="lang-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> people_on_mars <span class="hljs-keyword">AS</span>
+<span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">CONCAT</span>(<span class="hljs-string">'m'</span>,martian_id), first_name, last_name, <span class="hljs-string">'Martian'</span> <span class="hljs-keyword">AS</span> <span class="hljs-keyword">status</span>
+<span class="hljs-keyword">FROM</span> martian_public
+<span class="hljs-keyword">UNION</span>
+<span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">CONCAT</span>(<span class="hljs-string">'v'</span>,visitor_id), first_name, last_name, <span class="hljs-string">'Visitor'</span> <span class="hljs-keyword">AS</span> <span class="hljs-keyword">status</span>
+<span class="hljs-keyword">FROM</span> visitor;
+
+<span class="hljs-comment">/**/</span>
+<span class="hljs-keyword">SELECT</span> *
+<span class="hljs-keyword">FROM</span> people_on_mars
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> last_name;
+</code></pre>
+<h2 id="create-index">Create Index</h2>
+<pre><code class="lang-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">INDEX</span> person_first_name_idx
+<span class="hljs-keyword">ON</span> person (fist_name);
+</code></pre>
+<p>Notes Taken from Youtube channel : <a src="https://www.youtube.com/channel/UCW6TXMZ5Pq6yL6_k5NZ2e0Q" >Socratica</a></p>

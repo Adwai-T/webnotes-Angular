@@ -65,7 +65,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   flex-direction: column;
   align-items: flex-start;
   width: 95vw;
-  background-color: #fcfcf1;;
+  background-color: white;;
+  padding : 10px 15px;
 }
 
 .content_page h1{
@@ -79,10 +80,27 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .content_page .hljs-keyword{
   font-weight: 400;
+  color:#ff79c6;
 }
 
 .content_page .hljs-comment{
   color: #6272a4;
+}
+
+.content_page .hljs-title{
+  color: #8be9fd;
+}
+
+.content_page .hljs-type{
+  color : #bd93f9;
+}
+
+.content_page .hljs-meta{
+ color : #ffb86c;
+}
+
+.content_page .hljs-built_in{
+  color : #50fa7b;
 }
 
 .content_page pre{
@@ -90,5 +108,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   border-radius: 2px;
   color: #f8f8f2;
   width: 95%;
-  background-color: #282a36 ;
+  background-color: #282a36;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.content_page pre code{
+  color: #f8f8f2;
+}
+
+.content_page code{
+  color : #ff5555;
 }

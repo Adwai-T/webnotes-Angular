@@ -1,0 +1,158 @@
+<h1 id="html-and-html-5">HTML and HTML 5</h1>
+<h2 id="introduction-to-html-5-elements">Introduction to HTML 5 Elements</h2>
+<p>These tags give a discriptive structure to our HTML making the HTML code easier to read, and also help with Search Engine Optimization(SEO) and accessibility.</p>
+<pre><code class="lang-html"><span class="hljs-meta">&lt;!DOCTYPE html&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">main</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+    Helps search engines and other developers find the main content of the page.
+    There can be other child elements nested inside the main element.
+    <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">main</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Following are some examples of the other HTML 5--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">header</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">header</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">nav</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">video</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">article</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">article</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">section</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">section</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">footer</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">footer</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Adding image to the page--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://www.linktoimage/image.jpg"</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">"Alternate text to display when the image cannot be loaded."</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Adding an anchor tag to link to external pages--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"https://freecodecamp.org"</span> <span class="hljs-attr">target</span>=<span class="hljs-string">"_blank"</span>&gt;</span>This links to freecodecamp.org<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-comment">&lt;!--target="_blank will open the link in a new tab--&gt;</span>
+
+<span class="hljs-comment">&lt;!--Link to Interanl Sections of Page with Anchor Elements--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#main"</span>&gt;</span>Main<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">main</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"main"</span>&gt;</span>This is main element<span class="hljs-tag">&lt;/<span class="hljs-name">main</span>&gt;</span>
+<span class="hljs-comment">&lt;!--`#` With id name of the element that we need to go to is used to create the link--&gt;</span>
+
+<span class="hljs-comment">&lt;!--Create a Bulleted Unordered List--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>milk<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>Cheese<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!--Create an Ordered List--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>Garfield<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>Sylvester<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ol</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!--Creating a web Form--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">"/submit-cat-photo"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"cat photo URL"</span> <span class="hljs-attr">required</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span>&gt;</span>this button submits the form<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+
+  <span class="hljs-comment">&lt;!--Create Radio button pairs--&gt;</span>
+  <span class="hljs-comment">&lt;!--Radio buttons can be nested within its own label element. This way it will automatically associate the button with the label.
+
+  All related radio buttons should have the same name attribute to create a radio button group, this will make only one of them selectable at any time.
+
+  It is considered best practice to set a for attribute on the label element, with a value that matches the value of the id attribute of the input element. This allows assistive technologies to create a linked relationship between the label and the child input element. 
+  --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"indoor"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"indoor"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"indoor"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"radio"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"indoor-outdoor"</span>&gt;</span>Indoor
+  <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+
+  <span class="hljs-comment">&lt;!--Create a set of Check Boxes--&gt;</span>
+  <span class="hljs-comment">&lt;!--Checkbox and Radiobutton are very same in how they need to be added and hence the rules remain same--&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"loving"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"loving"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"Loving"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"checkbox"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"personality"</span> <span class="hljs-attr">checked</span>&gt;</span> Loving
+  <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+
+  <span class="hljs-comment">&lt;!--The value attribute is the value that gets send when the form is submitted.
+  The checked property is used to create the radiobutton or checkboxes that are checked by default--&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
+</code></pre>
+<h2 id="intermediate-html">Intermediate HTML</h2>
+<h3 id="metadata-the-meta-element">Metadata : the <code>&lt;meta&gt;</code> element</h3>
+<ul>
+<li><p><code>&lt;meta charset=&quot;utf-8&quot;&gt;</code> : This element simply specifies the document&#39;s character encoding.</p>
+</li>
+<li><p>Adding an author and description</p>
+</li>
+</ul>
+<pre><code class="lang-html">&lt;meta name=<span class="hljs-string">"author"</span> content=<span class="hljs-string">"Chris Mills"</span>&gt;
+&lt;meta name=<span class="hljs-string">"description"</span> content=<span class="hljs-comment">"The MDN Web Docs Learning Area aims to provide</span>
+<span class="hljs-built_in">complete</span> beginners <span class="hljs-keyword">to</span> the Web with <span class="hljs-keyword">all</span> they need <span class="hljs-keyword">to</span> know <span class="hljs-keyword">to</span> <span class="hljs-built_in">get</span>
+started with developing web sites <span class="hljs-built_in">and</span> applications.<span class="hljs-comment">"&gt;</span>
+</code></pre>
+<ul>
+<li><em>Open Graph Data</em> is a metadata protocol that facebook invented to provide rich metadata for websites.</li>
+</ul>
+<pre><code class="lang-html">&lt;meta property=<span class="hljs-string">"og:image"</span> content=<span class="hljs-string">"https://developer.cdn.mozilla.net/static/img/opengraph-logo.dc4e08e2f6af.png"</span>&gt;
+&lt;meta property=<span class="hljs-string">"og:description"</span> content=<span class="hljs-comment">"The Mozilla Developer Network (MDN) provides</span>
+information about Open Web technologies including HTML, CSS, <span class="hljs-built_in">and</span> APIs <span class="hljs-keyword">for</span> both Web sites
+<span class="hljs-built_in">and</span> HTML5 Apps. It also documents Mozilla products, like Firefox OS.<span class="hljs-comment">"&gt;</span>
+&lt;meta property=<span class="hljs-string">"og:title"</span> content=<span class="hljs-string">"Mozilla Developer Network"</span>&gt;
+</code></pre>
+<ul>
+<li>Adding custom icons to your site :</li>
+</ul>
+<pre><code class="lang-html">&lt;link <span class="hljs-keyword">rel</span>=<span class="hljs-string">"shortcut icon"</span> href=<span class="hljs-string">"favicon.ico"</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">"image/x-icon"</span>&gt;
+</code></pre>
+<p>Saving it in the same directory as the site&#39;s index page saved in .ico format.</p>
+<ul>
+<li>Applying CSS and JavaScript to HTML :</li>
+</ul>
+<pre><code class="lang-html">
+<span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"my-css-file.css"</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"my-js-file.js"</span> <span class="hljs-attr">defer</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+<ul>
+<li>Setting the primary language of the document : <code>&lt;html lang=&quot;en-US&quot;&gt;</code> or <code>&lt;p&gt;Japanese example: &lt;span lang=&quot;ja&quot;&gt;ご飯が熱い。&lt;/span&gt;.&lt;/p&gt;</code></li>
+</ul>
+<h3 id="text-formating-fundamentals">Text Formating Fundamentals</h3>
+<p>The following tags are recognized by screen reader and they are used to change how the words are spoken, hence they should not just be used for their view property.</p>
+<ul>
+<li>Emphasis :</li>
+</ul>
+<p><code>&lt;p&gt;I am &lt;em&gt;glad&lt;/em&gt; you weren&#39;t &lt;em&gt;late&lt;/em&gt;.&lt;/p&gt;</code></p>
+<p>Browsers style this as italic by default, but you shouldn&#39;t use this tag purely to get italic styling. To do that, you&#39;d use a <code>&lt;span&gt;</code> element and some CSS, or perhaps an <code>&lt;i&gt;</code>element (see below).</p>
+<p>Strong importance :</p>
+<p><code>&lt;p&gt;This liquid is &lt;strong&gt;highly toxic&lt;/strong&gt;.&lt;/p&gt;</code></p>
+<ul>
+<li><p>Presentational elements <code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, and <code>u</code> dont effect semantics.</p>
+</li>
+<li><p>Description lists</p>
+</li>
+</ul>
+<p>The browser default styles will display description lists with the descriptions indented somewhat from the terms.</p>
+<pre><code class="lang-html">&lt;dl&gt;
+  &lt;dt&gt;soliloquy&lt;/dt&gt;
+  &lt;dd&gt;In drama, where <span class="hljs-keyword">a</span> <span class="hljs-keyword">character</span> speaks <span class="hljs-built_in">to</span> themselves, representing their inner thoughts <span class="hljs-keyword">or</span> feelings <span class="hljs-keyword">and</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> <span class="hljs-built_in">process</span> relaying them <span class="hljs-built_in">to</span> <span class="hljs-keyword">the</span> audience (but <span class="hljs-keyword">not</span> <span class="hljs-built_in">to</span> other <span class="hljs-keyword">characters</span>.)&lt;/dd&gt;
+  &lt;dt&gt;monologue&lt;/dt&gt;
+  &lt;dd&gt;In drama, where <span class="hljs-keyword">a</span> <span class="hljs-keyword">character</span> speaks their thoughts out loud <span class="hljs-built_in">to</span> share them <span class="hljs-keyword">with</span> <span class="hljs-keyword">the</span> audience <span class="hljs-keyword">and</span> <span class="hljs-keyword">any</span> other <span class="hljs-keyword">characters</span> present.&lt;/dd&gt;
+  &lt;dt&gt;aside&lt;/dt&gt;
+  &lt;dd&gt;In drama, where <span class="hljs-keyword">a</span> <span class="hljs-keyword">character</span> shares <span class="hljs-keyword">a</span> comment only <span class="hljs-keyword">with</span> <span class="hljs-keyword">the</span> audience <span class="hljs-keyword">for</span> humorous <span class="hljs-keyword">or</span> dramatic effect. This is usually <span class="hljs-keyword">a</span> feeling, thought, <span class="hljs-keyword">or</span> piece <span class="hljs-keyword">of</span> additional background information.&lt;/dd&gt;
+&lt;/dl&gt;
+</code></pre>
+<ul>
+<li><p>Abbreviations : <code>&lt;p&gt;We use &lt;abbr title=&quot;Hypertext Markup Language&quot;&gt;HTML&lt;/abbr&gt; to structure our web documents.&lt;/p&gt;</code></p>
+</li>
+<li><p>Superscript <code>&lt;sup&gt;</code> and subscript <code>&lt;sub&gt;</code></p>
+</li>
+<li><p>Marking up time and dates : <code>&lt;time datetime=&quot;2016-01-20&quot;&gt;20 January 2016&lt;/time&gt;</code></p>
+</li>
+<li><p>BreakLine <code>&lt;br&gt;</code></p>
+</li>
+<li><p>PreFormatted Text : <code>&lt;pre&gt;</code> preserves the text formating and white space and will show the text as is.</p>
+</li>
+</ul>
