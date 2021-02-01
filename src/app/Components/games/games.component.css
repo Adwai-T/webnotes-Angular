@@ -10,13 +10,23 @@
     min-width: 360px;
 }
 
-#comming{
+#description{
     color: grey;
     align-self: flex-start;
 }
 
 #github{
     text-decoration: none;
-    color: darkblue;
+    color: darkcyan;
     font-size: larger;
+}
+
+a{
+    text-decoration: none;
+    color: darkcyan;
+}
+
+#game{
+    width: 805px;
+    height: 605px;
 }

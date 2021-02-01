@@ -26,7 +26,8 @@
   <router-outlet *ngIf="contentFromComponents && !contentFromFile"></router-outlet>
 
   <div id="content-fromfiles" *ngIf="contentFromFile && !contentFromComponents && contentReady">
-    <div class="code"><pre>{{ contentPage }}</pre></div>  
+    <!--<div class="code"><pre>{{ contentPage }}</pre></div>-->
+    <div class="content_page" [innerHTML] = "contentPage" ></div>
   </div>
 
   <div *ngIf="activeSubTopicSubscription">

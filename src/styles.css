@@ -36,36 +36,11 @@ a{
   margin : 5px auto;
 }
 
-H2{
-  color: crimson;
-  text-align: center;
-}
-
 .blog-container{
   background-color: #fff;
   padding: 10px 20px;
   border: 8px;
   margin-top: 5px;
-}
-
-code{
-  color : yellowgreen;
-  background-color: black;
-  padding: 8px;
-  border-radius: 5px;
-  margin: 10px 0px;
-  line-height: 35px;
-}
-
-.code{
-  color : darkslateblue;
-  background-color: antiquewhite;
-  padding: 8px;
-  border-radius: 10px;
-  margin-left: 10px;
-  align-self: flex-start;
-  justify-content: flex-start;
-  width: fit-content;
 }
 
 ul{
@@ -80,5 +55,40 @@ li{
   pointer-events: none;
 }
 
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Externally loaded pages code */
+.content_page{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 95vw;
+  background-color: #fcfcf1;;
+}
+
+.content_page h1{
+  align-self: center;
+  color:darkorange;
+}
+
+.content_page h2{
+  color: darkcyan;
+}
+
+.content_page .hljs-keyword{
+  font-weight: 400;
+}
+
+.content_page .hljs-comment{
+  color: #6272a4;
+}
+
+.content_page pre{
+  padding: 5px;
+  border-radius: 2px;
+  color: #f8f8f2;
+  width: 95%;
+  background-color: #282a36 ;
+}

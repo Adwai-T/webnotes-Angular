@@ -13,10 +13,9 @@
     <!--When the User Is Logged In-->
     <div *ngIf="authenticated">
         <mat-tab-group>
-            <mat-tab label="Items for Trade">  </mat-tab>
-            <mat-tab label="Add Items to Trade">  </mat-tab>
-            <mat-tab label="Trades Done">  </mat-tab>
+            <mat-tab label="Items for Trade"><app-tradeitems></app-tradeitems></mat-tab>
+            <mat-tab label="Add Items to Trade"><app-additem></app-additem></mat-tab>
+            <mat-tab label="Trades Done"><app-trades></app-trades></mat-tab>
           </mat-tab-group>
-        <router-outlet></router-outlet>
     </div>
 </div>

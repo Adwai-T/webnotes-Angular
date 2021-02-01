@@ -72,7 +72,7 @@ export class BlogComponent implements OnInit {
         {
           title: "Threads",
           imageSrc: "assets/images/languages/Threads.png",
-          linkToComponent: "/blog/java/threads"
+          linkToFile: "assets/pages/notes/_javathreads.html"
         }
       ]
     },
@@ -99,7 +99,7 @@ export class BlogComponent implements OnInit {
         {
           title: 'AsyncJS',
           imageSrc: "assets/images/languages/asyncJavascript.png",
-          linkToFile: 'assets/pages/javascript_blog/asyncjs.txt'
+          linkToFile: 'assets/pages/notes/asyncjs.txt'
         },
         {
           title: "Angular",
@@ -181,7 +181,6 @@ export class BlogComponent implements OnInit {
       this.contentFromFile = false;
       this.contentFromComponents = true;
     }
-
 
     if(subTopic.hasOwnProperty('linkToFile')){
       this.getFileFromServer(subTopic.linkToFile);

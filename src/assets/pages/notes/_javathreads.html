@@ -1,0 +1,341 @@
+<style>
+    h1 {
+        color : cyan
+    }
+</style>
+<h1 id="threads">Threads</h1>
+<p>Process : It is an instance of the program running</p>
+<p>A Process can have multipe Threads and has its own memory.</p>
+<h2 id="concurrency-with-treads">Concurrency With Treads</h2>
+<p>In this we do multipe task of different type simultaneously using threads.</p>
+<h2 id="parallelism">Parallelism</h2>
+<p>In this we split a task in to multipe smaller task and run them on different threads so the task is completed faster than running it on single thread.</p>
+<p><code>Thread thread = Thread.currentThread(); // the current thread</code></p>
+<p>Information about the main thread and other thread work similarly</p>
+<pre><code class="lang-java">
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MainThreadDemo</span> {
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(<span class="hljs-params">String[] args</span>) </span>{
+        Thread t = Thread.currentThread(); <span class="hljs-comment">// main thread</span>
+
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"Name: "</span> + t.getName());
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"ID: "</span> + t.getId());
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"Alive: "</span> + t.isAlive());
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"Priority: "</span> + t.getPriority()); <span class="hljs-comment">// MAX = 10 MIN = 1</span>
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"Daemon: "</span> + t.isDaemon());
+
+        t.setName(<span class="hljs-string">"my-thread"</span>);
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"New name: "</span> + t.getName());
+    }
+}
+</code></pre>
+<p>A daemon thread (comes from UNIX terminology) is a low priority thread that runs in the background to perform tasks such as garbage collection and so on. JVM does not wait for daemon threads before exiting while it waits for non-daemon threads.</p>
+<h2 id="creating-thread-in-java-two-different-approaches">Creating Thread in Java : Two different approaches</h2>
+<ul>
+<li>Extend Thread and override run method:</li>
+</ul>
+<pre><code class="lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloThread</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Thread</span> </span>{
+
+    <span class="hljs-meta">@Override</span>
+    public void run() {
+        <span class="hljs-type">String</span> helloMsg = <span class="hljs-type">String</span>.format(<span class="hljs-string">"Hello, i'm %s"</span>, getName());
+        <span class="hljs-type">System</span>.out.println(helloMsg);
+    }
+}
+</code></pre>
+<ul>
+<li>Implement Runnable and Override run :</li>
+</ul>
+<pre><code class="lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloRunnable</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Runnable</span> </span>{
+
+    <span class="hljs-meta">@Override</span>
+    public <span class="hljs-keyword">void</span> run() {
+        <span class="hljs-built_in">String</span> threadName = Thread.currentThread().getName();
+        <span class="hljs-built_in">String</span> helloMsg = <span class="hljs-built_in">String</span>.format(<span class="hljs-string">"Hello, i'm %s"</span>, threadName);
+        System.out.println(helloMsg);
+    }
+}
+</code></pre>
+<ul>
+<li>Creating threads from above code</li>
+</ul>
+<pre><code class="lang-java">
+Thread t1 = <span class="hljs-keyword">new</span> <span class="hljs-type">HelloThread</span>(); <span class="hljs-comment">// a subclass of Thread</span>
+
+Thread t2 = <span class="hljs-keyword">new</span> <span class="hljs-type">Thread</span>(<span class="hljs-keyword">new</span> <span class="hljs-type">HelloRunnable</span>()); <span class="hljs-comment">// passing runnable</span>
+</code></pre>
+<ul>
+<li>With Lambda Expression</li>
+</ul>
+<pre><code class="lang-java">Thread t3 = <span class="hljs-keyword">new</span> Thread<span class="hljs-function"><span class="hljs-params">(() -&gt; {
+    System.out.println(String.format(<span class="hljs-string">"Hello, i'm %s"</span>, Thread.currentThread().getName()));
+})</span>;</span>
+</code></pre>
+<h3 id="use-t-start-to-start-the-thread">Use <code>t.start()</code> to start the thread</h3>
+<blockquote>
+<p>Note : If you try to start a thread more than once, the start throws IllegalThreadStateException.</p>
+</blockquote>
+<h2 id="thread-management">Thread Management</h2>
+<ul>
+<li><p><em>Make thread Sleep</em></p>
+</li>
+<li><p>We could use the regular <code>Thread.sleep();</code> static method or.</p>
+</li>
+<li><p>we could use <code>TimeUnit.MILLISECONDS.sleep(2000)</code></p>
+</li>
+<li><p><em>Thread.join()</em></p>
+</li>
+</ul>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">JoiningExample</span> {
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(<span class="hljs-params">String []args</span>) throws InterruptedException </span>{
+        Thread worker = <span class="hljs-keyword">new</span> Worker();
+        worker.start(); <span class="hljs-comment">// start the worker</span>
+
+        Thread.sleep(<span class="hljs-number">100</span>L);
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"Do something useful"</span>);
+
+        worker.<span class="hljs-keyword">join</span>(<span class="hljs-number">3000</span>L);  <span class="hljs-comment">// waiting for the worker</span>
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"The program stopped"</span>);
+
+        <span class="hljs-comment">//IN the above join statement the main thread wait to execute after the join method until the</span>
+        <span class="hljs-comment">//Execution of the worker Thread is done.</span>
+    }
+}
+</code></pre>
+<p><strong>In multi Thread programs if threads other than the main thread has an exception, the exception is thrown and still the program will complete successfully, but if there is an error in the main thread the other threads will compelete but the program will exit with an error code.</strong></p>
+<h2 id="shared-data-in-between-treads">Shared Data in between Treads</h2>
+<p>Threads that belong to the same process share the common memory (that is called Heap). They may communicate by using shared data in memory. To be able to access the same data from multiple threads, each thread must have a reference to this data (by an object).</p>
+<p>NOTE : Atomic operations are those that finish in one step. Like read an integer. In some platforms reading a long or a 64 bit double might not be an atomic operation.</p>
+<ul>
+<li>Visibility between Threads :
+The variables might not always be visible to threads that work on the same varible due to optimization of either JVM or the system itself, and also due to caching of variables in the memory for faster performance. Thus we use the <code>volatile</code> keywork to make the varaible be visible and make the all threads see the changes that happen on the varaible. Also these variables are not cached for oprimization.</li>
+</ul>
+<p>Note : volatile also makes writting doubles and longs atomic.</p>
+<ul>
+<li>Thread Synchronization :
+The monitor is a special mechanism to control concurrent access to an object. In Java, each object and class has an associated implicit monitor. A thread can acquire a monitor, then other threads cannot acquire this monitor at the same time. They will wait until the owner (the thread that acquired the monitor) releases it.</li>
+</ul>
+<p>Thus, a thread can be locked by the monitor of an object and wait for its release. This mechanism allows programmers to protect critical sections from being accessed by multiple threads concurrently.</p>
+<p><code>synchronized</code> : can be used on classes, methods as well as on blocks of code. Following is example of synchronized on  block of codes in a class and methods.</p>
+<pre><code class="lang-java">
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SomeClass</span> </span>{
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">staticMethod</span><span class="hljs-params">()</span> </span>{
+
+        <span class="hljs-comment">// unsynchronized code</span>
+
+        <span class="hljs-keyword">synchronized</span> (SomeClass.class) { <span class="hljs-comment">// synchronization on the class</span>
+            <span class="hljs-comment">// synchronized code</span>
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">instanceMethod</span><span class="hljs-params">()</span> </span>{
+
+        <span class="hljs-comment">// unsynchronized code</span>
+
+        <span class="hljs-keyword">synchronized</span> (<span class="hljs-keyword">this</span>) { <span class="hljs-comment">// synchronization on this instance</span>
+            <span class="hljs-comment">// synchronized code</span>
+        }
+    }
+}
+</code></pre>
+<p>Locks :
+When we have a sycnhronized keywork in a class the monitor locks the thread and no other thread can make changes or enter the class.
+We might have methods and varaibles that are completely independent and we might want two thread to enter and change them both in different threads. This can be achieved by creating mulitple lock objects.</p>
+<pre><code class="lang-java"><span class="hljs-comment">//The class has two additional fields that are the locks for separating monitors for each critical section.</span>
+class SomeClass {
+
+    <span class="hljs-keyword">private</span> <span class="hljs-built_in">int</span> numberOfCallingMethod1 = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-built_in">int</span> numberOfCallingMethod2 = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">final</span> <span class="hljs-keyword">Object</span> lock1 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">Object</span>(); <span class="hljs-comment">// an object for locking</span>
+    <span class="hljs-keyword">final</span> <span class="hljs-keyword">Object</span> lock2 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">Object</span>(); <span class="hljs-comment">// another object for locking</span>
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> method1() {
+        System.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"method1..."</span>);
+
+        <span class="hljs-keyword">synchronized</span> (lock1) {
+            numberOfCallingMethod1++;
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> method2() {
+        System.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"method2..."</span>);
+
+        <span class="hljs-keyword">synchronized</span> (lock2) {
+            numberOfCallingMethod2++;
+        }
+    }
+}
+
+<span class="hljs-comment">/*
+If we have an instance of the class, one thread may work inside the synchronized block of the first method and, at the same time, another thread may work inside the synchronized block of the second method.
+*/</span>
+</code></pre>
+<h2 id="thread-interruptions">Thread Interruptions</h2>
+<p>Thread Interruptions do not immediately stop a thread but notifies it to stop.</p>
+<p>Depending on the current state of a thread, interruptions are handled differently. Invoking thread.interrupt() will cause InterruptedException if the thread is sleeping or joining another thread. Otherwise, the only thing that will happen is that the interrupted flag will be set to true.</p>
+<pre><code class="lang-java"><span class="hljs-keyword">Thread</span> <span class="hljs-keyword">thread</span> = <span class="hljs-params">...</span>
+<span class="hljs-keyword">thread</span>.interrupt(); <span class="hljs-comment">// interrupt this thread</span>
+</code></pre>
+<p>If we want to stop a thread by interrupting it we can use some the following program :</p>
+<pre><code class="lang-java">
+<span class="hljs-comment">//This program is just one example on how it could be used.</span>
+public <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomThread</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Thread</span> </span>{
+
+    <span class="hljs-meta">@Override</span>
+    public void run() {
+        <span class="hljs-keyword">while</span> (!isInterrupted()) {
+            <span class="hljs-keyword">try</span> {
+                doAction();
+                <span class="hljs-type">Thread</span>.sleep(<span class="hljs-number">1000</span>); <span class="hljs-comment">// it may throw InterruptedException</span>
+            } <span class="hljs-keyword">catch</span> (<span class="hljs-type">InterruptedException</span> e) {
+                <span class="hljs-type">System</span>.out.println(<span class="hljs-string">"sleeping was interrupted"</span>);
+                <span class="hljs-keyword">break</span>; <span class="hljs-comment">// stop the loop</span>
+            }
+        }
+        <span class="hljs-type">System</span>.out.printf(<span class="hljs-string">"%s finished"</span>, getName());
+    }
+
+    <span class="hljs-keyword">private</span> void doAction() {
+        <span class="hljs-comment">// something useful</span>
+    }
+}
+</code></pre>
+<h2 id="state-of-thread">State of Thread</h2>
+<p>The <code>Thread.state enum</code>
+<code>NEW</code>: an instance of the class Thread has been created, but it has not yet started;
+<code>RUNNABLE</code>: a thread is executing in JVM but it may be waiting for OS resources such as processor;
+<code>BLOCKED</code>: a thread that is blocked waiting for a monitor lock (we will consider it later);
+<code>WAITING</code>: a thread is waiting for another thread indefinitely long to perform a task (e.g. join without timeout);
+<code>TIMED_WAITING</code>: a thread is waiting for another thread for a specified waiting time (e.g. sleep, join with timeout);
+<code>TERMINATED</code> : a thread is terminated when run method completely executes itself or an uncaught exception occurs. Once a thread terminates it never gets back to its runnable state.</p>
+<p>To get the current state of the thread we use <code>getState()</code>.</p>
+<p><img src="./NotesImages/ThreadLifeCycle.svg" alt="ThreadLifeCycle">;</p>
+<h2 id="executor-executorservice">Executor : ExecutorService</h2>
+<p>As the program grows it becomes harder to manage threads as they are very low level. It might lead to unreachable code in the future as the application grows.</p>
+<p>Thus we use Thread-Executors with Executor Service ;</p>
+<p><code>ExecutorService executor = Executors.newFixedThreadPool(4);</code></p>
+<p>An executor has the submit method that accepts a Runnable task to be executed. Since Runnable is a functional interface, it is possible to use a lambda expression as a task.</p>
+<p>As an example, here we submit a task that prints &quot;Hello!&quot; to the standard output.</p>
+<p><code>executor.submit(() -&gt; System.out.println(&quot;Hello!&quot;));</code></p>
+<h2 id="stopping-executors">Stopping executors</h2>
+<p>An executor continues to work after the completion of a task since threads in the pool are waiting for new coming tasks. Your program will never stop while at least one executor still works.</p>
+<p>There are two methods for stopping executors:</p>
+<p>void shutdown() waits until all running task completes and prohibits submitting of new tasks;
+List<code>&lt;Runnable&gt;</code> shutdownNow() immediately stops all running tasks and returns a list of the tasks that were awaiting execution.
+Note that shutdown() does not block the current thread unlike join() of Thread. If you need to wait until the execution is complete, you can invoke awaitTermination(...) with the specified waiting time.</p>
+<pre><code class="lang-java">ExecutorService executor = Executors.newFixedThreadPool(<span class="hljs-number">4</span>);
+
+<span class="hljs-comment">// submitting tasks</span>
+
+executor.<span class="hljs-built_in">shutdown</span>();
+
+<span class="hljs-keyword">boolean</span> terminated = executor.awaitTermination(<span class="hljs-number">60</span>, TimeUnit.MILLISECONDS);
+
+<span class="hljs-built_in">if</span> (terminated) {
+    System.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"The executor was successfully stopped"</span>);
+} <span class="hljs-built_in">else</span> {
+    System.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">"Timeout elapsed before termination"</span>);
+}
+</code></pre>
+<p>Types of executors :</p>
+<ol>
+<li>An executor with a single thread : <code>Types of executors</code></li>
+<li>An executor with the growing pool : <code>ExecutorService executor = Executors.newCachedThreadPool();</code></li>
+<li>An executor that schedules a task : <code>ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();</code></li>
+<li>An excutor with fixed thread pool size : <code>ExecutorService executor = Executors.newFixedThreadPool(poolSize);</code></li>
+</ol>
+<pre><code class="lang-java">ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+executor.scheduleAtFixedRate<span class="hljs-function"><span class="hljs-params">(() -&gt;
+        System.out.println(LocalTime.now() + <span class="hljs-string">": Hello!"</span>), <span class="hljs-number">1000</span>, <span class="hljs-number">1000</span>, TimeUnit.MILLISECONDS)</span>;</span>
+</code></pre>
+<p>Exception handling :</p>
+<pre><code class="lang-java">ExecutorService executor = Executors.newSingleThreadExecutor();
+executor.submit<span class="hljs-function"><span class="hljs-params">(() -&gt; {
+    <span class="hljs-keyword">try</span> {
+        System.out.println(<span class="hljs-number">2</span> / <span class="hljs-number">0</span>);
+    } <span class="hljs-keyword">catch</span> (Exception e) {
+        e.printStackTrace();
+    }
+})</span>;</span>
+</code></pre>
+<h2 id="the-callable-interface">The Callable interface</h2>
+<p>Sometimes you need not only to execute a task in an executor but also to return a result of this task to the calling code. An executor supports another class of tasks named Callable that returns the result and may throw an exception.</p>
+<pre><code class="lang-java"><span class="hljs-meta">@FunctionalInterface</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Callable</span>&lt;<span class="hljs-title">V</span>&gt; </span>{
+    <span class="hljs-function">V <span class="hljs-title">call</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception</span>;
+}
+
+Callable&lt;Integer&gt; generator = () -&gt; {
+    TimeUnit.SECONDS.sleep(<span class="hljs-number">5</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">700000</span>;
+};
+</code></pre>
+<p>As you can see, it is a generic interface where the type parameter V determines the type of a result. Since it is a functional interface, we can use it together with lambda expressions and method references as well as implementing classes.</p>
+<p>When we submit a Callable to executor service, it cannot return a result directly since the submit method does not wait until the task completes. Instead, an executor returns a special object called Future that wraps the actual result that may not even exist yet. This object represents the result of an asynchronous computation (task).</p>
+<pre><code class="lang-java">ExecutorService executor = Executors.newSingleThreadExecutor();
+
+Future&lt;Integer&gt; future = executor.submit(() -&gt; {
+    TimeUnit.SECONDS.sleep(<span class="hljs-number">5</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">700000</span>;
+};
+
+<span class="hljs-comment">//To get the actual result form the futrue we use :</span>
+<span class="hljs-keyword">int</span> result = future.<span class="hljs-keyword">get</span>();
+
+<span class="hljs-keyword">int</span> result = future.<span class="hljs-keyword">get</span>(<span class="hljs-number">10</span>, TimeUnit.SECONDS); <span class="hljs-comment">// it blocks the current thread</span>
+
+<span class="hljs-comment">//Cancel a task :</span>
+future1.cancel(<span class="hljs-literal">true</span>);  <span class="hljs-comment">// try to cancel even if the task is executing now</span>
+future2.cancel(<span class="hljs-literal">false</span>); <span class="hljs-comment">// try to cancel only if the task is not executing</span>
+
+System.<span class="hljs-keyword">out</span>.println(future.isDone()); <span class="hljs-comment">// most likely it is false</span>
+</code></pre>
+<p>Example of Callbacks and Future in action :</p>
+<pre><code class="lang-java">ExecutorService executor = Executors.newFixedThreadPool(<span class="hljs-number">4</span>);
+
+Future&lt;Integer&gt; future1 = executor.submit<span class="hljs-function"><span class="hljs-params">(() -&gt; {
+    TimeUnit.SECONDS.sleep(<span class="hljs-number">5</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">700000</span>;
+})</span>;
+
+<span class="hljs-title">Future</span>&lt;<span class="hljs-title">Integer</span>&gt; <span class="hljs-title">future2</span> = <span class="hljs-title">executor</span>.<span class="hljs-title">submit</span><span class="hljs-params">(() -&gt; {
+    TimeUnit.SECONDS.sleep(<span class="hljs-number">5</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">900000</span>;
+})</span>;
+
+<span class="hljs-title">int</span> <span class="hljs-title">result</span> = <span class="hljs-title">future1</span>.<span class="hljs-title">get</span><span class="hljs-params">()</span> + <span class="hljs-title">future2</span>.<span class="hljs-title">get</span><span class="hljs-params">()</span>; // <span class="hljs-title">waiting</span> <span class="hljs-title">for</span> <span class="hljs-title">both</span> <span class="hljs-title">results</span>
+
+<span class="hljs-title">System</span>.<span class="hljs-title">out</span>.<span class="hljs-title">println</span><span class="hljs-params">(result)</span>; // 1600000</span>
+</code></pre>
+<p>Using invoke all to get futures form a list of tasks</p>
+<pre><code class="lang-java">
+ExecutorService executor = Executors.newFixedThreadPool(<span class="hljs-number">4</span>);
+List&lt;Callable&lt;Integer&gt;&gt; callables =
+        List.<span class="hljs-keyword">of</span><span class="hljs-function"><span class="hljs-params">(() -&gt; <span class="hljs-number">1000</span>, () -&gt; <span class="hljs-number">2000</span>, () -&gt; <span class="hljs-number">1500</span>)</span>; // <span class="hljs-title">three</span> "<span class="hljs-title">difficult</span>" <span class="hljs-title">tasks</span>
+
+<span class="hljs-title">List</span>&lt;<span class="hljs-title">Future</span>&lt;<span class="hljs-title">Integer</span>&gt;&gt; <span class="hljs-title">futures</span> = <span class="hljs-title">executor</span>.<span class="hljs-title">invokeAll</span><span class="hljs-params">(callables)</span>;
+<span class="hljs-title">int</span> <span class="hljs-title">sum</span> = 0;
+<span class="hljs-title">for</span> <span class="hljs-params">(Future&lt;Integer&gt; future : futures)</span> {
+   <span class="hljs-title">sum</span> += <span class="hljs-title">future</span>.<span class="hljs-title">get</span><span class="hljs-params">()</span>; // <span class="hljs-title">blocks</span> <span class="hljs-title">on</span> <span class="hljs-title">each</span> <span class="hljs-title">future</span> <span class="hljs-title">to</span> <span class="hljs-title">get</span> <span class="hljs-title">a</span> <span class="hljs-title">result</span>
+}
+<span class="hljs-title">System</span>.<span class="hljs-title">out</span>.<span class="hljs-title">println</span><span class="hljs-params">(sum)</span>;</span>
+</code></pre>
+<h2 id="summary-of-threads-executors">Summary of Threads Executors</h2>
+<p>Let&#39;s summarize the information about Callable and Future.</p>
+<p>To get a result of an asynchronous task executed in ExecutorService you have to execute three steps:</p>
+<p>create an object representing a Callable task;
+submit the task in ExecutorService and obtain a Future;
+invoke get to receive the actual result when you need it.
+Using Future allows us not to block the current thread until we do want to receive a result of a task. It is also possible to start multiple tasks and then get all results to aggregate them in the current thread. In addition to making your program more responsive, it will speed up your calculations if your computer supports parallel execution of threads.</p>
+<p>You may also use methods isDone, cancel and isCancelled of a future. But be careful with exception handling when using them.</p>
+<h2 id="classic-collections-and-multithreading">Classic collections and multithreading</h2>
+<ol>
+<li>Most of the classic collections like ArrayList, LinkedList, HashMap and others are non-synchronized and, as a consequence, they do not provide thread-safety;</li>
+<li>There is a set of old collections like Vector, Stack, and Hashtable that are totally synchronized and thread-safe, but they have low performance;</li>
+<li>When one thread is iterating over a standard collection and another thread tries to add a new element to it then we get a runtime exception called ConcurrentModificationException.</li>
+</ol>
+<h3 id="concurrent-collections">Concurrent collections</h3>
+<p>To avoid all the problems associated with custom synchronization, Java Class Library provides alternative collection implementations that are adapted to be used in multithreaded applications and they are fully thread-safe. You may find them in the java.util.concurrent package that includes lists, queues, maps and other collections which make it easier to develop modern Java applications.</p>
+<hr>
+<p>Done ...</p>
