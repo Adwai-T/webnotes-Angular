@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <div class="options-window" *ngIf="subTopics.length > 0">
+  <div class="tile-container" *ngIf="subTopics.length > 0">
     <div *ngFor="let subTopic of subTopics">
       <a [routerLink]="subTopic.linkToComponent" (click)="setSubTopicActive(subTopic)">
         <app-notes-tiles [tileTitle]="subTopic.title" [imgSrc]="subTopic.imageSrc">

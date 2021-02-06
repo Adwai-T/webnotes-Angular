@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import { Question } from 'src/app/interfaces/question';
 import { QuestionsService } from 'src/app/services/questions/questions.service';

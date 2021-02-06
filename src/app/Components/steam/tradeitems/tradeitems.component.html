@@ -1,1 +1,10 @@
-<p>tradeitems works!</p>
+<div id="container">
+  <div id="title">
+    Steam Item for trade. Chick on the trade link to trade me.
+  </div>
+
+  <div id="items_container">
+    <app-item *ngFor="let item of listOfItems" [item]="item"></app-item>
+  </div>
+</div>
+

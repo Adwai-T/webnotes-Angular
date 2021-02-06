@@ -7,12 +7,13 @@
 
 #addcomment-container{
    display: flex;
-   padding: 5px;
+   padding: 15px;
    margin: 5px 10px;
-   background-color: #fff;
-   width: 98%;
+   background-color: rgba(255, 255, 255, 0.6);
+   width: 80vw;
    align-items: center;
    justify-content: space-evenly;
+   border-radius: 5px;
 }
 
 #user-image{
@@ -38,10 +39,11 @@
 
 button{
     margin: 5px 10px 5px 5px;
-    padding: 5px;
+    padding: 8px;
     color: rebeccapurple;
+    border: none;
     border-radius: 5px;
-    background: lightblue;
+    background: rgba(255, 255, 255, 0.4);
 }
 
 button:hover{

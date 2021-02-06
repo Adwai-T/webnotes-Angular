@@ -26,7 +26,11 @@ a{
     color: darkcyan;
 }
 
+iframe{
+    border: none;
+}
+
 #game{
-    width: 805px;
-    height: 605px;
+    width: 820px;
+    height: 620px;
 }

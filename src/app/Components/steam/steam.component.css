@@ -1,10 +1,13 @@
 #container{
-    display: flex;
-    flex-direction: column;
+    height: fit-content;
     margin: 2px;
     padding: 5px;
     align-items: center;
-    /* justify-items: center; */
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+mat-tab-group{
+    display: block;
 }
 
 #titleContainer{

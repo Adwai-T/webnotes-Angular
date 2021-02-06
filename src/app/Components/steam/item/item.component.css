@@ -1,0 +1,17 @@
+.card{
+  min-width: 270px;
+  min-height: 270px;
+  max-width: fit-content;
+  max-height: auto;
+  margin: 5px;
+}
+
+.list{
+  padding : 15px;
+}
+
+.item_image{
+  padding : 0px 10px;
+  width: 200px;
+  height: 200px;
+}

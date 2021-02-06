@@ -6,17 +6,17 @@
 
   <div id="nav-title">
     <img src="assets/images/navicon.ico">
-    <a routerLink="" id="blog">
+    <a routerLink="/" id="blog">
       <div>ADWAIT</div>
     </a>
   </div>
 
   <div class="nav-links" *ngIf="!isMobileScreen">
     <a routerLink="/blog" class="nav-link">Notes<span></span></a>
-    <a href="https://github.com/Adwai-T/Notes" class="nav-link" target="_blank">GitNotes<span></span></a>
+    <!-- <a href="https://github.com/Adwai-T/Notes" class="nav-link" target="_blank">GitNotes<span></span></a> -->
     <a routerLink="/questions/quiz" class="nav-link">Quiz<span></span></a>
     <a routerLink="/games" class="nav-link">Game<span></span></a>
-    <a routerLink="/steam" class="nav-link">SteamTrade<span></span></a>
+    <a routerLink="/steam" class="nav-link">Steam<span></span></a>
   </div>
 
   <div id="nav-right" *ngIf="!toggleNavBar">
@@ -28,9 +28,9 @@
 
   <div id="sideNavLinks" *ngIf="toggleNavBar">
     <a routerLink="/blog" class="nav-link" (click)="toggleNavBar = !toggleNavBar">Notes</a>
-    <a href="https://github.com/Adwai-T/Notes" class="nav-link" target="_blank" (click)="toggleNavBar = !toggleNavBar">GitNotes</a>
+    <!-- <a href="https://github.com/Adwai-T/Notes" class="nav-link" target="_blank" (click)="toggleNavBar = !toggleNavBar">GitNotes</a> -->
     <a routerLink="/questions/quiz" class="nav-link" (click)="toggleNavBar = !toggleNavBar">Quiz</a>
     <a routerLink="/games" class="nav-link" (click)="toggleNavBar = !toggleNavBar">Game</a>
-    <a routerLink="/steam" class="nav-link" (click)="toggleNavBar = !toggleNavBar">SteamTrade</a>
+    <a routerLink="/steam" class="nav-link" (click)="toggleNavBar = !toggleNavBar">Steam</a>
   </div>
 </div>
