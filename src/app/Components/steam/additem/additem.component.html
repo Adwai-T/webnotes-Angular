@@ -1,3 +1,153 @@
-<div>
-  
+<div id="container">
+  <form [formGroup]="addItemForm" (ngSubmit)="onAddItem()" #formElement>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" (change)="updateOnBlur()" />
+      <mat-hint>eg. Snow Stompers</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Market Name</mat-label>
+      <input matInput formControlName="market_name" (blur)="updateOnBlur()"/>
+      <mat-hint>eg. Refined Metal</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>AppId</mat-label>
+      <input matInput formControlName="appId" (blur)="updateOnBlur()"/>
+      <mat-hint>eg. '<strong>440</strong>' for TF2</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Image Source Link</mat-label>
+      <input matInput formControlName="image_source" (blur)="updateOnBlur()"/>
+      <mat-hint>Get image link from Steam or Wiki</mat-hint>
+    </mat-form-field>
+
+    <div formGroupName="quality_group">
+      <mat-form-field>
+        <mat-label>Quality</mat-label>
+        <input matInput formControlName="quality" (blur)="updateOnBlur()"/>
+        <mat-hint>eg. UNIQUE</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Effect</mat-label>
+        <input matInput formControlName="effect" (blur)="updateOnBlur()"/>
+        <mat-hint>If UNUSUAL then effect name.</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Paint</mat-label>
+        <input matInput formControlName="paint" (blur)="updateOnBlur()"/>
+        <mat-hint>Name of Paint on the Cosmetic</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Item Ware</mat-label>
+        <input matInput formControlName="ware" (blur)="updateOnBlur()"/>
+        <mat-hint>eg. Factory New</mat-hint>
+      </mat-form-field>
+
+      <mat-checkbox formControlName="craftable" (change)="updateOnBlur()">Craftable</mat-checkbox>
+      <mat-hint>If unchecked will be set to Non Craftable.</mat-hint>
+
+      <mat-checkbox formControlName="festivized" (change)="updateOnBlur()">Festivized</mat-checkbox>
+      <mat-hint
+        >Not the same as Festive. Weapons that have Festivized applied are
+        Festivized</mat-hint
+      >
+    </div>
+
+    <div formGroupName="killstreak_group">
+      <mat-checkbox formControlName="hasKillstreak"
+        >Killstreak Active</mat-checkbox
+      >
+      <mat-hint>Has Killstreak Active(For weapons only)</mat-hint>
+
+      <div *ngIf="addItemForm.get('killstreak_group.hasKillstreak').value">
+        <mat-checkbox formControlName="hasKillstreakSheen">
+          Specialized Killstreak/Professional Killstreak
+        </mat-checkbox>
+        <mat-hint
+          >Is Specialized killstreak or Professional killstreak Active</mat-hint
+        >
+
+        <div
+          *ngIf="addItemForm.get('killstreak_group.hasKillstreakSheen').value"
+        >
+          <mat-form-field>
+            <mat-label>Killstreak Sheen</mat-label>
+            <input matInput formControlName="killstreakSheen" />
+            <mat-hint>eg. Hot Rod</mat-hint>
+          </mat-form-field>
+
+          <mat-checkbox formControlName="hasKillstreakEffect"
+            >Professional Killstreak</mat-checkbox
+          >
+          <mat-hint
+            >Is Professional killstreak. The above value is for sheen
+            only.</mat-hint
+          >
+
+          <div
+            *ngIf="
+              addItemForm.get('killstreak_group.hasKillstreakEffect').value
+            "
+          >
+            <mat-form-field>
+              <mat-label>Professional Killstreak Effect</mat-label>
+              <input matInput formControlName="killstreakEffect" />
+              <mat-hint>eg. Fire Horns</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div formGroupName="trade_price">
+      <mat-form-field>
+        <mat-label>Buy this Item at</mat-label>
+        <input matInput formControlName="BuyAt" />
+        <mat-hint> 1 => 1 Scrap </mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Sell this Item for</mat-label>
+        <input matInput formControlName="SellAt" />
+        <mat-hint> 1 => 1 Scrap </mat-hint>
+      </mat-form-field>
+      <mat-hint
+        >All value are in scrap metal equivalent. Buy at lower, Sell at higher
+        to make Profit.</mat-hint
+      >
+    </div>
+
+    <button mat-raised-button [color]="buttonAccent">Add Item</button>
+  </form>
+
+  <div>
+    <mat-card class="card" (click)="selected = !selected">
+      <mat-card-header>
+        <mat-card-title>{{ item.name }}</mat-card-title>
+        <mat-card-subtitle>{{ item.market_name }}</mat-card-subtitle>
+      </mat-card-header>
+      <img class="item_image" [src]="item.image_source" [alt]="item.name" />
+      <mat-card-content>
+        <mat-chip-list class="list">
+          <div *ngIf="selected">
+            <mat-chip *ngFor="let property of keys">{{ property }}</mat-chip>
+          </div>
+          <div>
+            <mat-chip color="primary" selected
+              >Buying At : {{ item.BuyAt }}</mat-chip
+            >
+            <mat-chip color="accent" selected
+              >Selling At : {{ item.SellAt }}</mat-chip
+            >
+          </div>
+        </mat-chip-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

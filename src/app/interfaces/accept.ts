@@ -1,5 +1,5 @@
 export interface Accept{
-    id:string,
+    id?:string,
     name:string,
     market_name:string,
     appId?:string,
@@ -12,7 +12,7 @@ export interface Accept{
     hasKillstreakActive?:boolean,
     hasKillstreakSheen?:boolean,
     killstreakSheen?:string,
-    hasKillstreakEffect?:string,
+    hasKillstreakEffect?:boolean,
     killstreakEffect?:string,
     festivized?:boolean,
     BuyAt:number,

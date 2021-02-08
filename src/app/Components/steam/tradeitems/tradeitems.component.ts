@@ -36,13 +36,12 @@ export class TradeitemsComponent implements OnInit{
 
     this.acceptItemSubscription = this.steam.getAcceptedItems(this.pageNumber, this.itemsPerPage).subscribe((data:Accept[]) => {
       this.listOfItems = data;
-      console.log(this.listOfItems);
     },
     err => {
       this.displayError(err);
     },
     () => {
-      console.log("Fetched All items");
+      this.acceptItemSubscription.unsubscribe();
     })
   }
 

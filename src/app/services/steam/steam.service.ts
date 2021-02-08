@@ -63,8 +63,11 @@ export class SteamService {
   }
 
   //---Get player inventory
-  getPlayerInventory(steamId64:string, appid:string, context:string): Observable<JSON>{
+  getPlayerInventory(steamId64:string, appid:string, context:string): Observable<Object>{
     let options = {
+      // headers : new HttpHeaders({
+      //   Accept: '*/*',
+      // }), 
       params: new HttpParams({
         fromObject:{
           l:'english',
@@ -73,6 +76,6 @@ export class SteamService {
       })
     }
 
-    return this.http.get<JSON>(this.inventoryUrl+'/'+steamId64+'/'+appid+'/'+context, options);
+    return this.http.get(this.inventoryUrl+'/'+steamId64+'/'+appid+'/'+context, options);
   }
 }

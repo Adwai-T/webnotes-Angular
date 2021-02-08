@@ -37,9 +37,11 @@ export class ItemComponent implements OnInit {
       } else if (
         property === 'effect' ||
         property === 'craftable' ||
-        property === 'hasKillstreakActive' ||
         property === 'festivized'
       ) {
+        this.keys.push(property);
+      } else if(property === 'hasKillstreakActive') {
+        this.keys.push('Killstreak')
       }
     }
   }

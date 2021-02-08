@@ -15,18 +15,18 @@ export class InventoryComponent implements OnInit {
   constructor(private steam:SteamService) { }
 
   ngOnInit(): void {
-    
+    // this.getInventory('76561197979674088', '440', '2');
   }
 
   getInventory(id:string, appid:string, context:string) {
-    this.steamSubscription = this.steam.getPlayerInventory(id, appid, context).subscribe(inventory => {
-
-    }, error => {
-      console.log("There was an error fetching inventory\n" + error);
-      this.steamSubscription.unsubscribe();
-    }, () => {
-      this.steamSubscription.unsubscribe();
-    })
+    // this.steamSubscription = this.steam.getPlayerInventory(id, appid, context).subscribe(inventory => {
+    //     console.log(inventory);
+    // }, error => {
+    //   console.log("There was an error fetching inventory\n" + error);
+    //   this.steamSubscription.unsubscribe();
+    // }, () => {
+    //   this.steamSubscription.unsubscribe();
+    // })
   }
 
 }

@@ -1,26 +1,22 @@
 #container{
   display: flex;
-  flex-wrap: wrap;
-  margin-right: 50px;
+  flex-wrap: nowrap;
   flex-direction: column;
+  width: fit-content;
 }
 
 #nav-bar{
   z-index: 10;
   width: 100vw;
   height: 61px;
+  overflow-x: hidden;
 }
 
 #page{
   display: flex;
   justify-content: center;
-}
-
-#notes-container{
-  display: flex;
-  flex-wrap: wrap;
-  width: 100vw;
-  justify-content: center;
+  margin: auto;
+  overflow-x: hidden;
 }
 
 

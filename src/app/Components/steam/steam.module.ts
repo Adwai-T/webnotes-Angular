@@ -1,12 +1,15 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { FormsModule } from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 
-import {MatCardModule} from '@angular/material/card';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatChipsModule} from '@angular/material/chips';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
 
 import { SteamComponent } from "./steam.component";
 import { AdditemComponent } from './additem/additem.component';
@@ -21,12 +24,17 @@ import { InvitemComponent } from "./invitem/invitem.component";
     imports: [
         CommonModule,
         RouterModule,
-        SteamRoutingModule,
+        ReactiveFormsModule,
+        
         MatFormFieldModule,
+        MatInputModule,
+        MatCheckboxModule,
         MatTabsModule,
-        FormsModule,
         MatCardModule,
         MatChipsModule,
+        MatButtonModule,
+
+        SteamRoutingModule,
     ],
     exports: [],
     declarations: [
