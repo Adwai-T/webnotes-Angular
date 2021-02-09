@@ -12,11 +12,29 @@
   overflow-x: hidden;
 }
 
+#background_image{
+  position: fixed;
+  z-index: -1;
+  transform: rotate(45deg);
+  left: -90px;
+  bottom: -20px;
+  display: inline;
+  overflow-x: hidden;
+}
+
+@media only screen and (max-width: 600px) {
+  #background_image{
+    height: auto;
+    width: 90%;
+  }
+}
+
+
+
 #page{
   display: flex;
   justify-content: center;
   margin: auto;
   overflow-x: hidden;
 }
-
 

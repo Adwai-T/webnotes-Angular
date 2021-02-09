@@ -16,13 +16,14 @@
   outline: none;
 }
 
-body{
-  background : linear-gradient(to right, #34ebb4, #3ebad6);
-  height: fit-content;
-  width: 100vw;
+html{
   overflow-x: hidden;
 }
 
+body{
+  background : linear-gradient(to right, #34ebb4, #3ebad6);
+  width: fit-content;
+}
 a{
   text-decoration: none;
 }

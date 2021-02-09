@@ -40,7 +40,7 @@ export class ProjectsComponent implements OnInit {
       title : "Website",
       subtitle : "FrontEnd/Angular app",
       image : "assets/images/projects/website.png",
-      description : "My website that you are currently viewing is made with Angular 9.",
+      description : "This website that you are currently are viewing is made with Angular 9.",
       gitLink : "https://github.com/Adwai-T/webnotes-Angular"
     },
     {
@@ -48,7 +48,7 @@ export class ProjectsComponent implements OnInit {
       title : "GitHub",
       subtitle : "My Github Repositories",
       image : "assets/images/projects/github.png",
-      description : "There are some more projects on my github. Most of them, I am actively trying to develop. I would love if you could check them out.",
+      description : "There are some more projects on my github. Most of them, are in active development.",
       gitLink : "https://github.com/Adwai-T/"
     },
   ];
