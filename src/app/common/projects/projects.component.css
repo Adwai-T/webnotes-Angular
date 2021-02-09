@@ -1,9 +1,18 @@
+*{
+    cursor : none;
+}
+
+* :hover{
+    cursor: none;
+}
+
 .container{
     display: flex;
     flex-direction: column;
     justify-items: center;
     padding: 5px;
     max-width: 800px;
+    scroll-behavior: smooth;
 }
 
 .card{
@@ -25,4 +34,13 @@
     display: flex;
     justify-content: flex-end;
     padding: 10px;
+}
+
+#cursor{
+    position: absolute;
+    width :7rem;
+    height: auto;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
 }

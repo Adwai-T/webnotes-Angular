@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-projects',
@@ -6,6 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./projects.component.css']
 })
 export class ProjectsComponent implements OnInit {
+
+  @ViewChild('cursor', { static: true })
+  private cursor:any;
+
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(e) {
+    this.cursor.nativeElement.style.left = e.pageX+'px';
+    this.cursor.nativeElement.style.top = e.pageY+'px';
+  }
 
   public projects = [
     // {
@@ -56,6 +65,9 @@ export class ProjectsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+         
   }
+
+  
 
 }
