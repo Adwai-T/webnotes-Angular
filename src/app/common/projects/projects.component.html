@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" (touchstart)="onTouch($event)">
 
     <img src="assets/images/cursor.gif" id="cursor" #cursor/>
     <div *ngFor="let project of projects">

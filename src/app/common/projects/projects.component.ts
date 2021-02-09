@@ -10,6 +10,8 @@ export class ProjectsComponent implements OnInit {
   @ViewChild('cursor', { static: true })
   private cursor:any;
 
+  private isTouchDevice:boolean;
+
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(e) {
     this.cursor.nativeElement.style.left = e.pageX+'px';
@@ -68,6 +70,10 @@ export class ProjectsComponent implements OnInit {
          
   }
 
+  onTouch(e){
+    this.cursor.nativeElement.style.display = "none";
+    this.isTouchDevice = true;
+  }
   
 
 }
