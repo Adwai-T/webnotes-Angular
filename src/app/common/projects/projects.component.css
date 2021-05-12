@@ -1,11 +1,3 @@
-*{
-    cursor : none;
-}
-
-* :hover{
-    cursor: none;
-}
-
 .container{
     display: flex;
     flex-direction: column;

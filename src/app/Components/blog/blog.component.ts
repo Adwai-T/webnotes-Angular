@@ -49,7 +49,7 @@ export class BlogComponent implements OnInit {
       ]
     },
     {
-      topic : "WebDevelopment",
+      topic : "WebDev",
       active : false,
       imageSrc : 'assets/images/languages/html.png',
       subTopics : [ 
@@ -67,11 +67,6 @@ export class BlogComponent implements OnInit {
           title: "JavaScript",
           imageSrc: "assets/images/languages/javascript.png",
           linkToFile: "assets/pages/notes/_javascript.txt"
-        },
-        {
-          title: 'AsyncJS',
-          imageSrc: "assets/images/languages/asyncJavascript.png",
-          linkToFile: 'assets/pages/notes/asyncjs.txt'
         },
         {
           title: "Angular",
@@ -106,7 +101,8 @@ export class BlogComponent implements OnInit {
         {
           title: "Maven",
           imageSrc: "assets/images/languages/maven.png",
-          linkToComponent: "/blog/util/maven"
+          // linkToComponent: "/blog/util/maven"
+          linkToFile: "assets/pages/notes/_maven.txt"
         },
         {
           title: "MongoDB",

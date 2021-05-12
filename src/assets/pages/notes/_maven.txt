@@ -1,0 +1,22 @@
+<div>
+    <h2>Maven</h2>
+
+    <h3>Apache Maven helps to manage</h3>
+    <ul>
+        <li>Builds</li>
+        <li>Documentation</li>
+        <li>Reporing</li>
+        <li>SCMs</li>
+        <li>Releases</li>
+        <li>Distribution</li>
+    </ul>
+
+    <h3>Maven Repository</h3>
+
+    <p>Local Repository : Stored at local computer in %USER_HOME%/.m2</p>
+
+    <p>Change the local repository directory : </p>
+
+    <p>This is the original code of the setting.xml located at <code>MAVEN_HOME/conf/settings.xml</code></p>
+    
+</div>
