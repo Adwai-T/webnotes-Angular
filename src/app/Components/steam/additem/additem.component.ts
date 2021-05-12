@@ -124,6 +124,7 @@ export class AdditemComponent implements OnInit, OnDestroy {
     if(this.addItemForm.valid) {
       this.updateItemSubscription = this.steam.updateAccepedItems(this.item).subscribe(
         (data:Accept) => {
+          
         },
         (err) => {},
         ()=>{

@@ -31,34 +31,6 @@ export class BlogComponent implements OnInit {
 
   //---Do not leave space in topic or subtopic title. They may cause problem fetching comments for them.
   public topics:Topic[] = [
-
-    {
-      topic : "Utils",
-      active : false,
-      imageSrc : 'assets/images/languages/utilities.png',
-      subTopics : [
-        {
-          title: "Git",
-          imageSrc: "assets/images/languages/git.png",
-          linkToComponent: "/blog/util/git"
-        },
-        {
-          title: "Heroku",
-          imageSrc: "https://img.icons8.com/nolan/128/heroku.png",
-          linkToComponent: "/blog/util/heroku"
-        },
-        {
-          title: "Maven",
-          imageSrc: "assets/images/languages/maven.png",
-          linkToComponent: "/blog/util/maven"
-        },
-        {
-          title: "MongoDB",
-          imageSrc: "assets/images/languages/mongodb.png",
-          linkToFile: "assets/pages/notes/_mongodb.txt"
-        }
-      ]
-    },
     {
       topic : "Java",
       active : false,
@@ -108,11 +80,39 @@ export class BlogComponent implements OnInit {
         }
       ]
     },
+    // {
+    //   topic : "DataBases",
+    //   active : false,
+    //   imageSrc : '/../../../../assets/images/languages/database.png',
+    //   subTopics : [ 
+
+    //   ]
+    // },
     {
-      topic : "DataBases",
+      topic : "Utils",
       active : false,
-      imageSrc : '/../../../../assets/images/languages/database.png',
-      subTopics : [ 
+      imageSrc : 'assets/images/languages/utilities.png',
+      subTopics : [
+        {
+          title: "Git",
+          imageSrc: "assets/images/languages/git.png",
+          linkToComponent: "/blog/util/git"
+        },
+        {
+          title: "Heroku",
+          imageSrc: "https://img.icons8.com/nolan/128/heroku.png",
+          linkToComponent: "/blog/util/heroku"
+        },
+        {
+          title: "Maven",
+          imageSrc: "assets/images/languages/maven.png",
+          linkToComponent: "/blog/util/maven"
+        },
+        {
+          title: "MongoDB",
+          imageSrc: "assets/images/languages/mongodb.png",
+          linkToFile: "assets/pages/notes/_mongodb.txt"
+        },
         {
           title: "SQL",
           imageSrc: "/../../../../assets/images/languages/SQL.png",

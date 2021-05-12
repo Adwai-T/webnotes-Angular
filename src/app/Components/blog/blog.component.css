@@ -12,9 +12,20 @@
     justify-content: center;
     max-width: 750px;
     background-color: rgba(255, 255, 255, 0.25);
-    padding: 5px 10px;
-    margin-bottom: 5px;
+    padding: 10px;
+    /* margin-bottom: 5px; */
+    margin-top: 10px;
     border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+#tile-space{
+    min-height: 10px;
+}
+
+.content_page{
+    max-width: 900px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 .options-window{

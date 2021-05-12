@@ -9,6 +9,9 @@
     </div>
   </div>
 
+  <div id='tile-space'>
+  </div>
+
   <div class="tile-container" *ngIf="subTopics.length > 0">
     <div *ngFor="let subTopic of subTopics">
       <a [routerLink]="subTopic.linkToComponent" (click)="setSubTopicActive(subTopic)">

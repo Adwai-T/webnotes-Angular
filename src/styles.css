@@ -21,7 +21,8 @@ html{
 }
 
 body{
-  background : linear-gradient(to right, #34ebb4, #3ebad6);
+  /* background : linear-gradient(to bottom, #09203f  , #537895); */
+  background-color: #fff;
   width: fit-content;
 }
 a{

@@ -3,16 +3,15 @@
   flex-direction: column;
   align-items: center;
   width: 150px;
-  padding : 2px;
+  padding :10px;
+  margin: 2px;
   border-radius: 10px;
-  background-color: rgb(255, 221, 248, 0.3);
-  margin: 4px;
 }
 
 .container-tile:hover{
-  transform: scale(1.1);
-  box-shadow: 11px 11px 8px 1px rgba(193,208,227,1);
+  /* box-shadow: 11px 11px 8px 1px rgba(193,208,227,1); */
   background-color: #ffffff;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
 img{
@@ -27,4 +26,8 @@ img{
 
 #description-tile{
   text-align: center;
+}
+
+@media screen and (min-width: 600px) {
+
 }
