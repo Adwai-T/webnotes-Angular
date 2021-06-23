@@ -16,19 +16,6 @@ const routes: Routes = [
     path: 'blog',
     loadChildren: () => import('./Components/blog/blog.module').then(m=> m.BlogModule)
   },
-
-  {
-    path: 'questions',
-    loadChildren: () => import('./Components/questions/questions.module').then(m=>m.QuestionsModule)
-  },
-  {
-    path: 'games',
-    loadChildren: () => import('./Components/games/games.module').then(m=>m.GamesModule)
-  },
-  {
-    path : 'steam',
-    loadChildren: () => import('./Components/steam/steam.module').then(m=>m.SteamModule)
-  }
 ];
 
 @NgModule({

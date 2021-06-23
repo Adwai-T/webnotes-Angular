@@ -1,0 +1,59 @@
+<style>
+  #container{
+    padding: 5px;
+    padding-left:20px;
+  }
+</style>
+<div id="container">
+  <div id="TOP">
+    <h1>Technical Analysis</h1>
+  </div>
+
+  <header id="header">
+    <h2>Analysis of Equity</h2>
+    <h3>Fundamental Analysis</h3>
+      Fundamental Analysis is the analysis of the companies strength and weakness for a long term investment. 
+      We will look at Fundamental analysis another article.
+  </p>
+    <h3>Technical Analysis</h3>
+    <p><strong>Technical Analysis</strong> is the research technique to identify tracking 
+      opportunities in the market based on the collective action of the market participants,
+      identify patterns and develop prespective of the market. It is mostly used for shot term trades,
+      it is with Fundamental analysis to decide entry point for the trade.
+    </p>
+    </header>
+    
+  <article>
+    <section id="Assumptions">
+      <h3>Assumptions for Techincal Analysis</h3>
+      <ol type="A">
+        <li>
+          <strong>Market Discounts Everything.</strong>
+          The how of the trends is more important that the why of market action.
+        </li>
+        <li>
+          <strong>Price Moves in Trends.</strong>
+          The Trends in price are a fundamental foundation on which Technical Analysis is based on.
+          Once such trends are established the price moves in the same direction until the trends are reversed.
+        </li>
+        <li>
+          <strong>History Tends to Repeat itself.</strong>
+          The market trends in similar situations tend to repeat themselves. That means studing past trends can gives us
+          information about how the market might behave in the future.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Candle Sticks and Patterns</h2>
+      <p>
+        There are many types of charts used for Techincal Analysis(TA). The most common type of charts used to represent
+        action in the market are Japanese Candlestick charts or simply Candlestick charts.
+        <sup><a href="https://en.wikipedia.org/wiki/Candlestick_chart#History" style="color:blue;" target="_blank"><b>History</b></a></sup>
+
+      </p>
+    </section>
+
+  </article>
+  </p>
+</div>
